@@ -1,3 +1,9 @@
 {
-	"eslint.run": "onSave"
+	"eslint.run": "onSave",
+	"editor.formatOnSave": true,
+	"prisma.fileWatcher": true,
+	"[prisma]": {
+		"editor.defaultFormatter": "Prisma.prisma",
+		"editor.formatOnSave": true
+	}
 }

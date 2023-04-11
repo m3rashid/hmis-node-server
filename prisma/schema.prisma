@@ -1,0 +1,179 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Address {
+  id             Int      @id @default(autoincrement())
+  city           String
+  state          String
+  country        String
+  pincode        String
+  roomNumber     String
+  BuildingNumber String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userId         Int
+  user           User     @relation(fields: [userId], references: [id])
+}
+
+model Resource {
+  id             Int          @id @default(autoincrement())
+  name           String
+  description    String
+  totalLevelsSum Int
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  permissions    Permission[]
+}
+
+model Permission {
+  id         Int      @id @default(autoincrement())
+  roleId     Int
+  Role       Role     @relation(fields: [roleId], references: [id])
+  resourceId Int
+  Resource   Resource @relation(fields: [resourceId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Role {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  isDeleted   Boolean      @default(false)
+  userIds     Int[]
+  permissions Permission[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  users       User[]
+}
+
+model Availability {
+  id        Int      @id @default(autoincrement())
+  day       String
+  startTime DateTime
+  endTime   DateTime
+  profileId Int
+  Profile   Profile  @relation(fields: [profileId], references: [id])
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  userId    String
+  email     String
+  password  String
+  name      String
+  isDeleted Boolean
+  roleIds   Int[]
+  roles     Role[]
+  profileId Int?
+  profile   Profile?
+  addresses Address[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Profile {
+  id                    Int            @id @default(autoincrement())
+  bio                   String
+  roomNumber            Int
+  sex                   Int
+  age                   Int
+  contactNumber         String
+  maritalStatus         Int
+  bloodGroup            Int
+  origin                String
+  lastVisit             DateTime
+  designation           String
+  department            String
+  userId                Int            @unique
+  availability          Availability[]
+  user                  User           @relation(fields: [userId], references: [id])
+  appointmentsAsUserOne Appointment[]  @relation("userOneProfile")
+  appointmentsAsUserTwo Appointment[]  @relation("userTwoProfile")
+  appointmentAsReferred Appointment[]  @relation("referrerUser")
+  leaves                Leave[]
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+}
+
+model Appointment {
+  id             Int          @id @default(autoincrement())
+  userOneId      Int
+  userOne        Profile      @relation("userOneProfile", fields: [userOneId], references: [id])
+  userTwoId      Int
+  userTwo        Profile      @relation("userTwoProfile", fields: [userTwoId], references: [id])
+  status         Int
+  time           DateTime
+  remarks        String
+  referredBy     Int
+  referredByUser Profile      @relation("referrerUser", fields: [referredBy], references: [id])
+  prescriptionId Int
+  prescription   Prescription @relation(fields: [prescriptionId], references: [id])
+  pending        Boolean
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Prescription {
+  id          Int                  @id @default(autoincrement())
+  remarks     String
+  Appointment Appointment[]
+  medicines   PrescribedMedicine[]
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+}
+
+model PrescribedMedicine {
+  id             Int           @id @default(autoincrement())
+  dosage         Int
+  prescriptionId Int
+  prescription   Prescription  @relation(fields: [prescriptionId], references: [id])
+  consumable     Consumables[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Consumables {
+  id                Int                  @id @default(autoincrement())
+  name              String
+  type              Int
+  quantityLeft      Int
+  quantityPerUnit   Int
+  batchNumber       String
+  manufacturer      String
+  expiryDate        DateTime
+  earlierPrescribed PrescribedMedicine[]
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+}
+
+model NonConsumables {
+  id                Int      @id @default(autoincrement())
+  name              String
+  availableQuantity Int
+  type              Int
+  servicingTime     Int
+  servicingTimeUnit Int
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Leave {
+  id        Int      @id @default(autoincrement())
+  startDate DateTime
+  endDate   DateTime
+  reason    String
+  profileId Int
+  profile   Profile? @relation(fields: [profileId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

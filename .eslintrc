@@ -3,6 +3,7 @@
 		"es2021": true,
 		"node": true
 	},
+	"plugins": ["prettier"],
 	"extends": "standard-with-typescript",
 	"overrides": [],
 	"parserOptions": {
@@ -10,5 +11,15 @@
 		"sourceType": "module",
 		"project": ["tsconfig.json"]
 	},
-	"rules": {}
+	"rules": {
+		"no-tabs": "off",
+		"@typescript-eslint/indent": "off",
+		"@typescript-eslint/explicit-function-return-type": "off",
+		"@typescript-eslint/space-before-function-paren": "off",
+		"@typescript-eslint/no-throw-literal": "off",
+		"@typescript-eslint/consistent-type-assertions": "off",
+		"@typescript-eslint/strict-boolean-expressions": "off",
+		"@typescript-eslint/ban-ts-comment": "off",
+		"@typescript-eslint/prefer-ts-expect-error": "off"
+	}
 }
