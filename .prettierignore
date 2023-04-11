@@ -34,3 +34,8 @@ tsconfig.json
 tsconfig.build.json
 yarn.lock
 src-tauri
+
+rollup.config.js
+tsconfig.json
+yarn.lock
+index.d.ts
