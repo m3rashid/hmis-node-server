@@ -1,0 +1,21 @@
+{
+	"name": "hmis-node-server",
+	"version": "1.0.0",
+	"main": "index.js",
+	"repository": "https://github.com/m3rashid-org/hmis-node-server.git",
+	"author": "m3rashid <m3rashid.hussain@gmail.com>",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^18.15.11",
+		"@typescript-eslint/eslint-plugin": "^5.43.0",
+		"eslint": "^8.0.1",
+		"eslint-config-standard-with-typescript": "^34.0.1",
+		"eslint-plugin-import": "^2.25.2",
+		"eslint-plugin-n": "^15.0.0",
+		"eslint-plugin-promise": "^6.0.0",
+		"husky": "^8.0.3",
+		"lint-staged": "^13.2.1",
+		"prettier": "^2.8.7",
+		"typescript": "*"
+	}
+}
