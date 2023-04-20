@@ -9,9 +9,9 @@ import cors from 'cors'
 import http from 'http'
 import helmet from 'helmet'
 import morgan from 'morgan'
-import router from 'routes'
 import express from 'express'
 import mongoose from 'mongoose'
+import routes from 'controllers'
 import config from 'helpers/config'
 import socketHandler from 'sockets'
 import compression from 'compression'
@@ -21,7 +21,7 @@ import monitor from 'express-status-monitor'
 // import initialDatabaseMigration from 'fresh'
 import monitorConfig from 'middlewares/metrics'
 import { Server as SocketServer } from 'socket.io'
-import { globalErrorHandlerMiddleware } from 'helpers/errorHandler'
+import { globalErrorHandlerMiddleware } from 'helpers/errors'
 
 mongoose.set('debug', process.env.NODE_ENV !== 'production')
 mongoose.plugin(paginate)
@@ -59,7 +59,7 @@ app.use(monitor(monitorConfig))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
-app.use(router)
+app.use(routes)
 
 app.use((req, res, next) => res.status(404).send('Not Found'))
 app.use(globalErrorHandlerMiddleware)

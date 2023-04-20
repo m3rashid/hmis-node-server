@@ -10,7 +10,8 @@ const environmentVariables = z.object({
 	MAILER_PASSWORD: z.string(),
 	DEV_PASSWORD: z.string(),
 	ADMIN_PASSWORD: z.string(),
-	ACCESS_SECRET: z.string()
+	ACCESS_SECRET: z.string(),
+	REFRESH_SECRET: z.string()
 })
 
 environmentVariables.parse(process.env)
