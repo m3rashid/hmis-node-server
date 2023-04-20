@@ -1,21 +1,21 @@
 import mongoose from 'mongoose'
 import type { IBaseModel } from 'models/base'
 import { baseModelSchema } from 'models/base'
-import type { IPermission } from 'models/permission'
+// import type { IPermission } from 'models/permission'
 import paginate from 'mongoose-paginate-v2'
 
 export interface IResource extends IBaseModel {
-	name: string
+	displayName: string
 	description?: string
-	permissions: IPermission[]
+	type: string
 }
 
 const resourceSchema = new mongoose.Schema<IResource>(
 	{
 		...baseModelSchema,
-		name: { type: String, required: true },
+		displayName: { type: String, required: true },
 		description: { type: String },
-		permissions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Permission', required: true }]
+		type: { type: String }
 	},
 	{ timestamps: true }
 )

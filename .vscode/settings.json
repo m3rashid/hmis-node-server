@@ -6,5 +6,5 @@
 		"editor.defaultFormatter": "Prisma.prisma",
 		"editor.formatOnSave": true
 	},
-	"cSpell.words": ["includepaths", "paren", "precommit"]
+	"cSpell.words": ["includepaths", "paren", "Parens", "precommit"]
 }

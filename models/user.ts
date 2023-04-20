@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema<IUser>(
 		email: { type: String, required: true },
 		password: { type: String, required: true },
 		roles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role', required: true }],
-		profile: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile', required: true }
+		profile: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }
 	},
 	{ timestamps: true }
 )

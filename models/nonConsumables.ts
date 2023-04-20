@@ -31,7 +31,7 @@ export interface INonConsumable extends IBaseModel {
 const nonConsumableSchema = new mongoose.Schema<INonConsumable>(
 	{
 		...baseModelSchema,
-		name: { type: String, required: true },
+		name: { type: String, unique: true, required: true },
 		type: { type: String, enum: NON_CONSUMABLE_TYPE, required: true },
 		quantityLeft: { type: Number, required: true },
 		lastServicingDate: { type: Date },

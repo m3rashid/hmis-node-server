@@ -1,24 +1,33 @@
 import mongoose from 'mongoose'
-import type { IRole } from 'models/role'
 import type { IBaseModel } from 'models/base'
 import { baseModelSchema } from 'models/base'
-import type { IResource } from 'models/resource'
 import paginate from 'mongoose-paginate-v2'
 
+export const PERMISSION = [
+	'READ',
+	'WRITE',
+	'UPDATE',
+	'DELETE',
+	'BULK_UPDATE',
+	'BULK_DELETE'
+] as const
+
 export interface IPermission extends IBaseModel {
-	name: string
+	displayName: string
 	description?: string
-	resource: IResource
-	roles?: IRole[]
+	resourceType: string // resourceType or ALL
+	scope: string // self, all or resourceId
+	permission: (typeof PERMISSION)[number]
 }
 
 const permissionSchema = new mongoose.Schema<IPermission>(
 	{
 		...baseModelSchema,
-		name: { type: String, required: true },
+		displayName: { type: String, unique: true, required: true },
 		description: { type: String },
-		resource: { type: mongoose.Schema.Types.ObjectId, ref: 'Resource', required: true },
-		roles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role', required: true }]
+		resourceType: { type: String, required: true },
+		scope: { type: String, required: true },
+		permission: { type: String, required: true, enum: PERMISSION }
 	},
 	{ timestamps: true }
 )

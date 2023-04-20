@@ -24,7 +24,7 @@ export interface IConsumable extends IBaseModel {
 const consumableSchema = new mongoose.Schema<IConsumable>(
 	{
 		...baseModelSchema,
-		name: { type: String, required: true },
+		name: { type: String, unique: true, required: true },
 		type: { type: String, enum: CONSUMABLE_TYPE, required: true },
 		quantityLeft: { type: Number, required: true },
 		quantityPerUnit: { type: Number, required: true },
