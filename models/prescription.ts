@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import type { IBaseModel } from 'models/base'
 import { baseModelSchema } from 'models/base'
-import type { IConsumable } from 'models/consumables'
+import type { IConsumable } from 'models/consumable'
 import type { IAppointment } from 'models/appointment'
 import paginate from 'mongoose-paginate-v2'
 

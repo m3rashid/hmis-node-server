@@ -6,6 +6,7 @@ import paginate from 'mongoose-paginate-v2'
 
 export interface IResource extends IBaseModel {
 	displayName: string
+	actualName: string
 	description?: string
 	type: string
 }
@@ -14,6 +15,7 @@ const resourceSchema = new mongoose.Schema<IResource>(
 	{
 		...baseModelSchema,
 		displayName: { type: String, required: true },
+		actualName: { type: String, unique: true, required: true },
 		description: { type: String },
 		type: { type: String }
 	},

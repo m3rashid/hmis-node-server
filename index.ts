@@ -18,6 +18,7 @@ import compression from 'compression'
 import checkSocketAuth from 'sockets/auth'
 import paginate from 'mongoose-paginate-v2'
 import monitor from 'express-status-monitor'
+// import initialDatabaseMigration from 'fresh'
 import monitorConfig from 'middlewares/metrics'
 import { Server as SocketServer } from 'socket.io'
 import { globalErrorHandlerMiddleware } from 'helpers/errorHandler'
@@ -68,6 +69,7 @@ const startServer = async () => {
 		const PORT = process.env.PORT ?? 4000
 		await mongoose.connect(process.env.DATABASE_URL)
 		console.log('Connection established successfully')
+		// await initialDatabaseMigration()
 		server.listen(PORT, () => {
 			console.log(`Server on :${PORT}`)
 		})

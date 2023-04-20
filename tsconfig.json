@@ -19,6 +19,6 @@
 		"outDir": "build",
 		"baseUrl": "."
   },
-	"include": ["**/*.ts"],
+	"include": ["**/*.ts", "fresh/index.js"],
   "exclude": ["node_modules", "build"]
 }

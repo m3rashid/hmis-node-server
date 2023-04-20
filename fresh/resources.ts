@@ -1,18 +1,19 @@
 import ResourceModel from 'models/resource'
+import { toSentenceCase } from 'utils/strings'
 
 const resources = [
 	{
-		name: 'User',
+		name: 'USER',
 		description: 'Auth users in the domain',
 		type: 'user'
 	},
 	{
-		name: 'Profile',
+		name: 'PROFILE',
 		description: 'Profile of users in the domain',
 		type: 'profile'
 	},
 	{
-		name: 'Address',
+		name: 'ADDRESS',
 		description: 'Addresses of users in the domain',
 		type: 'address'
 	},
@@ -22,42 +23,42 @@ const resources = [
 		type: 'permission'
 	},
 	{
-		name: 'Role',
+		name: 'ROLE',
 		description: 'Roles of the users in the domain',
 		type: 'role'
 	},
 	{
-		name: 'Availability',
+		name: 'AVAILABILITY',
 		description: 'Availability of the users in the domain',
 		type: 'availability'
 	},
 	{
-		name: 'Leave',
+		name: 'LEAVE',
 		description: 'Leave applications by the users',
 		type: 'leave'
 	},
 	{
-		name: 'Appointment',
+		name: 'APPOINTMENT',
 		description: 'Appointment of two users of different roles',
 		type: 'appointment'
 	},
 	{
-		name: 'Consumables',
+		name: 'CONSUMABLES',
 		description: 'All the items consumed by a patient or the hospital',
 		type: 'consumables'
 	},
 	{
-		name: 'Non Consumables',
+		name: 'NON_CONSUMABLES',
 		description: 'All the items used by the hospital which do not get depleted on use',
 		type: 'non_consumables'
 	},
 	{
-		name: 'Prescription',
+		name: 'PRESCRIPTION',
 		description: 'All the prescriptions created by the hospital authority',
 		type: 'prescription'
 	},
 	{
-		name: 'Config',
+		name: 'CONFIG',
 		description: 'App Configuration constants deciding the functionality for the entire app',
 		type: 'config'
 	}
@@ -66,7 +67,12 @@ const resources = [
 const migrateResources = async () => {
 	const promises: Array<Promise<any>> = []
 	resources.forEach(resource => {
-		const r = new ResourceModel(resource)
+		const r = new ResourceModel({
+			displayName: toSentenceCase(resource.name),
+			actualName: resource.name,
+			description: resource.description,
+			type: resource.type
+		})
 		promises.push(r.save())
 	})
 

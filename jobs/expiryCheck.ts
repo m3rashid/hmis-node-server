@@ -1,5 +1,5 @@
 import { logger } from 'helpers/logger'
-import ConsumableModel from 'models/consumables'
+import ConsumableModel from 'models/consumable'
 import NonConsumablesModel from 'models/nonConsumables'
 import cron from 'node-cron'
 

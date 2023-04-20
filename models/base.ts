@@ -6,12 +6,12 @@ export interface IBaseModel {
 	createdAt: Date
 	updatedAt: Date
 	deleted: boolean
-	createdBy: IUser
-	lastUpdatedBy: IUser
+	createdBy?: IUser
+	lastUpdatedBy?: IUser
 }
 
 export const baseModelSchema = {
 	deleted: { type: Boolean, default: false },
-	createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-	lastUpdatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
+	createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+	lastUpdatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 }

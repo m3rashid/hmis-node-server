@@ -14,6 +14,7 @@ export const PERMISSION = [
 
 export interface IPermission extends IBaseModel {
 	displayName: string
+	actualName: string
 	description?: string
 	resourceType: string // resourceType or ALL
 	scope: string // self, all or resourceId
@@ -23,7 +24,8 @@ export interface IPermission extends IBaseModel {
 const permissionSchema = new mongoose.Schema<IPermission>(
 	{
 		...baseModelSchema,
-		displayName: { type: String, unique: true, required: true },
+		displayName: { type: String, required: true },
+		actualName: { type: String, unique: true, required: true },
 		description: { type: String },
 		resourceType: { type: String, required: true },
 		scope: { type: String, required: true },
