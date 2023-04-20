@@ -20,6 +20,7 @@
 		"@typescript-eslint/consistent-type-assertions": "off",
 		"@typescript-eslint/strict-boolean-expressions": "off",
 		"@typescript-eslint/ban-ts-comment": "off",
-		"@typescript-eslint/prefer-ts-expect-error": "off"
+		"@typescript-eslint/prefer-ts-expect-error": "off",
+		"@typescript-eslint/no-namespace": "off"
 	}
 }
