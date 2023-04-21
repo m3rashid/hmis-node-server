@@ -1,6 +1,6 @@
-import type { IPermission } from 'models/permission'
-import PermissionModel from 'models/permission'
 import { toSentenceCase } from 'utils/strings'
+import PermissionModel from 'models/permission'
+import type { IPermission } from 'models/permission'
 
 type PermissionArray = Array<Partial<IPermission> & { name: string }>
 

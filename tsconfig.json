@@ -17,8 +17,8 @@
     "strict": true,
 		"target": "es5",
 		"outDir": "build",
-		"baseUrl": "."
+		"baseUrl": "src"
   },
-	"include": ["**/*.ts", "fresh/index.js"],
+	"include": ["src/**/*.ts"],
   "exclude": ["node_modules", "build"]
 }

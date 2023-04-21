@@ -1,6 +1,6 @@
-import PermissionModel from 'models/permission'
 import RoleModel from 'models/role'
 import { toSentenceCase } from 'utils/strings'
+import PermissionModel from 'models/permission'
 
 const defaultRoles = [
 	{

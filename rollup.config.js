@@ -7,7 +7,7 @@ import commonjs from '@rollup/plugin-commonjs'
 // eslint-disable-next-line turbo/no-undeclared-env-vars
 const dev = process.env.ROLLUP_WATCH === 'true'
 const config = {
-	input: './index.ts',
+	input: 'src/index.ts',
 	output: {
 		file: 'build/index.js'
 	},

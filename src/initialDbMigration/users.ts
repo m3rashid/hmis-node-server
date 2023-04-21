@@ -1,5 +1,5 @@
-import UserModel from 'models/user'
 import bcrypt from 'bcrypt'
+import UserModel from 'models/user'
 import RoleModel from 'models/role'
 
 const defaultUsers = [

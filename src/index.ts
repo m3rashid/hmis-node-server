@@ -12,15 +12,15 @@ import morgan from 'morgan'
 import express from 'express'
 import mongoose from 'mongoose'
 import routes from 'controllers'
+import { Server } from 'socket.io'
 import config from 'helpers/config'
 import socketHandler from 'sockets'
 import compression from 'compression'
 import checkSocketAuth from 'sockets/auth'
 import paginate from 'mongoose-paginate-v2'
 import monitor from 'express-status-monitor'
-// import initialDatabaseMigration from 'fresh'
 import monitorConfig from 'middlewares/metrics'
-import { Server as SocketServer } from 'socket.io'
+// import initialDbMigration from 'initialDbMigration'
 import { globalErrorHandlerMiddleware } from 'helpers/errors'
 
 mongoose.set('debug', process.env.NODE_ENV !== 'production')
@@ -31,12 +31,10 @@ app.use(helmet())
 app.use(compression())
 app.disable('x-powered-by')
 const server = http.createServer(app)
-const io = new SocketServer<
-	ClientToServerEvents,
-	ServerToClientEvents,
-	InterServerEvents,
-	SocketData
->(server, { cors: config.cors })
+const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(
+	server,
+	{ cors: config.cors }
+)
 
 io.engine.use(helmet())
 io.use(checkSocketAuth)
@@ -69,7 +67,7 @@ const startServer = async () => {
 		const PORT = process.env.PORT ?? 4000
 		await mongoose.connect(process.env.DATABASE_URL)
 		console.log('Connection established successfully')
-		// await initialDatabaseMigration()
+		// await initialDbMigration()
 		server.listen(PORT, () => {
 			console.log(`Server on :${PORT}`)
 		})

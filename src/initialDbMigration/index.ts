@@ -1,12 +1,12 @@
 import { wait } from 'utils/utils'
-import migrateRoles from 'fresh/role'
-import migrateUsers from 'fresh/users'
 import { logger } from 'helpers/logger'
-import migrateConfig from 'fresh/config'
 import migrateResources from './resources'
-import migratePermissions from 'fresh/permission'
+import migrateRoles from 'initialDbMigration/role'
+import migrateUsers from 'initialDbMigration/users'
+import migrateConfig from 'initialDbMigration/config'
+import migratePermissions from 'initialDbMigration/permission'
 
-const initialDatabaseMigration = async () => {
+const initialDbMigration = async () => {
 	try {
 		logger.info('Migrating Config')
 		await migrateConfig()
@@ -36,4 +36,4 @@ const initialDatabaseMigration = async () => {
 	}
 }
 
-export default initialDatabaseMigration
+export default initialDbMigration
