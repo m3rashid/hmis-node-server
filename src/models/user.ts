@@ -1,9 +1,9 @@
-import type { IBaseModel } from 'models/base'
 import mongoose from 'mongoose'
 import type { IRole } from 'models/role'
-import { baseModelSchema } from 'models/base'
-import type { IProfile } from 'models/profile'
 import paginate from 'mongoose-paginate-v2'
+import { baseModelSchema } from 'models/base'
+import type { IBaseModel } from 'models/base'
+import type { IProfile } from 'models/profile'
 
 export interface IUser extends IBaseModel {
 	name: string

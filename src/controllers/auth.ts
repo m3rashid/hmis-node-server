@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt'
 import UserModel from 'models/user'
-import { issueJWT } from 'helpers/jwt'
 import { newError } from 'helpers/errors'
 import type { Request, Response } from 'express'
 import type { LoginBody } from 'validators/auth'
+import { issueJWT } from 'helpers/jwt'
 
 export const login = async (req: Request<any, any, LoginBody>, res: Response) => {
 	const { email, password } = req.body

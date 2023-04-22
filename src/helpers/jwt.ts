@@ -1,6 +1,13 @@
 import JWT from 'jsonwebtoken'
 import type { IUser } from 'models/user'
 
+export interface ILoginUser {
+	_id: string
+	roles: any
+	name: string
+	email: string
+}
+
 export const issueJWT = (user: IUser) => {
 	const payload = {
 		sub: {
@@ -8,7 +15,7 @@ export const issueJWT = (user: IUser) => {
 			roles: user.roles,
 			name: user.name,
 			email: user.email
-		},
+		} as ILoginUser,
 		iat: Date.now()
 	}
 
@@ -23,25 +30,6 @@ export const verifyJWT = (token: string) => {
 	try {
 		const extractedToken = token.split(' ')[1]
 		const decoded = JWT.verify(extractedToken, process.env.ACCESS_SECRET)
-		return {
-			valid: true,
-			expired: false,
-			payload: decoded
-		}
-	} catch (err: any) {
-		return {
-			valid: false,
-			expired: err.message === 'jwt expired',
-			payload: null
-		}
-	}
-}
-
-export const revalidateJWT = (token: string) => {
-	try {
-		const extractedToken = token.split(' ')[1]
-		const decoded = JWT.verify(extractedToken, process.env.REFRESH_SECRET, {})
-
 		return {
 			valid: true,
 			expired: false,
