@@ -2,6 +2,7 @@ import 'dotenv/config'
 import { z } from 'zod'
 
 const environmentVariables = z.object({
+	ROLLUP_WATCH: z.enum(['true', 'false']),
 	NODE_ENV: z.enum(['development', 'production', 'test']),
 	PORT: z.string(),
 	DATABASE_URL: z.string(),

@@ -1,7 +1,8 @@
-import type { Request, Response } from 'express'
-import UserModel from 'models/user'
 import bcrypt from 'bcrypt'
+import UserModel from 'models/user'
 import { issueJWT } from 'helpers/jwt'
+import { newError } from 'helpers/errors'
+import type { Request, Response } from 'express'
 import type { LoginBody } from 'validators/auth'
 
 export const login = async (req: Request<any, any, LoginBody>, res: Response) => {
@@ -12,10 +13,9 @@ export const login = async (req: Request<any, any, LoginBody>, res: Response) =>
 		.populate('profile')
 		.lean()
 
-	if (!user) throw new Error('User not found')
-
+	if (!user) throw newError('User not found')
 	const match = await bcrypt.compare(password, user.password)
-	if (!match) throw new Error('Invalid Credentials')
+	if (!match) throw newError('Invalid Credentials')
 
 	const { accessToken, refreshToken } = issueJWT(user)
 	return res.status(200).json({
@@ -25,7 +25,9 @@ export const login = async (req: Request<any, any, LoginBody>, res: Response) =>
 	})
 }
 
-export const logout = async (req: Request, res: Response) => {}
+export const logout = async (req: Request, res: Response) => {
+	return res.sendStatus(200)
+}
 
 export const currentUser = async (req: Request, res: Response) => {}
 

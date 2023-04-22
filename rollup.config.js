@@ -1,10 +1,9 @@
 import run from '@rollup/plugin-run'
 import terser from '@rollup/plugin-terser'
+import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
 import includePaths from 'rollup-plugin-includepaths'
-import commonjs from '@rollup/plugin-commonjs'
 
-// eslint-disable-next-line turbo/no-undeclared-env-vars
 const dev = process.env.ROLLUP_WATCH === 'true'
 const config = {
 	input: 'src/index.ts',
@@ -18,8 +17,8 @@ const config = {
 			external: [],
 			extensions: ['.js', '.ts', '.d.ts', '.cjs']
 		}),
-		typescript(),
 		commonjs({ extensions: ['.js', '.ts', '.cjs'] }),
+		typescript(),
 		dev && run(),
 		!dev && terser()
 	]

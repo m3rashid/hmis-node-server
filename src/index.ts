@@ -57,8 +57,8 @@ app.use(monitor(monitorConfig))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
-app.use(routes)
 
+app.use(routes)
 app.use((req, res, next) => res.status(404).send('Not Found'))
 app.use(globalErrorHandlerMiddleware)
 
