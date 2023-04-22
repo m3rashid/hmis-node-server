@@ -1,8 +1,8 @@
-import type { IBaseModel } from 'models/base'
 import mongoose from 'mongoose'
-import { baseModelSchema } from 'models/base'
-import type { IProfile } from 'models/profile'
 import paginate from 'mongoose-paginate-v2'
+import type { IBaseModel } from 'models/base'
+import type { IProfile } from 'models/profile'
+import { baseModelSchema, modelNames } from 'models/base'
 
 export const DAYS: readonly string[] = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
 
@@ -30,5 +30,5 @@ interface IAvailabilityDocument extends Omit<mongoose.Document, '_id'>, IAvailab
 const AvailabilityModel = mongoose.model<
 	IAvailabilityDocument,
 	mongoose.PaginateModel<IAvailabilityDocument>
->('Availability', availabilitySchema)
+>(modelNames.availability, availabilitySchema)
 export default AvailabilityModel

@@ -1,17 +1,22 @@
 import type { z } from 'zod'
-import { newZodErrors } from 'helpers/errors'
+import { newZodErrors, useRoute } from 'helpers/errors'
 import type { NextFunction, Request, Response } from 'express'
 
-const validateSchema = (schema: z.ZodObject<any>) => {
-	return (req: Request, res: Response, next: NextFunction) => {
-		const result = schema.safeParse({
-			body: req.body,
-			query: req.query,
-			params: req.params
-		})
-		if (result.success) next()
-		else throw newZodErrors(result.error.issues)
-	}
+export const onlyValidate = (req: Request, schema: z.ZodObject<any>) => {
+	const result = schema.safeParse({
+		body: req.body,
+		query: req.query,
+		params: req.params
+	})
+
+	if (!result.success) throw newZodErrors(result.error.issues)
 }
 
-export default validateSchema
+const validate = (schema: z.ZodObject<any>) => {
+	return useRoute((req: Request, res: Response, next: NextFunction) => {
+		onlyValidate(req, schema)
+		next()
+	})
+}
+
+export default validate

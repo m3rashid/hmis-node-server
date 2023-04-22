@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import { z } from 'zod'
+import type { ILoginUser } from 'helpers/jwt'
 
 const environmentVariables = z.object({
 	ROLLUP_WATCH: z.enum(['true', 'false']),
@@ -20,7 +21,8 @@ environmentVariables.parse(process.env)
 declare global {
 	namespace Express {
 		interface Request {
-			user: any
+			user: ILoginUser
+			isAuthenticated: boolean
 		}
 	}
 

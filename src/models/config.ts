@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { modelNames } from 'models/base'
 
 export interface IConfig {
 	name: string
@@ -12,5 +13,5 @@ const configSchema = new mongoose.Schema<IConfig>({
 	value: { type: String, required: true }
 })
 
-const ConfigModel = mongoose.model<IConfig>('Config', configSchema)
+const ConfigModel = mongoose.model<IConfig>(modelNames.config, configSchema)
 export default ConfigModel

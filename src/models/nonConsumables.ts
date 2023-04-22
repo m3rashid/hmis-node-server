@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
-import type { IBaseModel } from 'models/base'
-import { baseModelSchema } from 'models/base'
 import paginate from 'mongoose-paginate-v2'
+import type { IBaseModel } from 'models/base'
+import { baseModelSchema, modelNames } from 'models/base'
 
 export const TIME_UNIT: readonly string[] = [
 	'MIN', // minutes
@@ -46,5 +46,5 @@ interface INonConsumableDocument extends Omit<mongoose.Document, '_id'>, INonCon
 const NonConsumableModel = mongoose.model<
 	INonConsumableDocument,
 	mongoose.PaginateModel<INonConsumableDocument>
->('NonConsumable', nonConsumableSchema)
+>(modelNames.nonConsumable, nonConsumableSchema)
 export default NonConsumableModel

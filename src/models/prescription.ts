@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
+import paginate from 'mongoose-paginate-v2'
 import type { IBaseModel } from 'models/base'
-import { baseModelSchema } from 'models/base'
 import type { IConsumable } from 'models/consumable'
 import type { IAppointment } from 'models/appointment'
-import paginate from 'mongoose-paginate-v2'
+import { baseModelSchema, modelNames } from 'models/base'
 
 export const TIME_OF_DAY: readonly string[] = ['BM', 'AF'] // before meal, after meal
 
@@ -47,5 +47,5 @@ interface IPrescriptionDocument extends Omit<mongoose.Document, '_id'>, IPrescri
 const PrescriptionModel = mongoose.model<
 	IPrescriptionDocument,
 	mongoose.PaginateModel<IPrescriptionDocument>
->('Prescription', prescriptionSchema)
+>(modelNames.prescription, prescriptionSchema)
 export default PrescriptionModel

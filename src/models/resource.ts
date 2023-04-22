@@ -1,8 +1,7 @@
 import mongoose from 'mongoose'
-import type { IBaseModel } from 'models/base'
-import { baseModelSchema } from 'models/base'
-// import type { IPermission } from 'models/permission'
 import paginate from 'mongoose-paginate-v2'
+import type { IBaseModel } from 'models/base'
+import { baseModelSchema, modelNames } from 'models/base'
 
 export interface IResource extends IBaseModel {
 	displayName: string
@@ -26,7 +25,7 @@ resourceSchema.plugin(paginate)
 interface IResourceDocument extends Omit<mongoose.Document, '_id'>, IResource {}
 
 const ResourceModel = mongoose.model<IResourceDocument, mongoose.PaginateModel<IResourceDocument>>(
-	'Resource',
+	modelNames.resource,
 	resourceSchema
 )
 export default ResourceModel

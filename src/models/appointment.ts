@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 import type { IUser } from 'models/user'
-import { baseModelSchema } from 'models/base'
+import paginate from 'mongoose-paginate-v2'
 import type { IBaseModel } from 'models/base'
 import type { IPrescription } from 'models/prescription'
-import paginate from 'mongoose-paginate-v2'
+import { baseModelSchema, modelNames } from 'models/base'
 
 export const APPOINTMENT_STATUS: readonly string[] = ['PENDING', 'ACCEPTED', 'REJECTED', 'RESOLVED']
 
@@ -45,5 +45,5 @@ interface IAppointmentDocument extends Omit<mongoose.Document, '_id'>, IAppointm
 const AppointmentModel = mongoose.model<
 	IAppointmentDocument,
 	mongoose.PaginateModel<IAppointmentDocument>
->('Appointment', appointmentSchema)
+>(modelNames.appointment, appointmentSchema)
 export default AppointmentModel

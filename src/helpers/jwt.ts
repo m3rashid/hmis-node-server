@@ -44,4 +44,22 @@ export const verifyJWT = (token: string) => {
 	}
 }
 
+export const revalidateJWT = (token: string) => {
+	try {
+		const extractedToken = token.split(' ')[1]
+		const decoded = JWT.verify(extractedToken, process.env.REFRESH_SECRET)
+		return {
+			valid: true,
+			expired: false,
+			payload: decoded
+		}
+	} catch (err: any) {
+		return {
+			valid: false,
+			expired: err.message === 'jwt expired',
+			payload: null
+		}
+	}
+}
+
 export const invalidateJWT = (token: string) => {}

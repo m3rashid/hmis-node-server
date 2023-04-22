@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
+import paginate from 'mongoose-paginate-v2'
 import type { IBaseModel } from 'models/base'
 import type { IProfile } from 'models/profile'
-import { baseModelSchema } from 'models/base'
-import paginate from 'mongoose-paginate-v2'
+import { baseModelSchema, modelNames } from 'models/base'
 
 export interface IAddress extends IBaseModel {
 	city: string
@@ -32,7 +32,7 @@ addressSchema.plugin(paginate)
 interface IAddressDocument extends Omit<mongoose.Document, '_id'>, IAddress {}
 
 const AddressModel = mongoose.model<IAddressDocument, mongoose.PaginateModel<IAddressDocument>>(
-	'Address',
+	modelNames.address,
 	addressSchema
 )
 export default AddressModel

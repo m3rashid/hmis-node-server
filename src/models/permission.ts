@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
-import type { IBaseModel } from 'models/base'
-import { baseModelSchema } from 'models/base'
 import paginate from 'mongoose-paginate-v2'
+import type { IBaseModel } from 'models/base'
+import { baseModelSchema, modelNames } from 'models/base'
 
 export const PERMISSION = [
 	'READ',
@@ -40,5 +40,5 @@ interface IPermissionDocument extends Omit<mongoose.Document, '_id'>, IPermissio
 const PermissionModel = mongoose.model<
 	IPermissionDocument,
 	mongoose.PaginateModel<IPermissionDocument>
->('Permission', permissionSchema)
+>(modelNames.permission, permissionSchema)
 export default PermissionModel

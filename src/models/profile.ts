@@ -1,12 +1,12 @@
 import mongoose from 'mongoose'
 import type { IUser } from 'models/user'
 import type { ILeave } from 'models/leave'
+import paginate from 'mongoose-paginate-v2'
 import type { IBaseModel } from 'models/base'
-import { baseModelSchema } from 'models/base'
 import type { IAddress } from 'models/address'
 import type { IAppointment } from 'models/appointment'
 import type { IAvailability } from 'models/availability'
-import paginate from 'mongoose-paginate-v2'
+import { baseModelSchema, modelNames } from 'models/base'
 
 export const SEX: readonly string[] = ['M', 'F', 'O']
 
@@ -20,6 +20,7 @@ export interface IProfile extends IBaseModel {
 	age?: number
 	sex: string
 	phone?: string
+	phoneVerified: boolean
 	maritalStatus?: string
 	profilePicture?: string
 	addresses?: IAddress[]
@@ -45,6 +46,7 @@ const profileSchema = new mongoose.Schema<IProfile>(
 		age: { type: Number },
 		sex: { type: String, required: true, enum: SEX },
 		phone: { type: String },
+		phoneVerified: { type: Boolean, default: false },
 		maritalStatus: { type: String, enum: MARITAL_STATUS },
 		profilePicture: { type: String },
 		addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Address' }],
@@ -68,7 +70,7 @@ profileSchema.plugin(paginate)
 interface IProfileDocument extends Omit<mongoose.Document, '_id'>, IProfile {}
 
 const ProfileModel = mongoose.model<IProfileDocument, mongoose.PaginateModel<IProfileDocument>>(
-	'Profile',
+	modelNames.profile,
 	profileSchema
 )
 export default ProfileModel

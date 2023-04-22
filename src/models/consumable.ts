@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
-import type { IBaseModel } from 'models/base'
-import { baseModelSchema } from 'models/base'
 import paginate from 'mongoose-paginate-v2'
+import type { IBaseModel } from 'models/base'
+import { baseModelSchema, modelNames } from 'models/base'
 
 export const CONSUMABLE_TYPE: readonly string[] = [
 	'TAB', // Tablet
@@ -41,5 +41,5 @@ interface IConsumableDocument extends Omit<mongoose.Document, '_id'>, IConsumabl
 const ConsumableModel = mongoose.model<
 	IConsumableDocument,
 	mongoose.PaginateModel<IConsumableDocument>
->('Consumable', consumableSchema)
+>(modelNames.consumable, consumableSchema)
 export default ConsumableModel

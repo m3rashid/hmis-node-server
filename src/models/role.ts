@@ -1,8 +1,8 @@
-import type { IBaseModel } from 'models/base'
 import mongoose from 'mongoose'
-import { baseModelSchema } from 'models/base'
-import type { IPermission } from 'models/permission'
 import paginate from 'mongoose-paginate-v2'
+import type { IBaseModel } from 'models/base'
+import type { IPermission } from 'models/permission'
+import { baseModelSchema, modelNames } from 'models/base'
 
 export interface IRole extends IBaseModel {
 	displayName: string
@@ -28,7 +28,7 @@ roleSchema.plugin(paginate)
 interface IRoleDocument extends Omit<mongoose.Document, '_id'>, IRole {}
 
 const RoleModel = mongoose.model<IRoleDocument, mongoose.PaginateModel<IRoleDocument>>(
-	'Role',
+	modelNames.role,
 	roleSchema
 )
 export default RoleModel
