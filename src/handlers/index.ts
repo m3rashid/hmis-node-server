@@ -32,5 +32,9 @@ router.post('/role/details', useRoute(roleController.getRoleDetails))
 
 router.post('/profile/create', useRoute(userController.createProfile))
 router.post('/profile/edit', useRoute(userController.updateProfile))
+router.get('/user/all', useRoute(userController.getAllUsers))
+router.get('/user/allWithDeleted', useRoute(userController.getAllUsersWithDeleted))
+
+router.get('/permission/all', useRoute(roleController.getAllPermissions))
 
 export default router

@@ -41,5 +41,6 @@ export const globalErrorHandlerMiddleware = (
 	res: Response,
 	next: NextFunction
 ) => {
+	console.log(err)
 	return res.status(500).json(err)
 }

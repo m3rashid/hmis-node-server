@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express'
 import type { CreateRoleBody, DeleteRoleBody, EditRoleBody } from 'handlers/role/validator'
+import PermissionModel from 'models/permission'
 import RoleModel from 'models/role'
 
 export const createRole = async (req: Request<any, any, CreateRoleBody>, res: Response) => {
@@ -30,18 +31,53 @@ export const deleteRole = async (req: Request<any, any, DeleteRoleBody>, res: Re
 	return res.json('Role deleted successfully')
 }
 
+// ERROR: not working
 export const getRoles = async (req: Request, res: Response) => {
-	const roles = await RoleModel.find({ deleted: false })
+	const roles = await RoleModel.aggregate([
+		{ $match: { deleted: false } },
+		{
+			$lookup: {
+				from: 'permissions',
+				localField: 'permissions',
+				foreignField: '_id',
+				as: 'permissions'
+			}
+		}
+	])
 	return res.json(roles)
 }
 
 export const getRoleWithDeleted = async (req: Request, res: Response) => {
-	const roles = await RoleModel.find()
+	const roles = await RoleModel.aggregate([
+		{
+			$lookup: {
+				from: 'permissions',
+				localField: 'permissions',
+				foreignField: '_id',
+				as: 'permissions'
+			}
+		}
+	])
 	return res.json(roles)
 }
 
 export const getRoleDetails = async (req: Request<any, any, DeleteRoleBody>, res: Response) => {
 	const { roleId } = req.body
-	const role = await RoleModel.findById(roleId).populate('permissions')
+	const role = await RoleModel.aggregate([
+		{ $match: { _id: roleId } },
+		{
+			$lookup: {
+				from: 'permissions',
+				localField: 'permissions',
+				foreignField: '_id',
+				as: 'permissions'
+			}
+		}
+	])
 	return res.json(role)
+}
+
+export const getAllPermissions = async (req: Request, res: Response) => {
+	const permissions = await PermissionModel.find({ deleted: false })
+	return res.json(permissions)
 }
