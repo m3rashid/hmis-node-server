@@ -1,8 +1,8 @@
 import { wait } from 'utils/utils'
 import { logger } from 'helpers/logger'
-import migrateResources from './resources'
+import migrateResources from './resource'
 import migrateRoles from 'initialDbMigration/role'
-import migrateUsers from 'initialDbMigration/users'
+import migrateUsers from 'initialDbMigration/user'
 import migrateConfig from 'initialDbMigration/config'
 import migratePermissions from 'initialDbMigration/permission'
 
