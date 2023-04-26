@@ -18,8 +18,6 @@ import socketHandler from 'sockets'
 import compression from 'compression'
 import checkSocketAuth from 'sockets/auth'
 import paginate from 'mongoose-paginate-v2'
-import monitor from 'express-status-monitor'
-import monitorConfig from 'middlewares/metrics'
 // import initialDbMigration from 'initialDbMigration'
 import { globalErrorHandlerMiddleware } from 'helpers/errors'
 
@@ -53,7 +51,6 @@ io.on('connection', socket => {
 
 app.use(cors(config.cors))
 app.use(morgan('dev'))
-app.use(monitor(monitorConfig))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
