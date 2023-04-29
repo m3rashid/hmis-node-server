@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import { toSentenceCase } from 'utils/strings'
 import PermissionModel from 'models/permission'
 import type { IPermission } from 'models/permission'
@@ -99,8 +100,8 @@ const migratePermissions = async (devId: string) => {
 			resourceType: perm.resourceType,
 			scope: perm.scope,
 			permission: perm.permission,
-			createdBy: devId,
-			lastUpdatedBy: devId
+			createdBy: new mongoose.Types.ObjectId(devId),
+			lastUpdatedBy: new mongoose.Types.ObjectId(devId)
 		})
 		promises.push(p.save())
 	})

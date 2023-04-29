@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import mongoose from 'mongoose'
 import UserModel from 'models/user'
 import RoleModel from 'models/role'
 
@@ -36,8 +37,8 @@ export const createAdminUser = async (devId: string) => {
 		email: adminUser.email,
 		password: pwd,
 		roles: roles.map(t => t._id),
-		createdBy: devId,
-		lastUpdatedBy: devId
+		createdBy: new mongoose.Types.ObjectId(devId),
+		lastUpdatedBy: new mongoose.Types.ObjectId(devId)
 	})
 	return await admin.save()
 }
@@ -46,7 +47,7 @@ export const updateDevUser = async (devId: string) => {
 	const roles = await RoleModel.find({ actualName: devUser.role }).select({ _id: 1 })
 	await UserModel.findByIdAndUpdate(devId, {
 		roles: roles.map(t => t._id),
-		createdBy: devId,
-		lastUpdatedBy: devId
+		createdBy: new mongoose.Types.ObjectId(devId),
+		lastUpdatedBy: new mongoose.Types.ObjectId(devId)
 	})
 }

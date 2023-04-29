@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import ConfigModel from 'models/config'
 
 const defaultConfig = {
@@ -28,8 +29,8 @@ const migrateConfig = async (devId: string) => {
 				name,
 				value,
 				containerName,
-				createdBy: devId,
-				lastUpdatedBy: devId
+				createdBy: new mongoose.Types.ObjectId(devId),
+				lastUpdatedBy: new mongoose.Types.ObjectId(devId)
 			})
 			promises.push(p.save())
 		})

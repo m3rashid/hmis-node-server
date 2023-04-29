@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import { faker } from '@faker-js/faker'
 import type { IConsumable } from 'models/consumable'
 import type { INonConsumable } from 'models/nonConsumables'
@@ -21,8 +22,8 @@ const fakeConsumables = (count: number, devId: string) => {
 			expiryDate: faker.date.future(),
 			manufacturer: faker.company.bs(),
 			deleted: faker.datatype.boolean(),
-			createdBy: devId as any,
-			lastUpdatedBy: devId as any
+			createdBy: new mongoose.Types.ObjectId(devId) as any,
+			lastUpdatedBy: new mongoose.Types.ObjectId(devId) as any
 		})
 	}
 	return consumablesArray
@@ -39,8 +40,8 @@ const fakeNonConsumables = (count: number, devId: string) => {
 			lastServicingDate: faker.date.past(),
 			nextServicingDate: faker.date.future(),
 			deleted: faker.datatype.boolean(),
-			createdBy: devId as any,
-			lastUpdatedBy: devId as any
+			createdBy: new mongoose.Types.ObjectId(devId) as any,
+			lastUpdatedBy: new mongoose.Types.ObjectId(devId) as any
 		})
 	}
 	return nonConsumablesArray

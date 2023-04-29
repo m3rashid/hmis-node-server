@@ -1,4 +1,4 @@
-import type { Types } from 'mongoose'
+import mongoose from 'mongoose'
 import ResourceModel from 'models/resource'
 import { toSentenceCase } from 'utils/strings'
 
@@ -73,8 +73,8 @@ const migrateResources = async (devId: string) => {
 			actualName: resource.name,
 			description: resource.description,
 			type: resource.type,
-			createdBy: devId,
-			lastUpdatedBy: devId
+			createdBy: new mongoose.Types.ObjectId(devId),
+			lastUpdatedBy: new mongoose.Types.ObjectId(devId)
 		})
 		promises.push(r.save())
 	})

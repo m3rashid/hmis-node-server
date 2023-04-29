@@ -1,5 +1,5 @@
+import mongoose from 'mongoose'
 import RoleModel from 'models/role'
-import type { Types } from 'mongoose'
 import { toSentenceCase } from 'utils/strings'
 import PermissionModel from 'models/permission'
 
@@ -28,8 +28,8 @@ const migrateRoles = async (devId: string) => {
 			actualName: role.name,
 			description: role.description,
 			permissions: adminPermissions,
-			createdBy: devId,
-			lastUpdatedBy: devId
+			createdBy: new mongoose.Types.ObjectId(devId),
+			lastUpdatedBy: new mongoose.Types.ObjectId(devId)
 		})
 		promises.push(r.save())
 	})

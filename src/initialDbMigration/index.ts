@@ -2,10 +2,10 @@ import { wait } from 'utils/utils'
 import { logger } from 'helpers/logger'
 import migrateResources from './resource'
 import migrateRoles from 'initialDbMigration/role'
-import { createAdminUser, createDevUser, updateDevUser } from 'initialDbMigration/user'
 import migrateConfig from 'initialDbMigration/config'
-import migratePermissions from 'initialDbMigration/permission'
 import migrateInventory from 'initialDbMigration/inventory'
+import migratePermissions from 'initialDbMigration/permission'
+import { createAdminUser, createDevUser, updateDevUser } from 'initialDbMigration/user'
 
 /**
  * Migration order:
@@ -23,6 +23,7 @@ const initialDbMigration = async () => {
 	try {
 		const devUser = await createDevUser()
 		if (!devUser) throw new Error('Dev User not created')
+		logger.info('Dev User Created')
 		const devId = devUser._id
 
 		await migrateConfig(devId)
