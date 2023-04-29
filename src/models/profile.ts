@@ -67,7 +67,7 @@ const profileSchema = new mongoose.Schema<IProfile>(
 )
 
 profileSchema.plugin(paginate)
-interface IProfileDocument extends Omit<mongoose.Document, '_id'>, IProfile {}
+export interface IProfileDocument extends Omit<mongoose.Document, '_id'>, IProfile {}
 
 const ProfileModel = mongoose.model<IProfileDocument, mongoose.PaginateModel<IProfileDocument>>(
 	modelNames.profile,

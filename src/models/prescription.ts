@@ -42,7 +42,7 @@ const prescriptionSchema = new mongoose.Schema<IPrescription>(
 )
 
 prescriptionSchema.plugin(paginate)
-interface IPrescriptionDocument extends Omit<mongoose.Document, '_id'>, IPrescription {}
+export interface IPrescriptionDocument extends Omit<mongoose.Document, '_id'>, IPrescription {}
 
 const PrescriptionModel = mongoose.model<
 	IPrescriptionDocument,

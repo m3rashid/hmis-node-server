@@ -29,7 +29,7 @@ const addressSchema = new mongoose.Schema<IAddress>(
 )
 
 addressSchema.plugin(paginate)
-interface IAddressDocument extends Omit<mongoose.Document, '_id'>, IAddress {}
+export interface IAddressDocument extends Omit<mongoose.Document, '_id'>, IAddress {}
 
 const AddressModel = mongoose.model<IAddressDocument, mongoose.PaginateModel<IAddressDocument>>(
 	modelNames.address,

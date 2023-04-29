@@ -89,7 +89,7 @@ const defaultAllPermissions: PermissionArray = [
 	...developerPermissions
 ]
 
-const migratePermissions = async () => {
+const migratePermissions = async (devId: string) => {
 	const promises: Array<Promise<any>> = []
 	defaultAllPermissions.forEach(perm => {
 		const p = new PermissionModel({
@@ -98,7 +98,9 @@ const migratePermissions = async () => {
 			description: perm.description,
 			resourceType: perm.resourceType,
 			scope: perm.scope,
-			permission: perm.permission
+			permission: perm.permission,
+			createdBy: devId,
+			lastUpdatedBy: devId
 		})
 		promises.push(p.save())
 	})

@@ -27,7 +27,7 @@ const leaveSchema = new mongoose.Schema<ILeave>(
 )
 
 leaveSchema.plugin(paginate)
-interface ILeaveDocument extends Omit<mongoose.Document, '_id'>, ILeave {}
+export interface ILeaveDocument extends Omit<mongoose.Document, '_id'>, ILeave {}
 
 const LeaveModel = mongoose.model<ILeaveDocument, mongoose.PaginateModel<ILeaveDocument>>(
 	modelNames.leave,

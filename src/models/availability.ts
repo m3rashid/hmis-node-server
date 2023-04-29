@@ -25,7 +25,7 @@ const availabilitySchema = new mongoose.Schema<IAvailability>(
 )
 
 availabilitySchema.plugin(paginate)
-interface IAvailabilityDocument extends Omit<mongoose.Document, '_id'>, IAvailability {}
+export interface IAvailabilityDocument extends Omit<mongoose.Document, '_id'>, IAvailability {}
 
 const AvailabilityModel = mongoose.model<
 	IAvailabilityDocument,

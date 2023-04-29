@@ -22,7 +22,7 @@ const config = {
 		dev && run(),
 		!dev && terser()
 	],
-	external: ['cors', 'http', 'helmet', 'morgan', 'express', 'mongoose', 'socket.io', 'compression', 'mongoose-paginate-v2', 'dotenv/config', 'zod', 'jsonwebtoken', 'bcrypt']
+	external: ['cors', 'http', 'helmet', 'morgan', 'winston', '@faker-js/faker', 'express', 'mongoose', 'socket.io', 'compression', 'mongoose-paginate-v2', 'dotenv/config', 'zod', 'jsonwebtoken', 'bcrypt']
 }
 
 export default config

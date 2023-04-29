@@ -35,7 +35,7 @@ const permissionSchema = new mongoose.Schema<IPermission>(
 )
 
 permissionSchema.plugin(paginate)
-interface IPermissionDocument extends Omit<mongoose.Document, '_id'>, IPermission {}
+export interface IPermissionDocument extends Omit<mongoose.Document, '_id'>, IPermission {}
 
 const PermissionModel = mongoose.model<
 	IPermissionDocument,

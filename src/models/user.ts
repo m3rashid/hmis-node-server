@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema<IUser>(
 )
 
 userSchema.plugin(paginate)
-interface IUserDocument extends Omit<mongoose.Document, '_id'>, IUser {}
+export interface IUserDocument extends Omit<mongoose.Document, '_id'>, IUser {}
 
 const UserModel = mongoose.model<IUserDocument, mongoose.PaginateModel<IUserDocument>>(
 	modelNames.user,

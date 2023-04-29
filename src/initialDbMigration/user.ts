@@ -2,40 +2,51 @@ import bcrypt from 'bcrypt'
 import UserModel from 'models/user'
 import RoleModel from 'models/role'
 
-const defaultUsers = [
-	{
-		name: 'HMIS App',
-		email: 'coold1741@gmail.com',
-		password: process.env.DEV_PASSWORD,
-		role: 'DEVELOPER'
-	},
-	{
-		name: 'MD Rashid Hussain',
-		email: 'm3rashid.hussain@gmail.com',
-		password: process.env.ADMIN_PASSWORD,
-		role: 'SUPER_ADMIN'
-	}
-]
+const devUser = {
+	name: 'HMIS App',
+	email: 'coold1741@gmail.com',
+	password: process.env.DEV_PASSWORD,
+	role: 'DEVELOPER'
+}
 
-const createUsers = async (user: (typeof defaultUsers)[number]) => {
-	const pwd = await bcrypt.hash(user.password, 12)
-	const roles = await RoleModel.find({ actualName: user.role }).select({ _id: 1 })
+const adminUser = {
+	name: 'MD Rashid Hussain',
+	email: 'm3rashid.hussain@gmail.com',
+	password: process.env.ADMIN_PASSWORD,
+	role: 'SUPER_ADMIN'
+}
 
-	const newUser = new UserModel({
-		name: user.name,
-		email: user.email,
+export const createDevUser = async () => {
+	const pwd = await bcrypt.hash(devUser.password, 12)
+	const dev = new UserModel({
+		name: devUser.name,
+		email: devUser.email,
 		password: pwd,
-		roles: roles.map(t => t._id)
+		roles: []
 	})
-	return await newUser.save()
+	return await dev.save()
 }
 
-const migrateUsers = async () => {
-	const promises: Array<Promise<any>> = []
-	defaultUsers.forEach(user => {
-		promises.push(createUsers(user))
+export const createAdminUser = async (devId: string) => {
+	const pwd = await bcrypt.hash(adminUser.password, 12)
+	const roles = await RoleModel.find({ actualName: adminUser.role }).select({ _id: 1 })
+
+	const admin = new UserModel({
+		name: adminUser.name,
+		email: adminUser.email,
+		password: pwd,
+		roles: roles.map(t => t._id),
+		createdBy: devId,
+		lastUpdatedBy: devId
 	})
-	await Promise.all(promises)
+	return await admin.save()
 }
 
-export default migrateUsers
+export const updateDevUser = async (devId: string) => {
+	const roles = await RoleModel.find({ actualName: devUser.role }).select({ _id: 1 })
+	await UserModel.findByIdAndUpdate(devId, {
+		roles: roles.map(t => t._id),
+		createdBy: devId,
+		lastUpdatedBy: devId
+	})
+}

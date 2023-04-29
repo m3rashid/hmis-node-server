@@ -1,4 +1,5 @@
 import RoleModel from 'models/role'
+import type { Types } from 'mongoose'
 import { toSentenceCase } from 'utils/strings'
 import PermissionModel from 'models/permission'
 
@@ -14,7 +15,7 @@ const defaultRoles = [
 	}
 ]
 
-const migrateRoles = async () => {
+const migrateRoles = async (devId: string) => {
 	const promises: Array<Promise<any>> = []
 	const adminPermissions = await PermissionModel.find({
 		resourceType: 'ALL',
@@ -26,7 +27,9 @@ const migrateRoles = async () => {
 			displayName: toSentenceCase(role.name),
 			actualName: role.name,
 			description: role.description,
-			permissions: adminPermissions
+			permissions: adminPermissions,
+			createdBy: devId,
+			lastUpdatedBy: devId
 		})
 		promises.push(r.save())
 	})

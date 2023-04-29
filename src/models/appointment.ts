@@ -40,7 +40,7 @@ const appointmentSchema = new mongoose.Schema<IAppointment>(
 )
 
 appointmentSchema.plugin(paginate)
-interface IAppointmentDocument extends Omit<mongoose.Document, '_id'>, IAppointment {}
+export interface IAppointmentDocument extends Omit<mongoose.Document, '_id'>, IAppointment {}
 
 const AppointmentModel = mongoose.model<
 	IAppointmentDocument,

@@ -56,7 +56,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 app.use(routes)
-app.use((req, res, next) => res.status(404).send('Not Found'))
+app.use((_, res, __) => res.status(404).send('Not Found'))
 app.use(globalErrorHandlerMiddleware)
 
 const startServer = async () => {

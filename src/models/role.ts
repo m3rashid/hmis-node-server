@@ -25,7 +25,7 @@ const roleSchema = new mongoose.Schema<IRole>(
 )
 
 roleSchema.plugin(paginate)
-interface IRoleDocument extends Omit<mongoose.Document, '_id'>, IRole {}
+export interface IRoleDocument extends Omit<mongoose.Document, '_id'>, IRole {}
 
 const RoleModel = mongoose.model<IRoleDocument, mongoose.PaginateModel<IRoleDocument>>(
 	modelNames.role,

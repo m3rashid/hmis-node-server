@@ -36,7 +36,7 @@ const consumableSchema = new mongoose.Schema<IConsumable>(
 )
 
 consumableSchema.plugin(paginate)
-interface IConsumableDocument extends Omit<mongoose.Document, '_id'>, IConsumable {}
+export interface IConsumableDocument extends Omit<mongoose.Document, '_id'>, IConsumable {}
 
 const ConsumableModel = mongoose.model<
 	IConsumableDocument,

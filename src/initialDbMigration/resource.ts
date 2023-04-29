@@ -1,3 +1,4 @@
+import type { Types } from 'mongoose'
 import ResourceModel from 'models/resource'
 import { toSentenceCase } from 'utils/strings'
 
@@ -64,14 +65,16 @@ const resources = [
 	}
 ]
 
-const migrateResources = async () => {
+const migrateResources = async (devId: string) => {
 	const promises: Array<Promise<any>> = []
 	resources.forEach(resource => {
 		const r = new ResourceModel({
 			displayName: toSentenceCase(resource.name),
 			actualName: resource.name,
 			description: resource.description,
-			type: resource.type
+			type: resource.type,
+			createdBy: devId,
+			lastUpdatedBy: devId
 		})
 		promises.push(r.save())
 	})

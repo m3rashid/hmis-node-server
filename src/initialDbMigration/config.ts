@@ -1,4 +1,3 @@
-import type { IConfig } from 'models/config'
 import ConfigModel from 'models/config'
 
 const defaultConfig = {
@@ -20,19 +19,23 @@ const defaultConfig = {
 	}
 }
 
-const migrateConfig = async () => {
-	const configs = Object.entries(defaultConfig).reduce<IConfig[]>(
-		(acc, [containerName, innerConfig]) => {
-			const c = Object.entries(innerConfig).map(([name, value]) => ({
+const migrateConfig = async (devId: string) => {
+	const promises: Array<Promise<any>> = []
+
+	Object.entries(defaultConfig).forEach(([containerName, innerConfig]) => {
+		Object.entries(innerConfig).forEach(([name, value]) => {
+			const p = new ConfigModel({
 				name,
 				value,
-				containerName
-			}))
-			return [...acc, ...c]
-		},
-		[]
-	)
-	await ConfigModel.insertMany(configs)
+				containerName,
+				createdBy: devId,
+				lastUpdatedBy: devId
+			})
+			promises.push(p.save())
+		})
+	})
+
+	await Promise.all(promises)
 }
 
 export default migrateConfig

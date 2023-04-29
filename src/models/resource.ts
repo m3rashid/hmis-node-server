@@ -22,7 +22,7 @@ const resourceSchema = new mongoose.Schema<IResource>(
 )
 
 resourceSchema.plugin(paginate)
-interface IResourceDocument extends Omit<mongoose.Document, '_id'>, IResource {}
+export interface IResourceDocument extends Omit<mongoose.Document, '_id'>, IResource {}
 
 const ResourceModel = mongoose.model<IResourceDocument, mongoose.PaginateModel<IResourceDocument>>(
 	modelNames.resource,
