@@ -5,3 +5,4 @@ todo.md
 .env
 old
 build
+yarn-error.log

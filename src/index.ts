@@ -63,10 +63,10 @@ const startServer = async () => {
 	try {
 		const PORT = process.env.PORT ?? 4000
 		await mongoose.connect(process.env.DATABASE_URL)
-		console.log('Connection established successfully')
+		console.log('Connection Established Successfully')
 		// await initialDbMigration()
 		server.listen(PORT, () => {
-			console.log(`Server on :${PORT}`)
+			console.log(`Server ON :${PORT}`)
 		})
 	} catch (err) {
 		await mongoose.disconnect()

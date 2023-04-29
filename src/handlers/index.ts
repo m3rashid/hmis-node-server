@@ -8,6 +8,7 @@ import { login, logout, revalidateToken } from 'handlers/auth/controller'
 import * as resourceController from 'handlers/resource/controller'
 import * as roleController from 'handlers/role/controller'
 import * as userController from 'handlers/user/controller'
+import * as inventoryController from 'handlers/inventory/controller'
 
 const router = Router()
 
@@ -36,5 +37,13 @@ router.get('/user/all', useRoute(userController.getAllUsers))
 router.get('/user/allWithDeleted', useRoute(userController.getAllUsersWithDeleted))
 
 router.get('/permission/all', useRoute(roleController.getAllPermissions))
+
+router.get('/inventory/consumable/all', useRoute(inventoryController.getAllConsumables))
+router.get('/inventory/consumable/removed', useRoute(inventoryController.getAllRemovedConsumables))
+router.get('/inventory/non-consumable/all', useRoute(inventoryController.getAllNonConsumables))
+router.get(
+	'/inventory/non-consumable/removed',
+	useRoute(inventoryController.getAllRemovedNonConsumables)
+)
 
 export default router

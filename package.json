@@ -11,6 +11,7 @@
 		"build": "npx rollup -c",
 		"dev": "npx rollup -c -w",
 		"lint": "eslint --fix \"**/!(node_modules|build)/*.{js,jsx,ts,tsx}\"",
+		"test": "mocha tests/**/*.js",
 		"start": "node ./build/index.js",
 		"format:check": "prettier --check .",
 		"format:write": "prettier --write .",
@@ -20,6 +21,8 @@
 		"prepare": "husky install"
 	},
 	"dependencies": {
+		"@faker-js/faker": "^7.6.0",
+		"axios": "^1.4.0",
 		"bcrypt": "^5.1.0",
 		"bull": "^4.10.4",
 		"compression": "^1.7.4",
@@ -52,6 +55,7 @@
 		"@types/express": "^4.17.17",
 		"@types/jsonwebtoken": "^9.0.1",
 		"@types/lodash-es": "^4.17.7",
+		"@types/mocha": "^10.0.1",
 		"@types/morgan": "^1.9.4",
 		"@types/node": "^18.15.11",
 		"@types/node-cron": "^3.0.7",
@@ -65,6 +69,7 @@
 		"eslint-plugin-promise": "^6.0.0",
 		"husky": "^8.0.3",
 		"lint-staged": "^13.2.1",
+		"mocha": "^10.2.0",
 		"prettier": "^2.8.7",
 		"rollup": "^3.20.2",
 		"rollup-plugin-includepaths": "^0.2.4",
