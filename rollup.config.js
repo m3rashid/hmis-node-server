@@ -21,7 +21,8 @@ const config = {
 		typescript(),
 		dev && run(),
 		!dev && terser()
-	]
+	],
+	external: ['cors', 'http', 'helmet', 'morgan', 'express', 'mongoose', 'socket.io', 'compression', 'mongoose-paginate-v2', 'dotenv/config', 'zod', 'jsonwebtoken', 'bcrypt']
 }
 
 export default config
