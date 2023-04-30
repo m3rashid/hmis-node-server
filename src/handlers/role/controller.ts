@@ -32,17 +32,7 @@ export const deleteRole = async (req: Request<any, any, DeleteRoleBody>, res: Re
 
 // ERROR: not working
 export const getRoles = async (req: Request, res: Response) => {
-	const roles = await RoleModel.aggregate([
-		{ $match: { deleted: false } },
-		{
-			$lookup: {
-				from: 'permissions',
-				localField: 'permissions',
-				foreignField: '_id',
-				as: 'permissions'
-			}
-		}
-	])
+	const roles = await RoleModel.aggregate([{ $match: { deleted: false } }])
 	return res.json(roles)
 }
 
