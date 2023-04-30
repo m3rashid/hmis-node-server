@@ -19,7 +19,7 @@ const resources = [
 		type: 'address'
 	},
 	{
-		name: 'Permission',
+		name: 'PERMISSION',
 		description: 'Permissions of the users in the domain',
 		type: 'permission'
 	},

@@ -1,9 +1,3 @@
-import type {
-	ClientToServerEvents,
-	InterServerEvents,
-	ServerToClientEvents,
-	SocketData
-} from 'sockets/types'
 import 'helpers/env'
 import cors from 'cors'
 import http from 'http'
@@ -18,8 +12,9 @@ import socketHandler from 'sockets'
 import compression from 'compression'
 import checkSocketAuth from 'sockets/auth'
 import paginate from 'mongoose-paginate-v2'
-import initialDbMigration from 'initialDbMigration'
+// import initialDbMigration from 'initialDbMigration'
 import { globalErrorHandlerMiddleware } from 'helpers/errors'
+import type { ListenEvents, ServerSideEvents, EmitEvents, SocketData } from 'sockets/types'
 
 mongoose.set('debug', process.env.NODE_ENV !== 'production')
 mongoose.plugin(paginate)
@@ -29,10 +24,9 @@ app.use(helmet())
 app.use(compression())
 app.disable('x-powered-by')
 const server = http.createServer(app)
-const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(
-	server,
-	{ cors: config.cors }
-)
+const io = new Server<ListenEvents, EmitEvents, ServerSideEvents, SocketData>(server, {
+	cors: config.cors
+})
 
 io.engine.use(helmet())
 io.use(checkSocketAuth)
@@ -64,7 +58,7 @@ const startServer = async () => {
 		const PORT = process.env.PORT ?? 4000
 		await mongoose.connect(process.env.DATABASE_URL)
 		console.log('Connection Established Successfully')
-		await initialDbMigration()
+		// await initialDbMigration()
 		server.listen(PORT, () => {
 			console.log(`Server ON :${PORT}`)
 		})

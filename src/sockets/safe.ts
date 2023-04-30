@@ -1,4 +1,4 @@
-import type { IO } from 'sockets'
+import type { IO } from 'sockets/types'
 import type { Socket } from 'socket.io'
 import { logger } from 'helpers/logger'
 

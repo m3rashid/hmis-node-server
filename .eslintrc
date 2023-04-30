@@ -26,6 +26,7 @@
 		"@typescript-eslint/no-misused-promises": "off",
 		"@typescript-eslint/no-unused-vars": "warn",
 		"no-unused-vars": "warn",
-		"indent": "off"
+		"indent": "off",
+		"@typescript-eslint/consistent-indexed-object-style": "off"
 	}
 }

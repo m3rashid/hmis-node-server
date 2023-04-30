@@ -1,11 +1,14 @@
-import mongoose from 'mongoose'
-import { toSentenceCase } from 'utils/strings'
-import PermissionModel from 'models/permission'
-import type { IPermission } from 'models/permission'
+import type { PERMISSION } from 'models/role'
 
-type PermissionArray = Array<Partial<IPermission> & { name: string }>
+type IPermissionArray = Array<{
+	name: string
+	description: string
+	resourceType: string
+	scope: string
+	permission: (typeof PERMISSION)[number]
+}>
 
-const defaultSelfPermissions: PermissionArray = [
+export const defaultSelfPermissions: IPermissionArray = [
 	{
 		name: 'READ_ALL_SELF',
 		description: 'Read access on all the self created resources (irrespective of the resource)',
@@ -37,7 +40,7 @@ const defaultSelfPermissions: PermissionArray = [
 	}
 ]
 
-const adminPermissions: PermissionArray = [
+export const adminPermissions: IPermissionArray = [
 	{
 		name: 'READ_ALL_ADMIN',
 		description: 'Read Access to do everything on every resource',
@@ -82,30 +85,4 @@ const adminPermissions: PermissionArray = [
 	}
 ]
 
-const developerPermissions: PermissionArray = []
-
-const defaultAllPermissions: PermissionArray = [
-	...defaultSelfPermissions,
-	...adminPermissions,
-	...developerPermissions
-]
-
-const migratePermissions = async (devId: string) => {
-	const promises: Array<Promise<any>> = []
-	defaultAllPermissions.forEach(perm => {
-		const p = new PermissionModel({
-			displayName: toSentenceCase(perm.name),
-			actualName: perm.name,
-			description: perm.description,
-			resourceType: perm.resourceType,
-			scope: perm.scope,
-			permission: perm.permission,
-			createdBy: new mongoose.Types.ObjectId(devId),
-			lastUpdatedBy: new mongoose.Types.ObjectId(devId)
-		})
-		promises.push(p.save())
-	})
-	await Promise.all(promises)
-}
-
-export default migratePermissions
+export const developerPermissions: IPermissionArray = []

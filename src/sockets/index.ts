@@ -1,19 +1,11 @@
-import type { Socket, Server } from 'socket.io'
-import type {
-	ClientToServerEvents,
-	InterServerEvents,
-	ServerToClientEvents,
-	SocketData
-} from 'sockets/types'
+import safeSocket from 'sockets/safe'
+import type { IO, SocketType } from 'sockets/types'
+import { userConnected, userDisconnected } from 'handlers/user/socket'
 
-export type IO = Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
-export type SocketType = Socket<
-	ClientToServerEvents,
-	ServerToClientEvents,
-	InterServerEvents,
-	SocketData
->
-
-const socketHandler = (io: IO, socket: SocketType) => {}
+const socketHandler = (io: IO, socket: SocketType) => {
+	socket.on('disconnect', safeSocket(userDisconnected)(io, socket))
+	socket.on('connect', safeSocket(userConnected)(io, socket))
+	socket.on('error', () => {})
+}
 
 export default socketHandler

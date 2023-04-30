@@ -1,7 +1,8 @@
 import mongoose from 'mongoose'
 import RoleModel from 'models/role'
+import type { IPermission } from 'models/role'
 import { toSentenceCase } from 'utils/strings'
-import PermissionModel from 'models/permission'
+import { adminPermissions } from 'initialDbMigration/permission'
 
 const defaultRoles = [
 	{
@@ -17,17 +18,21 @@ const defaultRoles = [
 
 const migrateRoles = async (devId: string) => {
 	const promises: Array<Promise<any>> = []
-	const adminPermissions = await PermissionModel.find({
-		resourceType: 'ALL',
-		scope: 'ALL'
-	}).select({ _id: 1 })
+	const permissions: IPermission[] = adminPermissions.map(perm => ({
+		actualName: perm.name,
+		displayName: toSentenceCase(perm.name),
+		description: perm.description,
+		resourceType: perm.resourceType,
+		scope: perm.scope,
+		permission: perm.permission
+	}))
 
 	defaultRoles.forEach(role => {
 		const r = new RoleModel({
 			displayName: toSentenceCase(role.name),
 			actualName: role.name,
 			description: role.description,
-			permissions: adminPermissions,
+			permissions,
 			createdBy: new mongoose.Types.ObjectId(devId),
 			lastUpdatedBy: new mongoose.Types.ObjectId(devId)
 		})

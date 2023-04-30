@@ -36,8 +36,6 @@ router.post('/profile/edit', useRoute(userController.updateProfile))
 router.get('/user/all', useRoute(userController.getAllUsers))
 router.get('/user/allWithDeleted', useRoute(userController.getAllUsersWithDeleted))
 
-router.get('/permission/all', useRoute(roleController.getAllPermissions))
-
 router.get('/inventory/consumable/all', useRoute(inventoryController.getAllConsumables))
 router.get('/inventory/consumable/removed', useRoute(inventoryController.getAllRemovedConsumables))
 router.get('/inventory/non-consumable/all', useRoute(inventoryController.getAllNonConsumables))
