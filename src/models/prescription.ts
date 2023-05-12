@@ -25,10 +25,18 @@ const prescriptionSchema = new mongoose.Schema<IPrescription>(
 	{
 		...baseModelSchema,
 		remarks: { type: String },
-		appointment: { type: mongoose.Schema.Types.ObjectId, ref: 'Appointment', required: true },
+		appointment: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: modelNames.appointment,
+			required: true
+		},
 		medicines: [
 			{
-				medicine: { type: mongoose.Schema.Types.ObjectId, ref: 'Consumable', required: true },
+				medicine: {
+					type: mongoose.Schema.Types.ObjectId,
+					ref: modelNames.consumable,
+					required: true
+				},
 				dosage: {
 					perDay: { type: Number, required: true },
 					timeOfDay: { type: String, enum: TIME_OF_DAY },

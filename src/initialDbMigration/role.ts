@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import RoleModel from 'models/role'
 import { toSentenceCase } from 'utils/strings'
-import { adminPermissions } from 'initialDbMigration/permission'
+import PermissionModel from 'models/permission'
 
 const defaultRoles = [
 	{
@@ -17,20 +17,15 @@ const defaultRoles = [
 
 const migrateRoles = async (devId: string) => {
 	const promises: Array<Promise<any>> = []
+	const adminPermissions = await PermissionModel.findOne({ actualName: 'ALL_ADMIN_ALL' })
+	if (!adminPermissions) throw new Error('Admin role not found')
 
 	defaultRoles.forEach(role => {
 		const r = new RoleModel({
 			actualName: role.name,
 			displayName: toSentenceCase(role.name),
 			description: role.description,
-			permissions: adminPermissions.map(perm => ({
-				actualName: perm.name,
-				displayName: toSentenceCase(perm.name),
-				description: perm.description,
-				resourceType: perm.resourceType,
-				scope: perm.scope,
-				permission: perm.permission
-			})),
+			permissions: [new mongoose.Types.ObjectId(adminPermissions._id)],
 			createdBy: new mongoose.Types.ObjectId(devId),
 			lastUpdatedBy: new mongoose.Types.ObjectId(devId)
 		})

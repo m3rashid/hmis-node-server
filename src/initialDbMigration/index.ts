@@ -1,9 +1,10 @@
 import { wait } from 'utils/utils'
 import { logger } from 'helpers/logger'
-import migrateResources from './resource'
 import migrateRoles from 'initialDbMigration/role'
 import migrateConfig from 'initialDbMigration/config'
+import migrateResources from 'initialDbMigration/resource'
 import migrateInventory from 'initialDbMigration/inventory'
+import migratePermissions from 'initialDbMigration/permission'
 import { createAdminUser, createDevUser, updateDevUser } from 'initialDbMigration/user'
 
 const initialDbMigration = async () => {
@@ -18,6 +19,10 @@ const initialDbMigration = async () => {
 
 	await migrateResources(devId)
 	logger.info('Resources Migrated')
+	await wait()
+
+	await migratePermissions(devId)
+	logger.info('Permissions Migrated')
 	await wait()
 
 	await migrateRoles(devId)

@@ -1,6 +1,6 @@
 export const PERMISSION = {
 	READ: 1,
-	WRITE: 2,
+	CREATE: 2,
 	UPDATE: 4,
 	DELETE: 8,
 	BULK_UPDATE: 16,

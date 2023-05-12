@@ -23,18 +23,18 @@ export interface IAppointment extends IBaseModel {
 const appointmentSchema = new mongoose.Schema<IAppointment>(
 	{
 		...baseModelSchema,
-		doctor: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-		patient: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+		doctor: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.user, required: true },
+		patient: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.user, required: true },
 		status: { type: String, enum: APPOINTMENT_STATUS, default: 'PENDING' },
 		chats: [
 			{
 				time: { type: Date, required: true },
 				remarks: { type: String },
-				from: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
+				from: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.user, required: true }
 			}
 		],
-		referredBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-		prescription: { type: mongoose.Schema.Types.ObjectId, ref: 'Prescription' }
+		referredBy: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.user },
+		prescription: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.prescription }
 	},
 	{ timestamps: true }
 )

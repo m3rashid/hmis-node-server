@@ -23,7 +23,7 @@ const addressSchema = new mongoose.Schema<IAddress>(
 		country: { type: String, default: 'India' },
 		roomNumber: { type: String },
 		buildingNumber: { type: String },
-		user: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile', required: true }
+		user: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.profile, required: true }
 	},
 	{ timestamps: true }
 )

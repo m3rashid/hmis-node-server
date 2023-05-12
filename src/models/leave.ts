@@ -20,7 +20,7 @@ const leaveSchema = new mongoose.Schema<ILeave>(
 		startDate: { type: Date, required: true },
 		endDate: { type: Date, required: true },
 		reason: { type: String, required: true },
-		user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+		user: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.user, required: true },
 		status: { type: String, enum: LEAVE_STATUS, default: 'PENDING' }
 	},
 	{ timestamps: true }

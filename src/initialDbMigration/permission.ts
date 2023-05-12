@@ -1,86 +1,160 @@
+import { PERMISSION } from 'handlers/role/helpers'
+import PermissionModel from 'models/permission'
+import mongoose from 'mongoose'
+import { toSentenceCase } from 'utils/strings'
+
 type IPermissionArray = Array<{
 	name: string
 	description: string
 	resourceType: string
 	scope: string
-	permission: string
+	permission: number
 }>
 
 export const defaultSelfPermissions: IPermissionArray = [
 	{
-		name: 'READ_ALL_SELF',
-		description: 'Read access on all the self created resources (irrespective of the resource)',
+		name: 'R_U_D_BU_PERM_SELF',
+		description: 'Read, Update, Delete and Bulk Update permissions to all Self Created resources',
 		resourceType: 'ALL',
 		scope: 'SELF',
-		permission: 'READ'
+		permission: PERMISSION.READ + PERMISSION.UPDATE + PERMISSION.DELETE + PERMISSION.BULK_UPDATE
 	},
 	{
-		name: 'UPDATE_ALL_SELF',
-		description: 'Edit access on all the self created resources (irrespective of the resource)',
+		name: 'R_PERM_SELF',
+		description: 'Only Read permissions to all Self Created resources',
 		resourceType: 'ALL',
 		scope: 'SELF',
-		permission: 'UPDATE'
+		permission: PERMISSION.READ
 	},
 	{
-		name: 'DELETE_ALL_SELF',
-		description: 'Delete access on all the self created resources (irrespective of the resource)',
+		name: 'U_PERM_SELF',
+		description: 'Only Update permissions to all Self Created resources',
 		resourceType: 'ALL',
 		scope: 'SELF',
-		permission: 'DELETE'
+		permission: PERMISSION.UPDATE
 	},
 	{
-		name: 'BULK_UPDATE_ALL_SELF',
-		description:
-			'Bulk Update access on all the self created resources (irrespective of the resource)',
+		name: 'D_PERM_SELF',
+		description: 'Only Delete permissions to all Self Created resources',
 		resourceType: 'ALL',
 		scope: 'SELF',
-		permission: 'BULK_UPDATE'
+		permission: PERMISSION.DELETE
+	},
+	{
+		name: 'BU_PERM_SELF',
+		description: 'Read, Update, Delete and Bulk Update permissions to all Self Created resources',
+		resourceType: 'ALL',
+		scope: 'SELF',
+		permission: PERMISSION.BULK_UPDATE
 	}
 ]
 
 export const adminPermissions: IPermissionArray = [
 	{
-		name: 'READ_ALL_ADMIN',
+		name: 'READ_ALL',
 		description: 'Read Access to do everything on every resource',
 		resourceType: 'ALL',
 		scope: 'ALL',
-		permission: 'READ'
+		permission: PERMISSION.READ
 	},
 	{
-		name: 'CREATE_ALL_ADMIN',
+		name: 'CREATE_ALL',
 		description: 'Create Access to do everything on every resource',
 		resourceType: 'ALL',
 		scope: 'ALL',
-		permission: 'WRITE'
+		permission: PERMISSION.CREATE
 	},
 	{
-		name: 'UPDATE_ALL_ADMIN',
+		name: 'UPDATE_ALL',
 		description: 'Update Access to do everything on every resource',
 		resourceType: 'ALL',
 		scope: 'ALL',
-		permission: 'UPDATE'
+		permission: PERMISSION.UPDATE
 	},
 	{
-		name: 'DELETE_ALL_ADMIN',
+		name: 'DELETE_ALL',
 		description: 'Delete Access to do everything on every resource',
 		resourceType: 'ALL',
 		scope: 'ALL',
-		permission: 'DELETE'
+		permission: PERMISSION.DELETE
 	},
 	{
-		name: 'BULK_UPDATE_ALL_ADMIN',
+		name: 'BULK_UPDATE_ALL',
 		description: 'Bulk Update Access to do everything on every resource',
 		resourceType: 'ALL',
 		scope: 'ALL',
-		permission: 'BULK_UPDATE'
+		permission: PERMISSION.BULK_UPDATE
 	},
 	{
-		name: 'BULK_DELETE_ALL_ADMIN',
-		description: 'Edit Access to do everything on every resource',
+		name: 'BULK_DELETE_ALL',
+		description: 'Bulk Delete Access to do everything on every resource',
 		resourceType: 'ALL',
 		scope: 'ALL',
-		permission: 'BULK_DELETE'
+		permission: PERMISSION.BULK_DELETE
+	},
+	{
+		name: 'ALL_ADMIN_ALL',
+		description: 'All Access to do everything on every resource',
+		resourceType: 'ALL',
+		scope: 'ALL',
+		permission:
+			PERMISSION.READ +
+			PERMISSION.CREATE +
+			PERMISSION.UPDATE +
+			PERMISSION.DELETE +
+			PERMISSION.BULK_UPDATE +
+			PERMISSION.BULK_DELETE
 	}
 ]
 
 export const developerPermissions: IPermissionArray = []
+
+export const defaultPatientPermissions: IPermissionArray = []
+
+export const defaultDoctorPermissions: IPermissionArray = []
+
+export const defaultNursePermissions: IPermissionArray = []
+
+export const defaultPharmacistPermissions: IPermissionArray = []
+
+export const defaultLabTechnicianPermissions: IPermissionArray = []
+
+export const defaultReceptionistPermissions: IPermissionArray = []
+
+export const defaultAccountantPermissions: IPermissionArray = []
+
+export const defaultInventoryManagerPermissions: IPermissionArray = []
+
+const migratePermissions = async (devId: string) => {
+	const promises: Array<Promise<any>> = []
+	const allPermissions: IPermissionArray = [
+		...defaultSelfPermissions,
+		...adminPermissions,
+		...developerPermissions,
+		...defaultPatientPermissions,
+		...defaultDoctorPermissions,
+		...defaultNursePermissions,
+		...defaultPharmacistPermissions,
+		...defaultLabTechnicianPermissions,
+		...defaultReceptionistPermissions,
+		...defaultAccountantPermissions,
+		...defaultInventoryManagerPermissions
+	]
+
+	allPermissions.forEach(perm => {
+		const p = new PermissionModel({
+			actualName: perm.name,
+			displayName: toSentenceCase(perm.name),
+			description: perm.description,
+			resourceType: perm.resourceType,
+			scope: perm.scope,
+			permission: perm.permission,
+			createdBy: new mongoose.Types.ObjectId(devId),
+			lastUpdatedBy: new mongoose.Types.ObjectId(devId)
+		})
+		promises.push(p.save())
+	})
+	await Promise.all(promises)
+}
+
+export default migratePermissions

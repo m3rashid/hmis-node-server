@@ -19,7 +19,7 @@ const availabilitySchema = new mongoose.Schema<IAvailability>(
 		day: { type: String, required: true, enum: DAYS },
 		startTime: { type: String, required: true },
 		endTime: { type: String, required: true },
-		profile: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile', required: true }
+		profile: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.profile, required: true }
 	},
 	{ timestamps: true }
 )
