@@ -8,7 +8,7 @@ const dev = process.env.ROLLUP_WATCH === 'true'
 const config = {
 	input: 'src/index.ts',
 	output: {
-		file: 'build/index.js'
+		file: 'dist/index.js'
 	},
 	plugins: [
 		includePaths({

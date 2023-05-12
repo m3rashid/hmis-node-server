@@ -1,11 +1,9 @@
-import type { PERMISSION } from 'models/role'
-
 type IPermissionArray = Array<{
 	name: string
 	description: string
 	resourceType: string
 	scope: string
-	permission: (typeof PERMISSION)[number]
+	permission: string
 }>
 
 export const defaultSelfPermissions: IPermissionArray = [

@@ -3,14 +3,6 @@ import paginate from 'mongoose-paginate-v2'
 import type { IBaseModel } from 'models/base'
 import { baseModelSchema, modelNames } from 'models/base'
 
-export const PERMISSION = [
-	'READ',
-	'WRITE',
-	'UPDATE',
-	'DELETE',
-	'BULK_UPDATE',
-	'BULK_DELETE'
-] as const
 export const ALL_RESOURCES = 'ALL'
 
 export const ALL_PERMISSION_SCOPE = 'ALL'
@@ -23,7 +15,7 @@ export interface IPermission {
 	description?: string
 	resourceType: string // database name (in short) or ALL
 	scope: string // self, all or resourceId
-	permission: (typeof PERMISSION)[number]
+	permission: number // bitwise permission
 }
 
 export interface IRole extends IBaseModel {
@@ -46,7 +38,7 @@ const roleSchema = new mongoose.Schema<IRole>(
 				description: { type: String },
 				resourceType: { type: String, required: true },
 				scope: { type: String, required: true },
-				permission: { type: String, required: true, enum: PERMISSION }
+				permission: { type: Number, required: true }
 			}
 		]
 	},

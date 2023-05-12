@@ -1,12 +1,11 @@
 import UserModel from 'models/user'
-import type { PERMISSION } from 'models/role'
 import { ALL_RESOURCES, ALL_PERMISSION_SCOPE, SELF_PERMISSION_SCOPE } from 'models/role'
 
 export const hasPermission = async (
 	userId: string,
 	scope: string,
 	resourceType: string,
-	requiredPermission: (typeof PERMISSION)[number]
+	requiredPermission: string
 ) => {
 	if (!userId) return false
 
