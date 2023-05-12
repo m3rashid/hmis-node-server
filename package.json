@@ -12,6 +12,7 @@
 		"dev": "npx rollup -c -w",
 		"lint": "eslint --fix \"**/!(node_modules|dist)/*.{js,jsx,ts,tsx}\"",
 		"start": "node ./dist/index.js",
+		"prod": "docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d",
 		"format:check": "prettier --check .",
 		"format:write": "prettier --write .",
 		"lint:check": "eslint .",
