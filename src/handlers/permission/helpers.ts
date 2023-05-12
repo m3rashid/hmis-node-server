@@ -12,7 +12,6 @@ export const REVERSED_PERMISSION = Object.entries(PERMISSION).reduce<Record<numb
 	{}
 )
 
-// Permission powers of 2 in reversed order
 export const availablePermissions = Object.values(PERMISSION).sort((a, b) => b - a)
 
 export const findPermission = (level: number) => {
@@ -26,4 +25,9 @@ export const findPermission = (level: number) => {
 	}
 
 	return permissions
+}
+
+// TODO: Implement this
+export const hasPermission = async () => {
+	return true
 }

@@ -1,7 +1,7 @@
-import { PERMISSION } from 'handlers/role/helpers'
-import PermissionModel from 'models/permission'
 import mongoose from 'mongoose'
 import { toSentenceCase } from 'utils/strings'
+import PermissionModel from 'models/permission'
+import { PERMISSION } from 'handlers/permission/helpers'
 
 type IPermissionArray = Array<{
 	name: string

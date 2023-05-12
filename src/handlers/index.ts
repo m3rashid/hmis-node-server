@@ -9,6 +9,7 @@ import * as resourceController from 'handlers/resource/controller'
 import * as roleController from 'handlers/role/controller'
 import * as userController from 'handlers/user/controller'
 import * as inventoryController from 'handlers/inventory/controller'
+import * as permissionController from 'handlers/permission/controller'
 
 const router = Router()
 
@@ -24,12 +25,14 @@ router.get('/resource/all', useRoute(resourceController.getAllResource))
 router.post('/resource/create', useRoute(resourceController.createResource))
 router.post('/resource/edit', useRoute(resourceController.editResource))
 
-router.get('/role/all', useRoute(roleController.getRoles))
+router.get('/role/all', useRoute(roleController.getDetailRoles))
 router.get('/role/allWithDeleted', useRoute(roleController.getRoleWithDeleted))
 router.post('/role/create', useRoute(roleController.createRole))
 router.post('/role/edit', useRoute(roleController.editRole))
 router.post('/role/delete', useRoute(roleController.deleteRole))
 router.post('/role/details', useRoute(roleController.getRoleDetails))
+
+router.get('/permission/all', useRoute(permissionController.getAllPermissions))
 
 router.post('/profile/create', useRoute(userController.createProfile))
 router.post('/profile/edit', useRoute(userController.updateProfile))
