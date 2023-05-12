@@ -6,7 +6,7 @@
 		"editor.defaultFormatter": "Prisma.prisma",
 		"editor.formatOnSave": true
 	},
-	"cSpell.words": ["includepaths", "paren", "Parens", "precommit"],
+	"cSpell.words": ["includepaths", "NAPI", "paren", "Parens", "precommit"],
 	"cSpell.ignorePaths": [
 		"package-lock.json",
 		"node_modules",

@@ -15,7 +15,6 @@ import paginate from 'mongoose-paginate-v2'
 // import initialDbMigration from 'initialDbMigration'
 import { globalErrorHandlerMiddleware } from 'helpers/errors'
 import type { ListenEvents, ServerSideEvents, EmitEvents, SocketData } from 'sockets/types'
-
 mongoose.set('debug', process.env.NODE_ENV !== 'production')
 mongoose.plugin(paginate)
 
