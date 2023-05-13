@@ -6,9 +6,11 @@ export interface IPermission {
 	displayName: string
 	actualName: string
 	description?: string
-	resourceType: string // database name (in short) or ALL
-	scope: string // self, all or resourceId
-	permission: number // bitwise permission
+	permissions: Array<{
+		resourceType: string // database name (in short) or ALL
+		scope: string[] // ALL | SELF | ResourceId
+		accessLevel: number // bitwise permission
+	}>
 }
 
 const permissionSchema = new mongoose.Schema<IPermission>(
@@ -17,9 +19,13 @@ const permissionSchema = new mongoose.Schema<IPermission>(
 		displayName: { type: String, required: true },
 		actualName: { type: String, required: true },
 		description: { type: String },
-		resourceType: { type: String, required: true },
-		scope: { type: String, required: true },
-		permission: { type: Number, required: true }
+		permissions: [
+			{
+				resourceType: { type: String, required: true },
+				scope: [{ type: String, required: true }],
+				accessLevel: { type: Number, required: true }
+			}
+		]
 	},
 	{}
 )

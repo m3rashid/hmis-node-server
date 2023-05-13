@@ -4,8 +4,8 @@ import http from 'http'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import express from 'express'
-import mongoose from 'mongoose'
 import routes from 'handlers'
+import mongoose from 'mongoose'
 import { Server } from 'socket.io'
 import config from 'helpers/config'
 import socketHandler from 'sockets'
@@ -70,6 +70,4 @@ const startServer = async () => {
 	}
 }
 
-startServer()
-	.then(() => {})
-	.catch(() => {})
+startServer().catch(() => {})

@@ -6,46 +6,69 @@ import { PERMISSION } from 'handlers/permission/helpers'
 type IPermissionArray = Array<{
 	name: string
 	description: string
-	resourceType: string
-	scope: string
-	permission: number
+	permissions: Array<{
+		resourceType: string
+		scope: string[]
+		accessLevel: number
+	}>
 }>
 
 export const defaultSelfPermissions: IPermissionArray = [
 	{
 		name: 'R_U_D_BU_PERM_SELF',
 		description: 'Read, Update, Delete and Bulk Update permissions to all Self Created resources',
-		resourceType: 'ALL',
-		scope: 'SELF',
-		permission: PERMISSION.READ + PERMISSION.UPDATE + PERMISSION.DELETE + PERMISSION.BULK_UPDATE
+		permissions: [
+			{
+				resourceType: 'ALL',
+				scope: ['SELF'],
+				accessLevel:
+					PERMISSION.READ + PERMISSION.UPDATE + PERMISSION.DELETE + PERMISSION.BULK_UPDATE
+			}
+		]
 	},
 	{
 		name: 'R_PERM_SELF',
 		description: 'Only Read permissions to all Self Created resources',
-		resourceType: 'ALL',
-		scope: 'SELF',
-		permission: PERMISSION.READ
+		permissions: [
+			{
+				resourceType: 'ALL',
+				scope: ['SELF'],
+				accessLevel: PERMISSION.READ
+			}
+		]
 	},
 	{
 		name: 'U_PERM_SELF',
 		description: 'Only Update permissions to all Self Created resources',
-		resourceType: 'ALL',
-		scope: 'SELF',
-		permission: PERMISSION.UPDATE
+		permissions: [
+			{
+				resourceType: 'ALL',
+				scope: ['SELF'],
+				accessLevel: PERMISSION.UPDATE
+			}
+		]
 	},
 	{
 		name: 'D_PERM_SELF',
 		description: 'Only Delete permissions to all Self Created resources',
-		resourceType: 'ALL',
-		scope: 'SELF',
-		permission: PERMISSION.DELETE
+		permissions: [
+			{
+				resourceType: 'ALL',
+				scope: ['SELF'],
+				accessLevel: PERMISSION.DELETE
+			}
+		]
 	},
 	{
 		name: 'BU_PERM_SELF',
 		description: 'Read, Update, Delete and Bulk Update permissions to all Self Created resources',
-		resourceType: 'ALL',
-		scope: 'SELF',
-		permission: PERMISSION.BULK_UPDATE
+		permissions: [
+			{
+				resourceType: 'ALL',
+				scope: ['SELF'],
+				accessLevel: PERMISSION.BULK_UPDATE
+			}
+		]
 	}
 ]
 
@@ -53,57 +76,85 @@ export const adminPermissions: IPermissionArray = [
 	{
 		name: 'READ_ALL',
 		description: 'Read Access to do everything on every resource',
-		resourceType: 'ALL',
-		scope: 'ALL',
-		permission: PERMISSION.READ
+		permissions: [
+			{
+				resourceType: 'ALL',
+				scope: ['ALL'],
+				accessLevel: PERMISSION.READ
+			}
+		]
 	},
 	{
 		name: 'CREATE_ALL',
 		description: 'Create Access to do everything on every resource',
-		resourceType: 'ALL',
-		scope: 'ALL',
-		permission: PERMISSION.CREATE
+		permissions: [
+			{
+				resourceType: 'ALL',
+				scope: ['ALL'],
+				accessLevel: PERMISSION.CREATE
+			}
+		]
 	},
 	{
 		name: 'UPDATE_ALL',
 		description: 'Update Access to do everything on every resource',
-		resourceType: 'ALL',
-		scope: 'ALL',
-		permission: PERMISSION.UPDATE
+		permissions: [
+			{
+				resourceType: 'ALL',
+				scope: ['ALL'],
+				accessLevel: PERMISSION.UPDATE
+			}
+		]
 	},
 	{
 		name: 'DELETE_ALL',
 		description: 'Delete Access to do everything on every resource',
-		resourceType: 'ALL',
-		scope: 'ALL',
-		permission: PERMISSION.DELETE
+		permissions: [
+			{
+				resourceType: 'ALL',
+				scope: ['ALL'],
+				accessLevel: PERMISSION.DELETE
+			}
+		]
 	},
 	{
 		name: 'BULK_UPDATE_ALL',
 		description: 'Bulk Update Access to do everything on every resource',
-		resourceType: 'ALL',
-		scope: 'ALL',
-		permission: PERMISSION.BULK_UPDATE
+		permissions: [
+			{
+				resourceType: 'ALL',
+				scope: ['ALL'],
+				accessLevel: PERMISSION.BULK_UPDATE
+			}
+		]
 	},
 	{
 		name: 'BULK_DELETE_ALL',
 		description: 'Bulk Delete Access to do everything on every resource',
-		resourceType: 'ALL',
-		scope: 'ALL',
-		permission: PERMISSION.BULK_DELETE
+		permissions: [
+			{
+				resourceType: 'ALL',
+				scope: ['ALL'],
+				accessLevel: PERMISSION.BULK_DELETE
+			}
+		]
 	},
 	{
 		name: 'ALL_ADMIN_ALL',
 		description: 'All Access to do everything on every resource',
-		resourceType: 'ALL',
-		scope: 'ALL',
-		permission:
-			PERMISSION.READ +
-			PERMISSION.CREATE +
-			PERMISSION.UPDATE +
-			PERMISSION.DELETE +
-			PERMISSION.BULK_UPDATE +
-			PERMISSION.BULK_DELETE
+		permissions: [
+			{
+				resourceType: 'ALL',
+				scope: ['ALL'],
+				accessLevel:
+					PERMISSION.READ +
+					PERMISSION.CREATE +
+					PERMISSION.UPDATE +
+					PERMISSION.DELETE +
+					PERMISSION.BULK_UPDATE +
+					PERMISSION.BULK_DELETE
+			}
+		]
 	}
 ]
 
@@ -146,9 +197,11 @@ const migratePermissions = async (devId: string) => {
 			actualName: perm.name,
 			displayName: toSentenceCase(perm.name),
 			description: perm.description,
-			resourceType: perm.resourceType,
-			scope: perm.scope,
-			permission: perm.permission,
+			permissions: perm.permissions.map(t => ({
+				resourceType: t.resourceType,
+				scope: t.scope,
+				accessLevel: t.accessLevel
+			})),
 			createdBy: new mongoose.Types.ObjectId(devId),
 			lastUpdatedBy: new mongoose.Types.ObjectId(devId)
 		})
