@@ -1,20 +1,22 @@
 import mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 import type { IBaseModel } from 'models/base'
-import type { IPermission } from 'models/permission'
 import { baseModelSchema, modelNames } from 'models/base'
 
-export const ALL_RESOURCES = 'ALL'
+export const NOT_ALLOWED_ROLE_ACTUAL_NAMES = ['DEVELOPER', 'SUPER_ADMIN']
 
-export const ALL_PERMISSION_SCOPE = 'ALL'
-export const SELF_PERMISSION_SCOPE = 'SELF'
-export const NOT_ALLOWED_PERMISSION_ACTUAL_NAMES = ['DEVELOPER', 'SUPER_ADMIN'] as const
+type SpecialResource = 'ALL' | 'INDEPENDENT'
+export interface IPermission {
+	[resourceTypeName: string]: {
+		[permission: string]: SpecialResource | string[] // <ObjectId> | 'SELF'
+	}
+}
 
 export interface IRole extends IBaseModel {
 	displayName: string
 	actualName: string
 	description?: string
-	permissions: IPermission[]
+	permissions: IPermission
 }
 
 const roleSchema = new mongoose.Schema<IRole>(
@@ -23,7 +25,7 @@ const roleSchema = new mongoose.Schema<IRole>(
 		displayName: { type: String, required: true },
 		actualName: { type: String, unique: true, required: true },
 		description: { type: String },
-		permissions: [{ type: mongoose.Schema.Types.ObjectId, ref: modelNames.permission }]
+		permissions: { type: mongoose.Schema.Types.Mixed, required: true }
 	},
 	{ timestamps: true }
 )

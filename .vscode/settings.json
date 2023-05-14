@@ -1,11 +1,6 @@
 {
 	"eslint.run": "onSave",
 	"editor.formatOnSave": true,
-	"prisma.fileWatcher": true,
-	"[prisma]": {
-		"editor.defaultFormatter": "Prisma.prisma",
-		"editor.formatOnSave": true
-	},
 	"cSpell.words": ["includepaths", "NAPI", "paren", "Parens", "precommit"],
 	"cSpell.ignorePaths": [
 		"package-lock.json",
@@ -16,6 +11,7 @@
 		".vscode-insiders",
 		"src/initialDbMigration/dummy/inventory.ts",
 		"yarn-error.log",
-		"yarn.lock"
+		"yarn.lock",
+		"datetime"
 	]
 }

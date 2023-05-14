@@ -3,27 +3,10 @@ import paginate from 'mongoose-paginate-v2'
 import type { IBaseModel } from 'models/base'
 import { baseModelSchema, modelNames } from 'models/base'
 
-export const TIME_UNIT: readonly string[] = [
-	'MIN', // minutes
-	'HR', // hours
-	'DAY', // days
-	'WK', // weeks
-	'MON', // months
-	'YR' // years
-]
-
-export const NON_CONSUMABLE_TYPE: readonly string[] = [
-	'VEH', // vehicles
-	'BED', // bedsheets, pillows, and other bed related stuff
-	'FUR', // furniture
-	'EQP', // Medical equipments
-	'OTH' // other
-]
-
 export interface INonConsumable extends IBaseModel {
 	name: string
-	type: string
 	quantityLeft: number
+	manufacturer?: string
 	lastServicingDate?: Date
 	nextServicingDate?: Date
 }
@@ -32,8 +15,8 @@ const nonConsumableSchema = new mongoose.Schema<INonConsumable>(
 	{
 		...baseModelSchema,
 		name: { type: String, unique: true, required: true },
-		type: { type: String, enum: NON_CONSUMABLE_TYPE, required: true },
 		quantityLeft: { type: Number, required: true },
+		manufacturer: { type: String },
 		lastServicingDate: { type: Date },
 		nextServicingDate: { type: Date }
 	},

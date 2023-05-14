@@ -2,26 +2,26 @@ import mongoose from 'mongoose'
 import { faker } from '@faker-js/faker'
 import type { IConsumable } from 'models/consumable'
 import type { INonConsumable } from 'models/nonConsumables'
-import ConsumableModel, { CONSUMABLE_TYPE } from 'models/consumable'
-import NonConsumableModel, { NON_CONSUMABLE_TYPE } from 'models/nonConsumables'
+import ConsumableModel from 'models/consumable'
+import NonConsumableModel from 'models/nonConsumables'
 import { dummyMedicines, dummyOtherAssets } from 'initialDbMigration/dummy/inventory'
 
-type ConsumableArray = Array<Partial<IConsumable>>
-type NonConsumableArray = Array<Partial<INonConsumable>>
+type InventoryArr<T> = Array<Omit<T, '_id' | 'createdAt' | 'updatedAt'>>
 
 const fakeConsumables = (count: number, devId: string) => {
 	const medicines = Array.from(new Set(dummyMedicines))
-	const consumablesArray: ConsumableArray = []
+	const consumablesArray: InventoryArr<IConsumable> = []
 	for (let i = 0; i < count; i++) {
 		consumablesArray.push({
 			name: medicines[i],
-			type: faker.helpers.arrayElement(CONSUMABLE_TYPE),
 			quantityLeft: faker.datatype.number({ min: 1, max: 1000 }),
 			quantityPerUnit: faker.datatype.number({ min: 1, max: 30 }),
 			batchNumber: faker.datatype.uuid(),
 			expiryDate: faker.date.future(),
 			manufacturer: faker.company.bs(),
 			deleted: faker.datatype.boolean(),
+			lastOrderDate: faker.date.past(),
+			nextOrderDate: faker.date.future(),
 			createdBy: new mongoose.Types.ObjectId(devId) as any,
 			lastUpdatedBy: new mongoose.Types.ObjectId(devId) as any
 		})
@@ -31,11 +31,10 @@ const fakeConsumables = (count: number, devId: string) => {
 
 const fakeNonConsumables = (count: number, devId: string) => {
 	const nonMedicines = Array.from(new Set(dummyOtherAssets))
-	const nonConsumablesArray: NonConsumableArray = []
+	const nonConsumablesArray: InventoryArr<INonConsumable> = []
 	for (let i = 0; i < count; i++) {
 		nonConsumablesArray.push({
 			name: nonMedicines[i],
-			type: faker.helpers.arrayElement(NON_CONSUMABLE_TYPE),
 			quantityLeft: faker.datatype.number({ min: 1, max: 1000 }),
 			lastServicingDate: faker.date.past(),
 			nextServicingDate: faker.date.future(),

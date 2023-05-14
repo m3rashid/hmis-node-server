@@ -4,16 +4,11 @@
 
 	// List of extensions which should be recommended for users of this workspace.
 	"recommendations": [
-		"bradlc.vscode-tailwindcss",
-		"aaron-bond.better-comments",
 		"dbaeumer.vscode-eslint",
 		"esbenp.prettier-vscode",
-		"wix.vscode-import-cost",
 		"usernamehw.errorlens",
-		"mhutchie.git-graph",
 		"ms-vscode.js-debug",
 		"ms-vscode.js-debug-companion",
-		"naumovs.color-highlight",
 		"eamodio.gitlens",
 		"streetsidesoftware.code-spell-checker"
 	],
