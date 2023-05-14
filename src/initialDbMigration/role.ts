@@ -25,7 +25,7 @@ const migrateRoles = async (devId: string) => {
 			permissions: resourceTypes.reduce(
 				(acc, perm) => ({
 					...acc,
-					[perm.actualName]: {
+					[perm.name]: {
 						...perm.availablePermissions.independent.map(t => ({ [t]: 'INDEPENDENT' })),
 						...perm.availablePermissions.actions.map(t => ({ [t]: 'ALL' }))
 					}

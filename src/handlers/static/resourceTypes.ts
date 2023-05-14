@@ -1,8 +1,7 @@
 import type { Request, Response } from 'express'
 
 export interface IResourceType {
-	displayName: string
-	actualName: string
+	name: string
 	description: string
 	availablePermissions: {
 		independent: string[]
@@ -12,8 +11,7 @@ export interface IResourceType {
 
 export const resourceTypes: readonly IResourceType[] = [
 	{
-		actualName: 'USER',
-		displayName: 'User',
+		name: 'USER',
 		description: 'Auth users in the domain',
 		availablePermissions: {
 			independent: ['CREATE'],
@@ -21,8 +19,7 @@ export const resourceTypes: readonly IResourceType[] = [
 		}
 	},
 	{
-		actualName: 'PROFILE',
-		displayName: 'Profile',
+		name: 'PROFILE',
 		description: 'Profile of users in the domain',
 		availablePermissions: {
 			independent: ['CREATE'],
@@ -30,8 +27,7 @@ export const resourceTypes: readonly IResourceType[] = [
 		}
 	},
 	{
-		actualName: 'ADDRESS',
-		displayName: 'Address',
+		name: 'ADDRESS',
 		description: 'Addresses of users in the domain',
 		availablePermissions: {
 			independent: ['CREATE'],
@@ -39,8 +35,7 @@ export const resourceTypes: readonly IResourceType[] = [
 		}
 	},
 	{
-		actualName: 'PERMISSION',
-		displayName: 'Permission',
+		name: 'PERMISSION',
 		description: 'Permissions of the users in the domain',
 		availablePermissions: {
 			independent: ['CREATE'],
@@ -48,8 +43,7 @@ export const resourceTypes: readonly IResourceType[] = [
 		}
 	},
 	{
-		actualName: 'ROLE',
-		displayName: 'Role',
+		name: 'ROLE',
 		description: 'Roles of the users in the domain',
 		availablePermissions: {
 			independent: ['CREATE'],
@@ -57,8 +51,7 @@ export const resourceTypes: readonly IResourceType[] = [
 		}
 	},
 	{
-		actualName: 'AVAILABILITY',
-		displayName: 'Availability',
+		name: 'AVAILABILITY',
 		description: 'Availability of the users in the domain',
 		availablePermissions: {
 			independent: ['CREATE'],
@@ -66,8 +59,7 @@ export const resourceTypes: readonly IResourceType[] = [
 		}
 	},
 	{
-		actualName: 'LEAVE',
-		displayName: 'Leave',
+		name: 'LEAVE',
 		description: 'Leave applications by the users',
 		availablePermissions: {
 			independent: ['CREATE'],
@@ -75,8 +67,7 @@ export const resourceTypes: readonly IResourceType[] = [
 		}
 	},
 	{
-		actualName: 'APPOINTMENT',
-		displayName: 'APPOINTMENT',
+		name: 'APPOINTMENT',
 		description: 'Appointment of two users of different roles',
 		availablePermissions: {
 			independent: ['CREATE'],
@@ -84,8 +75,7 @@ export const resourceTypes: readonly IResourceType[] = [
 		}
 	},
 	{
-		actualName: 'CONSUMABLES',
-		displayName: 'Consumables',
+		name: 'CONSUMABLES',
 		description: 'All the items consumed by a patient or the hospital',
 		availablePermissions: {
 			independent: ['CREATE'],
@@ -93,8 +83,7 @@ export const resourceTypes: readonly IResourceType[] = [
 		}
 	},
 	{
-		actualName: 'NON_CONSUMABLES',
-		displayName: 'Non Consumables',
+		name: 'NON_CONSUMABLES',
 		description: 'All the items used by the hospital which do not get depleted on use',
 		availablePermissions: {
 			independent: ['CREATE'],
@@ -102,8 +91,7 @@ export const resourceTypes: readonly IResourceType[] = [
 		}
 	},
 	{
-		actualName: 'PRESCRIPTION',
-		displayName: 'Prescription',
+		name: 'PRESCRIPTION',
 		description: 'All the prescriptions created by the hospital authority',
 		availablePermissions: {
 			independent: ['CREATE'],
@@ -111,8 +99,7 @@ export const resourceTypes: readonly IResourceType[] = [
 		}
 	},
 	{
-		actualName: 'CONFIG',
-		displayName: 'Config',
+		name: 'CONFIG',
 		description: 'App Configuration constants deciding the functionality for the entire app',
 		availablePermissions: {
 			independent: ['CREATE'],
