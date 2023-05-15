@@ -16,7 +16,7 @@ const defaultRoles = [
 	}
 ]
 
-const migrateRoles = async (devId: string) => {
+export const migrateRoles = async (devId: string) => {
 	const promises: Array<Promise<any>> = []
 	defaultRoles.forEach(role => {
 		const r = new RoleModel({
@@ -40,5 +40,3 @@ const migrateRoles = async (devId: string) => {
 	})
 	await Promise.all(promises)
 }
-
-export default migrateRoles

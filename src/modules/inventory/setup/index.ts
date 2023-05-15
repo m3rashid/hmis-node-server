@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker'
 import mongoose from 'mongoose'
 
-import { dummyMedicines, dummyOtherAssets } from 'initialDbMigration/dummy/inventory'
 import { ConsumableModel, NonConsumableModel } from 'modules/inventory'
 import type { IConsumable, INonConsumable } from 'modules/inventory'
+import { dummyMedicines, dummyOtherAssets } from 'modules/inventory/setup/dummy'
 
 type InventoryArr<T> = Array<Omit<T, '_id' | 'createdAt' | 'updatedAt'>>
 
@@ -45,7 +45,7 @@ const fakeNonConsumables = (count: number, devId: string) => {
 	return nonConsumablesArray
 }
 
-const migrateInventory = async (devId: string) => {
+export const migrateInventory = async (devId: string) => {
 	const promises: Array<Promise<any>> = []
 	fakeConsumables(60, devId).forEach(c => {
 		const p = new ConsumableModel(c)
@@ -58,5 +58,3 @@ const migrateInventory = async (devId: string) => {
 	})
 	await Promise.all(promises)
 }
-
-export default migrateInventory
