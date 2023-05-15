@@ -10,13 +10,11 @@
 	"scripts": {
 		"build": "yarn gyp && npx rollup -c",
 		"dev": "npx rollup -c -w",
-		"lint": "eslint --fix \"**/!(node_modules|dist)/*.{js,jsx,ts,tsx}\"",
+		"lint:fix": "eslint --fix \"**/!(node_modules|dist)/*.{js,jsx,ts,tsx}\"",
 		"start": "node ./dist/index.js",
 		"prod": "docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d",
-		"format:check": "prettier --check .",
 		"format:write": "prettier --write .",
 		"lint:check": "eslint .",
-		"lint:fix": "eslint --fix .",
 		"precommit": "lint-staged",
 		"prepare": "husky install",
 		"gyp": "node-gyp configure && node-gyp build"
@@ -84,11 +82,11 @@
 	},
 	"lint-staged": {
 		"*.{js,ts,tsx,d.ts}": [
-			"eslint",
-			"prettier --write"
+			"yarn lint:fix",
+			"yarn format:write"
 		],
 		"*.json": [
-			"prettier --write"
+			"yarn format:write"
 		]
 	}
 }
