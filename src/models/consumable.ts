@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
-import type { IBaseModel } from 'models/base'
 import { baseModelSchema, modelNames } from 'models/base'
+import type { Document, IBaseModel, PaginateModel } from 'models/base'
 
 export interface IConsumable extends IBaseModel {
 	name: string
@@ -30,10 +30,9 @@ const consumableSchema = new mongoose.Schema<IConsumable>(
 )
 
 consumableSchema.plugin(paginate)
-export interface IConsumableDocument extends Omit<mongoose.Document, '_id'>, IConsumable {}
 
-const ConsumableModel = mongoose.model<
-	IConsumableDocument,
-	mongoose.PaginateModel<IConsumableDocument>
->(modelNames.consumable, consumableSchema)
+const ConsumableModel = mongoose.model<Document<IConsumable>, PaginateModel<IConsumable>>(
+	modelNames.consumable,
+	consumableSchema
+)
 export default ConsumableModel

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import type { IUser } from 'models/user'
 import paginate from 'mongoose-paginate-v2'
-import type { IBaseModel } from 'models/base'
+import type { Document, IBaseModel, PaginateModel } from 'models/base'
 import type { IPrescription } from 'models/prescription'
 import { baseModelSchema, modelNames } from 'models/base'
 
@@ -40,10 +40,9 @@ const appointmentSchema = new mongoose.Schema<IAppointment>(
 )
 
 appointmentSchema.plugin(paginate)
-export interface IAppointmentDocument extends Omit<mongoose.Document, '_id'>, IAppointment {}
 
-const AppointmentModel = mongoose.model<
-	IAppointmentDocument,
-	mongoose.PaginateModel<IAppointmentDocument>
->(modelNames.appointment, appointmentSchema)
+const AppointmentModel = mongoose.model<Document<IAppointment>, PaginateModel<IAppointment>>(
+	modelNames.appointment,
+	appointmentSchema
+)
 export default AppointmentModel

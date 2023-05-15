@@ -25,8 +25,8 @@ const expiryCheckOnInventoryJob = async () => {
 	await Promise.all([consumables, nonConsumables])
 }
 
-// TODO: Decide how often this job should run
-cron.schedule('', () => {
+// RUN Job at 12:00 AM everyday
+cron.schedule('* * 0 * * *', () => {
 	logger.info('Leave Job started')
 	expiryCheckOnInventoryJob()
 		.then(() => {

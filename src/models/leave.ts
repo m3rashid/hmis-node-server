@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 import type { IUser } from 'models/user'
 import paginate from 'mongoose-paginate-v2'
-import type { IBaseModel } from 'models/base'
 import { baseModelSchema, modelNames } from 'models/base'
+import type { Document, IBaseModel, PaginateModel } from 'models/base'
 
 export const LEAVE_STATUS: readonly string[] = ['PENDING', 'ACCEPTED', 'REJECTED', 'ENDED']
 
@@ -27,9 +27,8 @@ const leaveSchema = new mongoose.Schema<ILeave>(
 )
 
 leaveSchema.plugin(paginate)
-export interface ILeaveDocument extends Omit<mongoose.Document, '_id'>, ILeave {}
 
-const LeaveModel = mongoose.model<ILeaveDocument, mongoose.PaginateModel<ILeaveDocument>>(
+const LeaveModel = mongoose.model<Document<ILeave>, PaginateModel<ILeave>>(
 	modelNames.leave,
 	leaveSchema
 )

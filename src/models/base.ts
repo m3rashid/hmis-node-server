@@ -29,8 +29,12 @@ export const modelNames = {
 	profile: 'Profile',
 	resource: 'Resource',
 	role: 'Role',
-	user: 'User'
+	user: 'User',
+	attendance: 'Attendance'
 } as const
 
 export type IDbSchemaMap = typeof modelNames
 export type IDbSchemaKeys = keyof IDbSchemaMap
+export type IDbSchemaValues = IDbSchemaMap[IDbSchemaKeys]
+export type Document<T> = Omit<mongoose.Document, '_id'> & T
+export type PaginateModel<T> = mongoose.PaginateModel<Document<T>>

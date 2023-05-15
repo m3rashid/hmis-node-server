@@ -105,6 +105,14 @@ export const resourceTypes: readonly IResourceType[] = [
 			independent: ['CREATE'],
 			actions: ['READ', 'UPDATE', 'UPDATE_MANY', 'DELETE', 'DELETE_MANY']
 		}
+	},
+	{
+		name: 'ATTENDANCE',
+		description: 'Attendance of the users in the domain',
+		availablePermissions: {
+			independent: ['CREATE'],
+			actions: ['READ', 'UPDATE', 'UPDATE_MANY', 'DELETE', 'DELETE_MANY']
+		}
 	}
 ]
 
