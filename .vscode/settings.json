@@ -1,6 +1,9 @@
 {
-	"eslint.run": "onSave",
-	"editor.formatOnSave": true,
+	"editor.formatOnSave": false,
+	"eslint.validate": ["typescript"],
+	"editor.codeActionsOnSave": {
+		"source.fixAll": true
+	},
 	"cSpell.words": ["includepaths", "NAPI", "paren", "Parens", "precommit"],
 	"cSpell.ignorePaths": [
 		"package-lock.json",
