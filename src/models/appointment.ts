@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 import type { IUser } from 'models/user'
 import paginate from 'mongoose-paginate-v2'
-import type { Document, IBaseModel, PaginateModel } from 'models/base'
 import type { IPrescription } from 'models/prescription'
 import { baseModelSchema, modelNames } from 'models/base'
+import type { Document, IBaseModel, PaginateModel } from 'models/base'
 
 export const APPOINTMENT_STATUS: readonly string[] = ['PENDING', 'ACCEPTED', 'REJECTED', 'RESOLVED']
 
