@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
-import { baseModelSchema, models } from 'modules/default/model'
+import { baseModelSchema, modelNames as models } from 'modules/default/model'
 import type { Document, IBaseModel, PaginateModel } from 'modules/default/model'
 
 export const NOT_ALLOWED_ROLE_ACTUAL_NAMES = ['DEVELOPER', 'SUPER_ADMIN']
@@ -33,8 +33,5 @@ const roleSchema = new mongoose.Schema<IRole>(
 
 roleSchema.plugin(paginate)
 
-const RoleModel = mongoose.model<Document<IRole>, PaginateModel<IRole>>(
-	models.role.name,
-	roleSchema
-)
+const RoleModel = mongoose.model<Document<IRole>, PaginateModel<IRole>>(models.role, roleSchema)
 export default RoleModel

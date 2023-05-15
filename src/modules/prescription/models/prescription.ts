@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
 import type { IAppointment } from 'modules/appointment/models/appointment'
-import { baseModelSchema, models } from 'modules/default/model'
+import { baseModelSchema, modelNames as models } from 'modules/default/model'
 import type { Document, IBaseModel, PaginateModel } from 'modules/default/model'
 import type { IConsumable } from 'modules/inventory/models/consumable'
 
@@ -28,14 +28,14 @@ const prescriptionSchema = new mongoose.Schema<IPrescription>(
 		remarks: { type: String },
 		appointment: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: models.appointment.name,
+			ref: models.appointment,
 			required: true
 		},
 		medicines: [
 			{
 				medicine: {
 					type: mongoose.Schema.Types.ObjectId,
-					ref: models.consumable.name,
+					ref: models.consumable,
 					required: true
 				},
 				dosage: {
@@ -53,7 +53,7 @@ const prescriptionSchema = new mongoose.Schema<IPrescription>(
 prescriptionSchema.plugin(paginate)
 
 const PrescriptionModel = mongoose.model<Document<IPrescription>, PaginateModel<IPrescription>>(
-	models.prescription.name,
+	models.prescription,
 	prescriptionSchema
 )
 export default PrescriptionModel

@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
 import type { IUser } from 'modules/auth/models/user'
-import { baseModelSchema, models } from 'modules/default/model'
+import { baseModelSchema, modelNames as models } from 'modules/default/model'
 import type { Document, IBaseModel, PaginateModel } from 'modules/default/model'
 
 export const LEAVE_STATUS: readonly string[] = ['PENDING', 'ACCEPTED', 'REJECTED', 'ENDED']
@@ -21,7 +21,7 @@ const leaveSchema = new mongoose.Schema<ILeave>(
 		startDate: { type: Date, required: true },
 		endDate: { type: Date, required: true },
 		reason: { type: String, required: true },
-		user: { type: mongoose.Schema.Types.ObjectId, ref: models.user.name, required: true },
+		user: { type: mongoose.Schema.Types.ObjectId, ref: models.user, required: true },
 		status: { type: String, enum: LEAVE_STATUS, default: 'PENDING' }
 	},
 	{ timestamps: true }
@@ -30,7 +30,7 @@ const leaveSchema = new mongoose.Schema<ILeave>(
 leaveSchema.plugin(paginate)
 
 const LeaveModel = mongoose.model<Document<ILeave>, PaginateModel<ILeave>>(
-	models.leave.name,
+	models.leave,
 	leaveSchema
 )
 export default LeaveModel

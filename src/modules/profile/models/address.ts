@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
 import type { Document, IBaseModel, PaginateModel } from 'modules/default/model'
-import { baseModelSchema, models } from 'modules/default/model'
+import { baseModelSchema, modelNames as models } from 'modules/default/model'
 import type { IProfile } from 'modules/profile/models/profile'
 
 export interface IAddress extends IBaseModel {
@@ -24,7 +24,7 @@ const addressSchema = new mongoose.Schema<IAddress>(
 		country: { type: String, default: 'India' },
 		roomNumber: { type: String },
 		buildingNumber: { type: String },
-		user: { type: mongoose.Schema.Types.ObjectId, ref: models.profile.name, required: true }
+		user: { type: mongoose.Schema.Types.ObjectId, ref: models.profile, required: true }
 	},
 	{ timestamps: true }
 )
@@ -32,7 +32,7 @@ const addressSchema = new mongoose.Schema<IAddress>(
 addressSchema.plugin(paginate)
 
 const AddressModel = mongoose.model<Document<IAddress>, PaginateModel<IAddress>>(
-	models.address.name,
+	models.address,
 	addressSchema
 )
 

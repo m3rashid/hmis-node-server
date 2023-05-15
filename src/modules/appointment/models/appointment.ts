@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
 import type { IUser } from 'modules/auth/models/user'
-import { baseModelSchema, models } from 'modules/default/model'
+import { baseModelSchema, modelNames as models } from 'modules/default/model'
 import type { Document, IBaseModel, PaginateModel } from 'modules/default/model'
 import type { IPrescription } from 'modules/prescription/models/prescription'
 
@@ -24,18 +24,18 @@ export interface IAppointment extends IBaseModel {
 const appointmentSchema = new mongoose.Schema<IAppointment>(
 	{
 		...baseModelSchema,
-		doctor: { type: mongoose.Schema.Types.ObjectId, ref: models.user.name, required: true },
-		patient: { type: mongoose.Schema.Types.ObjectId, ref: models.user.name, required: true },
+		doctor: { type: mongoose.Schema.Types.ObjectId, ref: models.user, required: true },
+		patient: { type: mongoose.Schema.Types.ObjectId, ref: models.user, required: true },
 		status: { type: String, enum: APPOINTMENT_STATUS, default: 'PENDING' },
 		chats: [
 			{
 				time: { type: Date, required: true },
 				remarks: { type: String },
-				from: { type: mongoose.Schema.Types.ObjectId, ref: models.user.name, required: true }
+				from: { type: mongoose.Schema.Types.ObjectId, ref: models.user, required: true }
 			}
 		],
-		referredBy: { type: mongoose.Schema.Types.ObjectId, ref: models.user.name },
-		prescription: { type: mongoose.Schema.Types.ObjectId, ref: models.prescription.name }
+		referredBy: { type: mongoose.Schema.Types.ObjectId, ref: models.user },
+		prescription: { type: mongoose.Schema.Types.ObjectId, ref: models.prescription }
 	},
 	{ timestamps: true }
 )
@@ -43,7 +43,7 @@ const appointmentSchema = new mongoose.Schema<IAppointment>(
 appointmentSchema.plugin(paginate)
 
 const AppointmentModel = mongoose.model<Document<IAppointment>, PaginateModel<IAppointment>>(
-	models.appointment.name,
+	models.appointment,
 	appointmentSchema
 )
 export default AppointmentModel

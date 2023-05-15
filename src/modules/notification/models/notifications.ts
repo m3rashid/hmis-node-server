@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
-import { baseModelSchema, models } from 'modules/default/model'
+import { baseModelSchema, modelNames as models } from 'modules/default/model'
 import type { Document, IBaseModel, PaginateModel } from 'modules/default/model'
 
 export interface INotification extends IBaseModel {
@@ -21,7 +21,7 @@ const notificationSchema = new mongoose.Schema<INotification>(
 notificationSchema.plugin(paginate)
 
 const NotificationModel = mongoose.model<Document<INotification>, PaginateModel<INotification>>(
-	models.notification.name,
+	models.notification,
 	notificationSchema
 )
 export default NotificationModel

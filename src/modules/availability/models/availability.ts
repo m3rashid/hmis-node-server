@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
-import { baseModelSchema, models } from 'modules/default/model'
+import { baseModelSchema, modelNames as models } from 'modules/default/model'
 import type { Document, IBaseModel, PaginateModel } from 'modules/default/model'
 import type { IProfile } from 'modules/profile/models/profile'
 
@@ -20,7 +20,7 @@ const availabilitySchema = new mongoose.Schema<IAvailability>(
 		day: { type: String, required: true, enum: DAYS },
 		startTime: { type: String, required: true },
 		endTime: { type: String, required: true },
-		profile: { type: mongoose.Schema.Types.ObjectId, ref: models.profile.name, required: true }
+		profile: { type: mongoose.Schema.Types.ObjectId, ref: models.profile, required: true }
 	},
 	{ timestamps: true }
 )
@@ -28,7 +28,7 @@ const availabilitySchema = new mongoose.Schema<IAvailability>(
 availabilitySchema.plugin(paginate)
 
 const AvailabilityModel = mongoose.model<Document<IAvailability>, PaginateModel<IAvailability>>(
-	models.availability.name,
+	models.availability,
 	availabilitySchema
 )
 export default AvailabilityModel

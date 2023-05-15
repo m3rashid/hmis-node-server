@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
 import type { IUser } from 'modules/auth/models/user'
-import { models } from 'modules/default/model'
+import { modelNames as models } from 'modules/default/model'
 import type { Document, PaginateModel } from 'modules/default/model'
 
 export interface IAttendance {
@@ -16,7 +16,7 @@ export interface IAttendance {
 }
 
 const attendanceSchema = new mongoose.Schema<IAttendance>({
-	userId: { type: mongoose.Schema.Types.ObjectId, ref: models.user.name, required: true },
+	userId: { type: mongoose.Schema.Types.ObjectId, ref: models.user, required: true },
 	date: { type: Date, required: true },
 	slots: [
 		{
@@ -29,7 +29,7 @@ const attendanceSchema = new mongoose.Schema<IAttendance>({
 attendanceSchema.plugin(paginate)
 
 const AttendanceModel = mongoose.model<Document<IAttendance>, PaginateModel<IAttendance>>(
-	models.attendance.name,
+	models.attendance,
 	attendanceSchema
 )
 export default AttendanceModel

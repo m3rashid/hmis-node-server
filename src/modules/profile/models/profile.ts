@@ -5,7 +5,7 @@ import type { IAppointment } from 'modules/appointment/models/appointment'
 import type { IUser } from 'modules/auth/models/user'
 import type { IAvailability } from 'modules/availability/models/availability'
 import type { ILeave } from 'modules/availability/models/leave'
-import { baseModelSchema, models } from 'modules/default/model'
+import { baseModelSchema, modelNames as models } from 'modules/default/model'
 import type { Document, IBaseModel, PaginateModel } from 'modules/default/model'
 import type { IAddress } from 'modules/profile/models/address'
 
@@ -50,21 +50,19 @@ const profileSchema = new mongoose.Schema<IProfile>(
 		phoneVerified: { type: Boolean, default: false },
 		maritalStatus: { type: String, enum: MARITAL_STATUS },
 		profilePicture: { type: String },
-		addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: models.address.name }],
+		addresses: [{ type: mongoose.Schema.Types.ObjectId, ref: models.address }],
 		bloodGroup: { type: String, enum: BLOOD_GROUPS },
 		origin: { type: String },
 		lastVisit: { type: Date },
 		designation: { type: String },
 		department: { type: String },
 		userHealthId: { type: String },
-		user: { type: mongoose.Schema.Types.ObjectId, ref: models.user.name, required: true },
-		leaves: [{ type: mongoose.Schema.Types.ObjectId, ref: models.leave.name }],
-		availabilities: [{ type: mongoose.Schema.Types.ObjectId, ref: models.availability.name }],
-		appointmentsAsDoctor: [{ type: mongoose.Schema.Types.ObjectId, ref: models.appointment.name }],
-		appointmentsAsPatient: [{ type: mongoose.Schema.Types.ObjectId, ref: models.appointment.name }],
-		appointmentsAsReferredBy: [
-			{ type: mongoose.Schema.Types.ObjectId, ref: models.appointment.name }
-		]
+		user: { type: mongoose.Schema.Types.ObjectId, ref: models.user, required: true },
+		leaves: [{ type: mongoose.Schema.Types.ObjectId, ref: models.leave }],
+		availabilities: [{ type: mongoose.Schema.Types.ObjectId, ref: models.availability }],
+		appointmentsAsDoctor: [{ type: mongoose.Schema.Types.ObjectId, ref: models.appointment }],
+		appointmentsAsPatient: [{ type: mongoose.Schema.Types.ObjectId, ref: models.appointment }],
+		appointmentsAsReferredBy: [{ type: mongoose.Schema.Types.ObjectId, ref: models.appointment }]
 	},
 	{ timestamps: true }
 )
@@ -72,7 +70,7 @@ const profileSchema = new mongoose.Schema<IProfile>(
 profileSchema.plugin(paginate)
 
 const ProfileModel = mongoose.model<Document<IProfile>, PaginateModel<IProfile>>(
-	models.profile.name,
+	models.profile,
 	profileSchema
 )
 export default ProfileModel

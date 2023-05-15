@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
-import { baseModelSchema, models } from 'modules/default/model'
+import { baseModelSchema, modelNames as models } from 'modules/default/model'
 import type { Document, IBaseModel, PaginateModel } from 'modules/default/model'
 import type { IProfile } from 'modules/profile/models/profile'
 import type { IRole } from 'modules/role/models/role'
@@ -23,15 +23,12 @@ const userSchema = new mongoose.Schema<IUser>(
 		emailVerified: { type: Boolean, default: false },
 		password: { type: String, required: true },
 		roles: [{ type: mongoose.Schema.Types.ObjectId, ref: models.role, required: true }],
-		profile: { type: mongoose.Schema.Types.ObjectId, ref: models.profile.name }
+		profile: { type: mongoose.Schema.Types.ObjectId, ref: models.profile }
 	},
 	{ timestamps: true }
 )
 
 userSchema.plugin(paginate)
 
-const UserModel = mongoose.model<Document<IUser>, PaginateModel<IUser>>(
-	models.user.name,
-	userSchema
-)
+const UserModel = mongoose.model<Document<IUser>, PaginateModel<IUser>>(models.user, userSchema)
 export default UserModel
