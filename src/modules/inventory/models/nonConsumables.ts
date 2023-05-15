@@ -26,8 +26,7 @@ const nonConsumableSchema = new mongoose.Schema<INonConsumable>(
 
 nonConsumableSchema.plugin(paginate)
 
-const NonConsumableModel = mongoose.model<Document<INonConsumable>, PaginateModel<INonConsumable>>(
-	models.nonConsumable,
-	nonConsumableSchema
-)
-export default NonConsumableModel
+export const NonConsumableModel = mongoose.model<
+	Document<INonConsumable>,
+	PaginateModel<INonConsumable>
+>(models.nonConsumable, nonConsumableSchema)

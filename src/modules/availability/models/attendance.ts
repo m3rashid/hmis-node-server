@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
-import type { IUser } from 'modules/auth/models/user'
+import type { IUser } from 'modules/auth'
 import { modelNames as models } from 'modules/default/model'
 import type { Document, PaginateModel } from 'modules/default/model'
 
@@ -28,8 +28,7 @@ const attendanceSchema = new mongoose.Schema<IAttendance>({
 
 attendanceSchema.plugin(paginate)
 
-const AttendanceModel = mongoose.model<Document<IAttendance>, PaginateModel<IAttendance>>(
+export const AttendanceModel = mongoose.model<Document<IAttendance>, PaginateModel<IAttendance>>(
 	models.attendance,
 	attendanceSchema
 )
-export default AttendanceModel

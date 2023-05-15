@@ -20,8 +20,7 @@ const notificationSchema = new mongoose.Schema<INotification>(
 
 notificationSchema.plugin(paginate)
 
-const NotificationModel = mongoose.model<Document<INotification>, PaginateModel<INotification>>(
-	models.notification,
-	notificationSchema
-)
-export default NotificationModel
+export const NotificationModel = mongoose.model<
+	Document<INotification>,
+	PaginateModel<INotification>
+>(models.notification, notificationSchema)

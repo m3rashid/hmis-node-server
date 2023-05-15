@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import ConsumableModel from 'modules/inventory/models/consumable'
-import NonConsumableModel from 'modules/inventory/models/nonConsumables'
+import { ConsumableModel } from 'modules/inventory/models/consumable'
+import { NonConsumableModel } from 'modules/inventory/models/nonConsumables'
 
 export const getAllConsumables = async (req: Request, res: Response) => {
 	const consumables = await ConsumableModel.find({ deleted: false })

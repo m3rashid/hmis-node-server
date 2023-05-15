@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
 import mongoose from 'mongoose'
 
-import UserModel from 'modules/auth/models/user'
-import RoleModel from 'modules/role/models/role'
+import { UserModel } from 'modules/auth'
+import { RoleModel } from 'modules/role'
 
 const devUser = {
 	name: 'HMIS App',

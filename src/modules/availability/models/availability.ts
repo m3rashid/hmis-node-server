@@ -3,7 +3,7 @@ import paginate from 'mongoose-paginate-v2'
 
 import { baseModelSchema, modelNames as models } from 'modules/default/model'
 import type { Document, IBaseModel, PaginateModel } from 'modules/default/model'
-import type { IProfile } from 'modules/profile/models/profile'
+import type { IProfile } from 'modules/profile'
 
 export const DAYS: readonly string[] = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
 
@@ -27,8 +27,7 @@ const availabilitySchema = new mongoose.Schema<IAvailability>(
 
 availabilitySchema.plugin(paginate)
 
-const AvailabilityModel = mongoose.model<Document<IAvailability>, PaginateModel<IAvailability>>(
-	models.availability,
-	availabilitySchema
-)
-export default AvailabilityModel
+export const AvailabilityModel = mongoose.model<
+	Document<IAvailability>,
+	PaginateModel<IAvailability>
+>(models.availability, availabilitySchema)

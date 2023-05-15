@@ -33,5 +33,7 @@ const roleSchema = new mongoose.Schema<IRole>(
 
 roleSchema.plugin(paginate)
 
-const RoleModel = mongoose.model<Document<IRole>, PaginateModel<IRole>>(models.role, roleSchema)
-export default RoleModel
+export const RoleModel = mongoose.model<Document<IRole>, PaginateModel<IRole>>(
+	models.role,
+	roleSchema
+)

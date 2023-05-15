@@ -15,7 +15,7 @@ import {
 	// signupPatientStepTwo,
 	// signupUser,
 	// updatePassword
-} from 'modules/auth/controller'
+} from 'modules/auth/controllers'
 import { loginSchema } from 'modules/auth/validator'
 import validate from 'modules/default/validator'
 import { useRoute } from 'utils/errors'

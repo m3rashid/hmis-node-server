@@ -1,3 +1,4 @@
+import type { INotification } from 'modules/notification/models/notifications'
 import mongoose from 'mongoose'
 
 import type { IAppointment } from 'modules/appointment/models/appointment'
@@ -7,7 +8,6 @@ import type { IAvailability } from 'modules/availability/models/availability'
 import type { ILeave } from 'modules/availability/models/leave'
 import type { IConsumable } from 'modules/inventory/models/consumable'
 import type { INonConsumable } from 'modules/inventory/models/nonConsumables'
-import type { INotification } from 'modules/notification/models/notifications'
 import type { IPrescription } from 'modules/prescription/models/prescription'
 import type { IAddress } from 'modules/profile/models/address'
 import type { IProfile } from 'modules/profile/models/profile'

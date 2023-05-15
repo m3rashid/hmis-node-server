@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import RoleModel from 'modules/role/models/role'
+import { RoleModel } from 'modules/role/models/role'
 import type { CreateRoleBody, DeleteRoleBody, EditRoleBody } from 'modules/role/validator'
 
 export const createRole = async (req: Request<any, any, CreateRoleBody>, res: Response) => {

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
-import type { IUser } from 'modules/auth/models/user'
+import type { IUser } from 'modules/auth'
 import { baseModelSchema, modelNames as models } from 'modules/default/model'
 import type { Document, IBaseModel, PaginateModel } from 'modules/default/model'
 
@@ -29,8 +29,7 @@ const leaveSchema = new mongoose.Schema<ILeave>(
 
 leaveSchema.plugin(paginate)
 
-const LeaveModel = mongoose.model<Document<ILeave>, PaginateModel<ILeave>>(
+export const LeaveModel = mongoose.model<Document<ILeave>, PaginateModel<ILeave>>(
 	models.leave,
 	leaveSchema
 )
-export default LeaveModel

@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 
 import { toSentenceCase } from 'helpers/strings'
-import { resourceTypes } from 'modules/resources/data'
-import RoleModel from 'modules/role/models/role'
+import { resourceTypes } from 'modules/resources'
+import { RoleModel } from 'modules/role'
 
 const defaultRoles = [
 	{

@@ -1,13 +1,12 @@
 import mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 
-import type { IAppointment } from 'modules/appointment/models/appointment'
-import type { IUser } from 'modules/auth/models/user'
-import type { IAvailability } from 'modules/availability/models/availability'
-import type { ILeave } from 'modules/availability/models/leave'
+import type { IAppointment } from 'modules/appointment'
+import type { IUser } from 'modules/auth'
+import type { IAvailability, ILeave } from 'modules/availability'
 import { baseModelSchema, modelNames as models } from 'modules/default/model'
 import type { Document, IBaseModel, PaginateModel } from 'modules/default/model'
-import type { IAddress } from 'modules/profile/models/address'
+import type { IAddress } from 'modules/profile'
 
 export const SEX: readonly string[] = ['M', 'F', 'O']
 
@@ -69,8 +68,7 @@ const profileSchema = new mongoose.Schema<IProfile>(
 
 profileSchema.plugin(paginate)
 
-const ProfileModel = mongoose.model<Document<IProfile>, PaginateModel<IProfile>>(
+export const ProfileModel = mongoose.model<Document<IProfile>, PaginateModel<IProfile>>(
 	models.profile,
 	profileSchema
 )
-export default ProfileModel

@@ -2,10 +2,8 @@ import { faker } from '@faker-js/faker'
 import mongoose from 'mongoose'
 
 import { dummyMedicines, dummyOtherAssets } from 'initialDbMigration/dummy/inventory'
-import ConsumableModel from 'modules/inventory/models/consumable'
-import type { IConsumable } from 'modules/inventory/models/consumable'
-import NonConsumableModel from 'modules/inventory/models/nonConsumables'
-import type { INonConsumable } from 'modules/inventory/models/nonConsumables'
+import { ConsumableModel, NonConsumableModel } from 'modules/inventory'
+import type { IConsumable, INonConsumable } from 'modules/inventory'
 
 type InventoryArr<T> = Array<Omit<T, '_id' | 'createdAt' | 'updatedAt'>>
 

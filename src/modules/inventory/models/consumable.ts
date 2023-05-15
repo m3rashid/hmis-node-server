@@ -32,8 +32,7 @@ const consumableSchema = new mongoose.Schema<IConsumable>(
 
 consumableSchema.plugin(paginate)
 
-const ConsumableModel = mongoose.model<Document<IConsumable>, PaginateModel<IConsumable>>(
+export const ConsumableModel = mongoose.model<Document<IConsumable>, PaginateModel<IConsumable>>(
 	models.consumable,
 	consumableSchema
 )
-export default ConsumableModel

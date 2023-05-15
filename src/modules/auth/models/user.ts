@@ -3,8 +3,8 @@ import paginate from 'mongoose-paginate-v2'
 
 import { baseModelSchema, modelNames as models } from 'modules/default/model'
 import type { Document, IBaseModel, PaginateModel } from 'modules/default/model'
-import type { IProfile } from 'modules/profile/models/profile'
-import type { IRole } from 'modules/role/models/role'
+import type { IProfile } from 'modules/profile'
+import type { IRole } from 'modules/role'
 
 export interface IUser extends IBaseModel {
 	name: string
@@ -30,5 +30,7 @@ const userSchema = new mongoose.Schema<IUser>(
 
 userSchema.plugin(paginate)
 
-const UserModel = mongoose.model<Document<IUser>, PaginateModel<IUser>>(models.user, userSchema)
-export default UserModel
+export const UserModel = mongoose.model<Document<IUser>, PaginateModel<IUser>>(
+	models.user,
+	userSchema
+)

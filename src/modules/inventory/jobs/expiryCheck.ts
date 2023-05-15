@@ -1,7 +1,7 @@
 import cron from 'node-cron'
 
-import ConsumableModel from 'modules/inventory/models/consumable'
-import NonConsumablesModel from 'modules/inventory/models/nonConsumables'
+import { ConsumableModel } from 'modules/inventory/models/consumable'
+import { NonConsumablesModel } from 'modules/inventory/models/nonConsumables'
 import { logger } from 'utils/logger'
 
 const expiryCheckOnInventoryJob = async () => {

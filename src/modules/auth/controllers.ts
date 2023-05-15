@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import type { Request, Response } from 'express'
 
-import UserModel from 'modules/auth/models/user'
+import { UserModel } from 'modules/auth/models/user'
 import type { LoginBody } from 'modules/auth/validator'
 import { newError } from 'utils/errors'
 import { issueJWT, revalidateJWT } from 'utils/jwt'
