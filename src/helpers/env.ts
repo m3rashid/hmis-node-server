@@ -13,7 +13,11 @@ const environmentVariables = z.object({
 	DEV_PASSWORD: z.string(),
 	ADMIN_PASSWORD: z.string(),
 	ACCESS_SECRET: z.string(),
-	REFRESH_SECRET: z.string()
+	REFRESH_SECRET: z.string(),
+	S3_ACCESS_KEY_ID: z.string(),
+	S3_SECRET_ACCESS_KEY: z.string(),
+	S3_BUCKET_NAME: z.string(),
+	S3_REGION: z.string()
 })
 
 environmentVariables.parse(process.env)

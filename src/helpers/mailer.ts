@@ -10,7 +10,7 @@ export const emailQueue = new Queue('email', {
 		removeOnComplete: true
 	},
 	settings: {
-		retryProcessDelay: 1000 * 60 * 5 // 10 minutes
+		retryProcessDelay: 1000 * 60 * 5 // 5 minutes
 	}
 })
 
