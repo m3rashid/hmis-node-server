@@ -30,7 +30,8 @@ export const modelNames = {
 	resource: 'Resource',
 	role: 'Role',
 	user: 'User',
-	attendance: 'Attendance'
+	attendance: 'Attendance',
+	notification: 'Notification'
 } as const
 
 export type IDbSchemaMap = typeof modelNames
