@@ -36,6 +36,5 @@ export const sendMail = (props: ISendMailOptions) => {
 			from: props.from ?? `"${config.appName}" <${process.env.MAILER_USER}>`,
 			...props
 		})
-		.then()
 		.catch(console.log)
 }
