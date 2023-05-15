@@ -22,8 +22,8 @@ import routes from 'modules/router'
 // eslint-disable-next-line import/order
 import config from 'utils/config'
 
-// import initialDbMigration from 'initialDbMigration'
 import { globalErrorHandlerMiddleware } from 'utils/errors'
+// import initialDbMigration from 'utils/setup'
 mongoose.set('debug', process.env.NODE_ENV !== 'production')
 mongoose.plugin(paginate)
 
