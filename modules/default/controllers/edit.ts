@@ -6,7 +6,7 @@ import type { PartialUser } from 'modules/default/controllers/base'
 import type { IDbSchemaKeys, ModelSchemasTypes, PaginateModel } from 'modules/default/model'
 import { onlyValidate } from 'modules/default/validator'
 import type { IError } from 'utils/errors'
-import { newError } from 'utils/errors'
+import { newError, useRoute } from 'utils/errors'
 
 type EditPayload<M extends IDbSchemaKeys> = ModelSchemasTypes[M]
 type EditResponse<M extends IDbSchemaKeys> = ModelSchemasTypes[M] | IError | IError[]
@@ -26,46 +26,50 @@ interface EditOptions<M extends IDbSchemaKeys> {
 }
 
 // TODO: INCOMPLETE
-export const Edit =
-	<M extends IDbSchemaKeys>(
-		model: PaginateModel<any>,
-		{
-			validator,
-			skipValidator,
-			reqTransformer = async req => req,
-			payloadTransformer = async ({ user, payload }) => payload,
-			serializer = async ({ user, data }) => data
-		}: EditOptions<M>
-	) =>
-	async (_req: Request<any, any, { payload: EditPayload<M> }>, res: Response<EditResponse<M>>) => {
-		const req = await reqTransformer(_req)
-		const user = req.user
+export const Edit = <M extends IDbSchemaKeys>(
+	model: PaginateModel<any>,
+	{
+		validator,
+		skipValidator,
+		reqTransformer = async req => req,
+		payloadTransformer = async ({ user, payload }) => payload,
+		serializer = async ({ user, data }) => data
+	}: EditOptions<M>
+) =>
+	useRoute(
+		async (
+			_req: Request<any, any, { payload: EditPayload<M> }>,
+			res: Response<EditResponse<M>>
+		) => {
+			const req = await reqTransformer(_req)
+			const user = req.user
 
-		const payload = await payloadTransformer({
-			user,
-			payload: req.body.payload || {}
-		})
-
-		if (!validator && !skipValidator) return res.json(newError('Invalid Router Configuration'))
-		if (validator) {
-			const errors = onlyValidate(req, validator)
-			if (errors.length > 0) return res.json(errors)
-		}
-
-		const obj = new model({
-			...payload,
-			...(req.user && {
-				createdBy: new mongoose.Types.ObjectId(req.user._id),
-				lastUpdatedBy: new mongoose.Types.ObjectId(req.user._id)
+			const payload = await payloadTransformer({
+				user,
+				payload: req.body.payload || {}
 			})
-		})
 
-		await obj.save()
+			if (!validator && !skipValidator) return res.json(newError('Invalid Router Configuration'))
+			if (validator) {
+				const errors = onlyValidate(req, validator)
+				if (errors.length > 0) return res.json(errors)
+			}
 
-		const data = await serializer({
-			user,
-			data: JSON.parse(JSON.stringify(obj))
-		})
+			const obj = new model({
+				...payload,
+				...(req.user && {
+					createdBy: new mongoose.Types.ObjectId(req.user._id),
+					lastUpdatedBy: new mongoose.Types.ObjectId(req.user._id)
+				})
+			})
 
-		res.status(200).json(data)
-	}
+			await obj.save()
+
+			const data = await serializer({
+				user,
+				data: JSON.parse(JSON.stringify(obj))
+			})
+
+			res.status(200).json(data)
+		}
+	)
