@@ -6,7 +6,7 @@ import includePaths from 'rollup-plugin-includepaths'
 
 const dev = process.env.ROLLUP_WATCH === 'true'
 const config = {
-	input: 'src/index.ts',
+	input: 'index.ts',
 	output: {
 		file: 'dist/index.js'
 	},

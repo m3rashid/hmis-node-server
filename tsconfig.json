@@ -17,8 +17,8 @@
     "strict": true,
 		"target": "es5",
 		"outDir": "dist",
-		"baseUrl": "src"
+		"baseUrl": "."
   },
-	"include": ["src/**/*.ts", "../build/Release/**.node"],
+	"include": ["./**/*.ts", "../build/Release/**.node"],
   "exclude": ["node_modules", "dist"]
 }

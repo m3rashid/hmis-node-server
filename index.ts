@@ -19,9 +19,7 @@ import type {
 	SocketData
 } from 'modules/default/sockets/types'
 import routes from 'modules/router'
-// eslint-disable-next-line import/order
-import config from 'utils/config'
-
+import { config } from 'utils/config'
 import { globalErrorHandlerMiddleware } from 'utils/errors'
 // import initialDbMigration from 'utils/setup'
 mongoose.set('debug', process.env.NODE_ENV !== 'production')

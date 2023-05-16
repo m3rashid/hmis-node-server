@@ -1,7 +1,7 @@
 import cron from 'node-cron'
 
 import { ConsumableModel } from 'modules/inventory/models/consumable'
-import { NonConsumablesModel } from 'modules/inventory/models/nonConsumables'
+import { NonConsumableModel } from 'modules/inventory/models/nonConsumables'
 import { logger } from 'utils/logger'
 
 const expiryCheckOnInventoryJob = async () => {
@@ -13,7 +13,7 @@ const expiryCheckOnInventoryJob = async () => {
 		{ deleted: true }
 	)
 
-	const nonConsumables = await NonConsumablesModel.updateMany(
+	const nonConsumables = await NonConsumableModel.updateMany(
 		{
 			nextServicingDate: { $lt: new Date() }
 		},

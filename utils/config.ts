@@ -1,6 +1,6 @@
 import type { CorsOptions } from 'cors'
 
-const config = {
+export const config = {
 	appName: 'HMIS',
 	appFullName: 'Hospital Management Information System',
 	appVersion: '1.0.0',
@@ -10,5 +10,3 @@ const config = {
 		optionsSuccessStatus: 200
 	} as CorsOptions
 }
-
-export default config

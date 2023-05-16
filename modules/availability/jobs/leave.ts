@@ -1,6 +1,6 @@
 import cron from 'node-cron'
 
-import LeaveModel from 'modules/availability/models/leave'
+import { LeaveModel } from 'modules/availability/models/leave'
 import { logger } from 'utils/logger'
 
 const leaveJob = async () => {
