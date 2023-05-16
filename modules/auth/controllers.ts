@@ -3,6 +3,7 @@ import type { Request, Response } from 'express'
 
 import { UserModel } from 'modules/auth/models/user'
 import type { LoginBody } from 'modules/auth/validator'
+import { List } from 'modules/default/controllers'
 import { newError } from 'utils/errors'
 import { issueJWT, revalidateJWT } from 'utils/jwt'
 
@@ -90,10 +91,16 @@ export const resetPassword = async (req: Request, res: Response) => {
 	console.log('Hello')
 }
 
-export const getAllUsers = async (req: Request, res: Response) => {
-	const users = await UserModel.find({ deleted: false }).populate('roles')
-	return res.json(users)
-}
+export const getAllUsers = List<'user'>(UserModel, {
+	skipValidator: true,
+	queryTransformer: async () => ({ deleted: false }),
+	optionsTransformer: async () => ({
+		options: {
+			populate: 'roles',
+			limit: 15
+		}
+	})
+})
 
 export const getAllUsersWithDeleted = async (req: Request, res: Response) => {
 	const users = await UserModel.find().populate('roles')

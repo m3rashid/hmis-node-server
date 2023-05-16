@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express'
 
+import { List } from 'modules/default/controllers'
 import { RoleModel } from 'modules/role/models/role'
 import type { CreateRoleBody, DeleteRoleBody, EditRoleBody } from 'modules/role/validator'
 
@@ -37,20 +38,10 @@ export const getRoles = async (req: Request, res: Response) => {
 	return res.json(roles)
 }
 
-export const getDetailRoles = async (req: Request, res: Response) => {
-	const roles = await RoleModel.aggregate([
-		{ $match: { deleted: false } },
-		{
-			$lookup: {
-				from: 'permissions',
-				localField: 'permissions',
-				foreignField: '_id',
-				as: 'permissions'
-			}
-		}
-	])
-	return res.json(roles)
-}
+export const getDetailRoles = List<'role'>(RoleModel, {
+	skipValidator: true,
+	queryTransformer: async () => ({ deleted: false })
+})
 
 export const getRoleWithDeleted = async (req: Request, res: Response) => {
 	const roles = await RoleModel.aggregate([
