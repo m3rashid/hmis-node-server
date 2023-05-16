@@ -3,16 +3,15 @@ import type { FilterQuery, PaginateOptions } from 'mongoose'
 import type { z } from 'zod'
 
 import type { PartialUser } from 'modules/default/controllers/base'
-import type { IDbSchemaKeys, ModelSchemasTypes } from 'modules/default/model'
-import { models } from 'modules/default/model/modelMap'
+import type { IDbSchemaKeys, ModelSchemasTypes, PaginateModel } from 'modules/default/model'
 import { onlyValidate } from 'modules/default/validator'
+import type { IError } from 'utils/errors'
 import { newError } from 'utils/errors'
 
-type ListResponse<M extends IDbSchemaKeys, T> = T | ModelSchemasTypes[M]
-
 type ListQuery<M extends IDbSchemaKeys> = FilterQuery<ModelSchemasTypes[M]>
+type ListResponse<M extends IDbSchemaKeys> = ModelSchemasTypes[M] | IError | IError[]
 
-interface ListOptions<M extends IDbSchemaKeys, T> {
+interface ListOptions<M extends IDbSchemaKeys> {
 	validator?: z.ZodObject<any>
 	skipValidator?: boolean
 	maxLimit?: number
@@ -23,15 +22,12 @@ interface ListOptions<M extends IDbSchemaKeys, T> {
 		options: PaginateOptions
 	}) => Promise<PaginateOptions>
 	queryTransformer?: (_: { user: PartialUser | null; query: ListQuery<M> }) => Promise<ListQuery<M>>
-	serializer?: (_: {
-		user: PartialUser | null
-		data: ListResponse<M, T>
-	}) => Promise<ListResponse<M, T>>
+	serializer?: (_: { user: PartialUser | null; data: ListResponse<M> }) => Promise<ListResponse<M>>
 }
 
 export const List =
-	<M extends IDbSchemaKeys, T>(
-		modelName: M,
+	<M extends IDbSchemaKeys>(
+		model: PaginateModel<any>,
 		{
 			populate,
 			validator,
@@ -41,11 +37,11 @@ export const List =
 			optionsTransformer = async ({ user, options }) => options,
 			queryTransformer = async ({ user, query }) => query,
 			serializer = async ({ user, data }) => data
-		}: ListOptions<M, T>
+		}: ListOptions<M>
 	) =>
 	async (
 		_req: Request<any, any, { query: ListQuery<M>; options: PaginateOptions }>,
-		res: Response<ListResponse<M, T>>
+		res: Response<ListResponse<M>>
 	) => {
 		const req = await reqTransformer(_req)
 		const user = req.user
@@ -62,13 +58,15 @@ export const List =
 			}
 		})
 
-		if (!validator && !skipValidator) return newError('Invalid Router Configuration')
+		if (!validator && !skipValidator) return res.json(newError('Invalid Router Configuration'))
 
-		const model = models[modelName]
 		const query = await queryTransformer({ user, query: req.body.query || {} })
 
-		if (limit > maxLimit) return newError('Maximum limit exceeded')
-		if (validator) onlyValidate(req, validator)
+		if (limit > maxLimit) return res.json(newError('Maximum limit exceeded'))
+		if (validator) {
+			const errors = onlyValidate(req, validator)
+			if (errors.length > 0) return res.json(errors)
+		}
 
 		const ogData = await model.paginate(query, options)
 		const data = await serializer({

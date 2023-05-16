@@ -14,7 +14,7 @@ export const newError = (msg: IError['message'], err?: Partial<Omit<IError, 'mes
 }
 
 export const newZodErrors = (errors: ZodError['issues']) => {
-	if (errors.length === 0) return
+	if (errors.length === 0) return []
 	const newErrors = errors.map(err => {
 		return {
 			name: 'ZOD_ERROR',

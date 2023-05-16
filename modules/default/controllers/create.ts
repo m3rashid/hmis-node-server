@@ -3,15 +3,15 @@ import mongoose from 'mongoose'
 import type { z } from 'zod'
 
 import type { PartialUser } from 'modules/default/controllers/base'
-import type { IDbSchemaKeys, ModelSchemasTypes } from 'modules/default/model'
-import { models } from 'modules/default/model/modelMap'
+import type { IDbSchemaKeys, ModelSchemasTypes, PaginateModel } from 'modules/default/model'
 import { onlyValidate } from 'modules/default/validator'
+import type { IError } from 'utils/errors'
 import { newError } from 'utils/errors'
 
 type CreatePayload<M extends IDbSchemaKeys> = ModelSchemasTypes[M]
-type CreateResponse<M extends IDbSchemaKeys, T> = T | ModelSchemasTypes[M]
+type CreateResponse<M extends IDbSchemaKeys> = ModelSchemasTypes[M] | IError | IError[]
 
-interface CreateOptions<M extends IDbSchemaKeys, T> {
+interface CreateOptions<M extends IDbSchemaKeys> {
 	skipValidator?: boolean
 	validator?: z.ZodObject<any>
 	reqTransformer?: (req: Request) => Promise<Request>
@@ -21,24 +21,24 @@ interface CreateOptions<M extends IDbSchemaKeys, T> {
 	}) => Promise<CreatePayload<M>>
 	serializer?: (_: {
 		user: PartialUser | null
-		data: Promise<CreateResponse<M, T>>
-	}) => Promise<CreateResponse<M, T>>
+		data: Promise<CreateResponse<M>>
+	}) => Promise<CreateResponse<M>>
 }
 
 export const Create =
 	<M extends IDbSchemaKeys, T>(
-		modelName: M,
+		model: PaginateModel<any>,
 		{
 			validator,
 			skipValidator,
 			reqTransformer = async req => req,
 			payloadTransformer = async ({ user, payload }) => payload,
 			serializer = async ({ user, data }) => data
-		}: CreateOptions<M, T>
+		}: CreateOptions<M>
 	) =>
 	async (
 		_req: Request<any, any, { payload: CreatePayload<M> }>,
-		res: Response<CreateResponse<M, T>>
+		res: Response<CreateResponse<M>>
 	) => {
 		const req = await reqTransformer(_req)
 		const user = req.user
@@ -48,10 +48,12 @@ export const Create =
 			payload: req.body.payload || {}
 		})
 
-		if (!validator && !skipValidator) return newError('Invalid Router Configuration')
-		if (validator) onlyValidate(req, validator)
+		if (!validator && !skipValidator) return res.json(newError('Invalid Router Configuration'))
+		if (validator) {
+			const errors = onlyValidate(req, validator)
+			if (errors.length > 0) return res.json(errors)
+		}
 
-		const model = models[modelName]
 		const obj = new model({
 			...payload,
 			...(req.user && {

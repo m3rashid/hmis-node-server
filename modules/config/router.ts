@@ -5,6 +5,6 @@ import { useRoute } from 'utils/errors'
 
 const configRouter = Router()
 
-configRouter.get('/config', useRoute(getConfig))
+configRouter.get('/', useRoute(getConfig))
 
 export default configRouter
