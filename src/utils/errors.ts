@@ -4,16 +4,12 @@ import type { ZodError } from 'zod'
 export interface IError {
 	name: string
 	message: string
-	path: string[]
-	type: 'OPERATIONAL' | 'DEVELOPER'
 }
 
 export const newError = (msg: IError['message'], err?: Partial<Omit<IError, 'message'>>) => {
 	return {
 		message: msg,
-		name: err?.name ?? '',
-		path: err?.path ?? [],
-		type: err?.type ?? 'OPERATIONAL'
+		name: err?.name ?? msg
 	} as IError
 }
 
@@ -22,9 +18,7 @@ export const newZodErrors = (errors: ZodError['issues']) => {
 	const newErrors = errors.map(err => {
 		return {
 			name: 'ZOD_ERROR',
-			message: err.message,
-			path: err.path,
-			type: 'OPERATIONAL'
+			message: err.message
 		} as IError
 	})
 

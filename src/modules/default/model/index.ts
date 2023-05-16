@@ -1,17 +1,13 @@
-import type { INotification } from 'modules/notification/models/notifications'
 import mongoose from 'mongoose'
 
-import type { IAppointment } from 'modules/appointment/models/appointment'
-import type { IUser } from 'modules/auth/models/user'
-import type { IAttendance } from 'modules/availability/models/attendance'
-import type { IAvailability } from 'modules/availability/models/availability'
-import type { ILeave } from 'modules/availability/models/leave'
-import type { IConsumable } from 'modules/inventory/models/consumable'
-import type { INonConsumable } from 'modules/inventory/models/nonConsumables'
-import type { IPrescription } from 'modules/prescription/models/prescription'
-import type { IAddress } from 'modules/profile/models/address'
-import type { IProfile } from 'modules/profile/models/profile'
-import type { IRole } from 'modules/role/models/role'
+import type { IAppointment } from 'modules/appointment'
+import type { IUser } from 'modules/auth'
+import type { IAttendance, IAvailability, ILeave } from 'modules/availability'
+import type { IConsumable, INonConsumable } from 'modules/inventory'
+import type { INotification } from 'modules/notification'
+import type { IPrescription } from 'modules/prescription'
+import type { IAddress, IProfile } from 'modules/profile'
+import type { IRole } from 'modules/role'
 
 export interface IBaseModel {
 	_id: string
@@ -28,7 +24,7 @@ export const baseModelSchema = {
 	lastUpdatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 }
 
-export type ModelSchemas = Readonly<{
+export type ModelSchemasTypes = Readonly<{
 	address: IAddress
 	appointment: IAppointment
 	availability: IAvailability
@@ -46,7 +42,7 @@ export type ModelSchemas = Readonly<{
 export type Document<T> = Omit<mongoose.Document, '_id'> & T
 export type PaginateModel<T> = mongoose.PaginateModel<Document<T>>
 
-export type IDbSchemaKeys = keyof ModelSchemas
+export type IDbSchemaKeys = keyof ModelSchemasTypes
 
 export const modelNames: Record<IDbSchemaKeys, string> = {
 	address: 'Address',

@@ -7,9 +7,7 @@ import { PrescriptionModel } from 'modules/prescription'
 import { AddressModel, ProfileModel } from 'modules/profile'
 import { RoleModel } from 'modules/role'
 
-import type { IDbSchemaKeys, ModelSchemas, PaginateModel } from '.'
-
-export const models: Record<IDbSchemaKeys, PaginateModel<ModelSchemas[IDbSchemaKeys]>> = {
+export const models = {
 	address: AddressModel,
 	appointment: AppointmentModel,
 	availability: AvailabilityModel,
@@ -22,4 +20,4 @@ export const models: Record<IDbSchemaKeys, PaginateModel<ModelSchemas[IDbSchemaK
 	user: UserModel,
 	attendance: AttendanceModel,
 	notification: NotificationModel
-}
+} as const

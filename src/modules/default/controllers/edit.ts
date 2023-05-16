@@ -8,24 +8,25 @@ import { models } from 'modules/default/model/modelMap'
 import { onlyValidate } from 'modules/default/validator'
 import { newError } from 'utils/errors'
 
-type CreatePayload<M extends IDbSchemaKeys> = ModelSchemasTypes[M]
-type CreateResponse<M extends IDbSchemaKeys, T> = T | ModelSchemasTypes[M]
+type EditPayload<M extends IDbSchemaKeys> = ModelSchemasTypes[M]
+type EditResponse<M extends IDbSchemaKeys, T> = T | ModelSchemasTypes[M]
 
-interface CreateOptions<M extends IDbSchemaKeys, T> {
+interface EditOptions<M extends IDbSchemaKeys, T> {
 	skipValidator?: boolean
 	validator?: z.ZodObject<any>
 	reqTransformer?: (req: Request) => Promise<Request>
 	payloadTransformer?: (_: {
 		user: PartialUser | null
-		payload: CreatePayload<M>
-	}) => Promise<CreatePayload<M>>
+		payload: EditPayload<M>
+	}) => Promise<EditPayload<M>>
 	serializer?: (_: {
 		user: PartialUser | null
-		data: Promise<CreateResponse<M, T>>
-	}) => Promise<CreateResponse<M, T>>
+		data: Promise<EditResponse<M, T>>
+	}) => Promise<EditResponse<M, T>>
 }
 
-export const Create =
+// TODO: INCOMPLETE
+export const Edit =
 	<M extends IDbSchemaKeys, T>(
 		modelName: M,
 		{
@@ -34,11 +35,11 @@ export const Create =
 			reqTransformer = async req => req,
 			payloadTransformer = async ({ user, payload }) => payload,
 			serializer = async ({ user, data }) => data
-		}: CreateOptions<M, T>
+		}: EditOptions<M, T>
 	) =>
 	async (
-		_req: Request<any, any, { payload: CreatePayload<M> }>,
-		res: Response<CreateResponse<M, T>>
+		_req: Request<any, any, { payload: EditPayload<M> }>,
+		res: Response<EditResponse<M, T>>
 	) => {
 		const req = await reqTransformer(_req)
 		const user = req.user
