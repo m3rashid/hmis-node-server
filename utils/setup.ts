@@ -1,7 +1,7 @@
 import { wait } from 'helpers/utils'
-import { createAdminUser, createDevUser, updateDevUser } from 'modules/auth'
-import { migrateInventory } from 'modules/inventory'
-import { migrateRoles } from 'modules/role'
+import { createAdminUser, createDevUser, updateDevUser } from 'setup/auth'
+import { migrateInventory } from 'setup/inventory'
+import { migrateRoles } from 'setup/role'
 import { logger } from 'utils/logger'
 
 const initialDbMigration = async () => {

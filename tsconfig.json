@@ -15,7 +15,7 @@
     "preserveWatchOutput": true,
     "skipLibCheck": true,
     "strict": true,
-		"target": "es5",
+		"target": "es2016",
 		"outDir": "dist",
 		"baseUrl": "."
   },

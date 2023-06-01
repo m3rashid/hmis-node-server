@@ -2,7 +2,7 @@ import Queue from 'bull'
 import nodemailer from 'nodemailer'
 import type { SendMailOptions } from 'nodemailer'
 
-import config from 'utils/config'
+import { config } from 'utils/config'
 
 // TODO: Add a queue for sending emails
 export const emailQueue = new Queue('email', {
