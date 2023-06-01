@@ -1,5 +1,4 @@
 import JWT from 'jsonwebtoken'
-
 import type { IUser } from 'modules/auth/models/user'
 
 export interface ILoginUser {
