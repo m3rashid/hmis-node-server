@@ -1,5 +1,6 @@
 import JWT from 'jsonwebtoken'
-import type { IUser } from 'modules/auth/models/user'
+
+import type { IUser } from 'models/user'
 
 export interface ILoginUser {
 	_id: string
@@ -19,8 +20,8 @@ export const issueJWT = (user: IUser) => {
 		iat: Date.now()
 	}
 
-	const refreshToken = JWT.sign(payload, process.env.REFRESH_SECRET, {})
-	const accessToken = JWT.sign(payload, process.env.ACCESS_SECRET, {
+	const refreshToken = JWT.sign(payload, process.env.REFRESH_SECRET as string, {})
+	const accessToken = JWT.sign(payload, process.env.ACCESS_SECRET as string, {
 		expiresIn: '1d'
 	})
 	return { accessToken, refreshToken }
@@ -29,7 +30,7 @@ export const issueJWT = (user: IUser) => {
 export const verifyJWT = (token: string) => {
 	try {
 		const extractedToken = token.split(' ')[1]
-		const decoded = JWT.verify(extractedToken, process.env.ACCESS_SECRET)
+		const decoded = JWT.verify(extractedToken, process.env.ACCESS_SECRET as string)
 		return {
 			valid: true,
 			expired: false,
@@ -47,7 +48,7 @@ export const verifyJWT = (token: string) => {
 export const revalidateJWT = (token: string) => {
 	try {
 		const extractedToken = token.split(' ')[1]
-		const decoded = JWT.verify(extractedToken, process.env.REFRESH_SECRET)
+		const decoded = JWT.verify(extractedToken, process.env.REFRESH_SECRET as string)
 		return {
 			valid: true,
 			expired: false,

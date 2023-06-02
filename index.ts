@@ -34,7 +34,7 @@ app.use(globalErrorHandlerMiddleware)
 const startServer = async () => {
 	try {
 		const PORT = process.env.PORT ?? 4000
-		await mongoose.connect(process.env.DATABASE_URL)
+		await mongoose.connect(process.env.DATABASE_URL as string)
 		console.log('Connection Established Successfully')
 		// await mongoose.connection.db.dropDatabase()
 		// console.log('Database Dropped Successfully')

@@ -7,14 +7,14 @@ import { UserModel } from 'models/user'
 const devUser = {
 	name: 'HMIS App',
 	email: 'coold1741@gmail.com',
-	password: process.env.DEV_PASSWORD,
+	password: process.env.DEV_PASSWORD as string,
 	role: 'DEVELOPER'
 }
 
 const adminUser = {
 	name: 'MD Rashid Hussain',
 	email: 'm3rashid.hussain@gmail.com',
-	password: process.env.ADMIN_PASSWORD,
+	password: process.env.ADMIN_PASSWORD as string,
 	role: 'SUPER_ADMIN'
 }
 
