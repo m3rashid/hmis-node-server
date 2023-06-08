@@ -15,11 +15,11 @@ const fakeConsumables = (count: number, devId: string) => {
 	for (let i = 0; i < count; i++) {
 		consumablesArray.push({
 			name: medicines[i],
-			quantityLeft: faker.datatype.number({ min: 1, max: 1000 }),
-			quantityPerUnit: faker.datatype.number({ min: 1, max: 30 }),
-			batchNumber: faker.datatype.uuid(),
+			quantityLeft: faker.number.int({ min: 1, max: 1000 }),
+			quantityPerUnit: faker.number.int({ min: 1, max: 30 }),
+			batchNumber: faker.string.uuid(),
 			expiryDate: faker.date.future(),
-			manufacturer: faker.company.bs(),
+			manufacturer: faker.company.buzzPhrase(),
 			deleted: faker.datatype.boolean(),
 			lastOrderDate: faker.date.past(),
 			nextOrderDate: faker.date.future(),
@@ -36,7 +36,7 @@ const fakeNonConsumables = (count: number, devId: string) => {
 	for (let i = 0; i < count; i++) {
 		nonConsumablesArray.push({
 			name: nonMedicines[i],
-			quantityLeft: faker.datatype.number({ min: 1, max: 1000 }),
+			quantityLeft: faker.number.int({ min: 1, max: 1000 }),
 			lastServicingDate: faker.date.past(),
 			nextServicingDate: faker.date.future(),
 			deleted: faker.datatype.boolean(),

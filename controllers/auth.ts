@@ -57,38 +57,47 @@ export const logout = async (req: Request, res: Response) => {
 
 export const currentUser = async (req: Request, res: Response) => {
 	console.log('Hello')
+	res.status(200).json('Hello')
 }
 
 export const currentUserAllDetails = async (req: Request, res: Response) => {
 	console.log('Hello')
+	res.status(200).json('Hello')
 }
 
 export const signupUser = async (req: Request, res: Response) => {
 	console.log('Hello')
+	res.status(200).json('Hello')
 }
 
 export const signupPatientInit = async (req: Request, res: Response) => {
 	console.log('Hello')
+	res.status(200).json('Hello')
 }
 
 export const signupPatientStepTwo = async (req: Request, res: Response) => {
 	console.log('Hello')
+	res.status(200).json('Hello')
 }
 
 export const signupPatientFinalize = async (req: Request, res: Response) => {
 	console.log('Hello')
+	res.status(200).json('Hello')
 }
 
 export const updatePassword = async (req: Request, res: Response) => {
 	console.log('Hello')
+	res.status(200).json('Hello')
 }
 
 export const forgotPassword = async (req: Request, res: Response) => {
 	console.log('Hello')
+	res.status(200).json('Hello')
 }
 
 export const resetPassword = async (req: Request, res: Response) => {
 	console.log('Hello')
+	res.status(200).json('Hello')
 }
 
 export const getAllUsers = List<'user'>(UserModel, {
