@@ -8,16 +8,14 @@
 	"type": "module",
 	"bin": "dist/index.js",
 	"scripts": {
-		"build": "pnpm gyp && npx rollup -c",
+		"build": "npx rollup -c",
 		"dev": "npx rollup -c -w",
+		"prod": "node dist/index.js",
 		"lint:fix": "eslint --fix \"**/!(node_modules|dist)/*.{js,jsx,ts,tsx}\"",
 		"start": "node ./dist/index.js",
-		"prod": "docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d",
-		"format:write": "prettier --write .",
 		"lint:check": "eslint .",
 		"precommit": "lint-staged",
-		"prepare": "husky install",
-		"gyp": "node-gyp configure && node-gyp build"
+		"prepare": "husky install"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.342.0",
@@ -39,6 +37,7 @@
 		"multer-s3": "^3.0.1",
 		"node-cron": "^3.0.2",
 		"nodemailer": "^6.9.3",
+		"socket.io": "^4.6.2",
 		"tslib": "^2.5.2",
 		"winston": "^3.9.0",
 		"xss-clean": "^0.1.1",
@@ -64,27 +63,20 @@
 		"@typescript-eslint/eslint-plugin": "^5.59.8",
 		"@typescript-eslint/parser": "^5.59.8",
 		"eslint": "^8.41.0",
-		"eslint-config-prettier": "^8.8.0",
 		"eslint-config-standard-with-typescript": "^34.0.1",
 		"eslint-import-resolver-typescript": "^3.5.5",
 		"eslint-plugin-import": "^2.27.5",
 		"eslint-plugin-n": "^16.0.0",
-		"eslint-plugin-prettier": "^4.2.1",
 		"eslint-plugin-promise": "^6.1.1",
 		"husky": "^8.0.3",
 		"lint-staged": "^13.2.2",
-		"prettier": "^2.8.8",
 		"rollup": "^3.23.0",
 		"rollup-plugin-includepaths": "^0.2.4",
 		"typescript": "^5.0.4"
 	},
 	"lint-staged": {
 		"*.{js,ts,tsx,d.ts}": [
-			"pnpm lint:fix",
-			"pnpm format:write"
-		],
-		"*.json": [
-			"pnpm format:write"
+			"pnpm lint:fix"
 		]
 	}
 }
