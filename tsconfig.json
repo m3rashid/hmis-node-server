@@ -17,7 +17,8 @@
     "strict": true,
 		"target": "es2016",
 		"outDir": "dist",
-		"baseUrl": "."
+		"baseUrl": ".",
+		"typeRoots": ["./node_modules/@types", "./types"]
   },
 	"include": ["./**/*.ts", "../build/Release/**.node"],
   "exclude": ["node_modules", "dist"]

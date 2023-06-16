@@ -1,15 +1,19 @@
 import 'utils/env'
-import http from 'http'
+import http from "http"
 
 import compression from 'compression'
 import cors from 'cors'
+import eiows from "eiows"
 import express from 'express'
 import helmet from 'helmet'
 import mongoose from 'mongoose'
 import paginate from 'mongoose-paginate-v2'
 import morgan from 'morgan'
+import { Server as SocketServer } from 'socket.io';
 
 import router from 'routes'
+import checkSocketAuth from 'sockets/auth'
+import type { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from 'sockets/types'
 import { config } from 'utils/config'
 import { globalErrorHandlerMiddleware } from 'utils/errors'
 // import initialDbMigration from 'utils/setup'
@@ -20,6 +24,17 @@ const app = express()
 app.use(helmet())
 app.use(compression())
 app.disable('x-powered-by')
+
+const server = http.createServer(app);
+const io = new SocketServer<
+  ClientToServerEvents,
+  ServerToClientEvents,
+  InterServerEvents,
+  SocketData
+>(server, { cors: config.cors, wsEngine: eiows.Server });
+
+io.engine.use(helmet());
+io.use(checkSocketAuth);
 
 app.use(cors(config.cors))
 app.use(morgan('dev'))
