@@ -99,16 +99,10 @@ export const resetPassword = async (req: Request, res: Response) => {
 	res.status(200).json('Hello')
 }
 
-// export const getAllUsers = List<'user'>(UserModel, {
-// 	skipValidator: true,
-// 	queryTransformer: async () => ({ deleted: false }),
-// 	optionsTransformer: async () => ({
-// 		options: {
-// 			populate: 'roles',
-// 			limit: 15
-// 		}
-// 	})
-// })
+export const getAllUsers = async (req: Request, res: Response) => {
+	const users = await UserModel.find({ deleted: false }).populate('roles')
+	return res.json(users)
+}
 
 export const getAllUsersWithDeleted = async (req: Request, res: Response) => {
 	const users = await UserModel.find().populate('roles')

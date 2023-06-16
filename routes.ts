@@ -4,7 +4,7 @@ import {
 	currentUser,
 	currentUserAllDetails,
 	forgotPassword,
-	// getAllUsers,
+	getAllUsers,
 	getAllUsersWithDeleted,
 	login,
 	logout,
@@ -60,7 +60,7 @@ router.get('/config', (req, res) => res.json(appConfig))
 router.post('/auth/login', validate(loginSchema), useRoute(login))
 router.post('/auth/logout', useRoute(logout))
 router.post('/auth/revalidate', useRoute(revalidateToken))
-// router.get('/auth/user/all', useRoute(getAllUsers))
+router.get('/auth/user/all', useRoute(getAllUsers))
 router.get('/auth/user/all-with-deleted', useRoute(getAllUsersWithDeleted))
 router.post('/auth/user/me', checkAuth, useRoute(currentUser))
 router.post('/auth/user/me-details', checkAuth, useRoute(currentUserAllDetails))
