@@ -15,11 +15,11 @@ export const onlyValidate = (req: Request, schema: z.ZodObject<any>): IError[] =
 	return []
 }
 
-const validate = (schema: z.ZodObject<any>) => {
-	return useRoute((req: Request, res: Response, next: NextFunction) => {
-		onlyValidate(req, schema)
-		next()
-	})
-}
+const validate = (schema: z.ZodObject<any>): ReturnType<typeof useRoute> => {
+  return useRoute((req: Request, res: Response, next: NextFunction) => {
+    onlyValidate(req, schema);
+    next();
+  });
+};
 
 export default validate

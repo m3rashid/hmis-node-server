@@ -5,7 +5,7 @@ const checkSocketAuth = (socket: Socket, next: any) => {
   try {
     const token = socket.handshake.auth.token;
     if (!token) throw new Error('Auth error');
-    const payload = JWT.verify(token, process.env.ACCESS_SECRET);
+    const payload = JWT.verify(token, process.env.ACCESS_SECRET!);
 
     socket.data.user = payload.sub;
     return next();

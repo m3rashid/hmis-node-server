@@ -4,7 +4,7 @@ import { newError, useRoute } from 'utils/errors'
 import { verifyJWT } from 'utils/jwt'
 import type { ILoginUser } from 'utils/jwt'
 
-export const actualAuthCheck = (req: Request) => {
+export const actualAuthCheck = (req: Request): Request => {
 	const token = req.headers.authorization
 	if (!token) throw newError('Token not provided')
 	const { valid, expired, payload } = verifyJWT(token)
@@ -15,7 +15,7 @@ export const actualAuthCheck = (req: Request) => {
 	return req
 }
 
-export const checkAuth = useRoute((req: Request, res: Response, next: NextFunction) => {
+export const checkAuth: ReturnType<typeof useRoute> = useRoute((req: Request, res: Response, next: NextFunction) => {
 	actualAuthCheck(req)
 	next()
 })

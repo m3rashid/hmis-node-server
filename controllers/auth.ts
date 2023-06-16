@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt'
 import type { Request, Response } from 'express'
 
-import { List } from 'controllers/default/list'
 import { UserModel } from 'models/user'
 import { newError } from 'utils/errors'
 import { issueJWT, revalidateJWT } from 'utils/jwt'
@@ -100,16 +99,16 @@ export const resetPassword = async (req: Request, res: Response) => {
 	res.status(200).json('Hello')
 }
 
-export const getAllUsers = List<'user'>(UserModel, {
-	skipValidator: true,
-	queryTransformer: async () => ({ deleted: false }),
-	optionsTransformer: async () => ({
-		options: {
-			populate: 'roles',
-			limit: 15
-		}
-	})
-})
+// export const getAllUsers = List<'user'>(UserModel, {
+// 	skipValidator: true,
+// 	queryTransformer: async () => ({ deleted: false }),
+// 	optionsTransformer: async () => ({
+// 		options: {
+// 			populate: 'roles',
+// 			limit: 15
+// 		}
+// 	})
+// })
 
 export const getAllUsersWithDeleted = async (req: Request, res: Response) => {
 	const users = await UserModel.find().populate('roles')

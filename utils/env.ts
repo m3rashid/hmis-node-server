@@ -24,10 +24,6 @@ const environmentVariables = z.object({
 environmentVariables.parse(process.env)
 
 declare global {
-	namespace NodeJS {
-		type ProcessEnv = z.infer<typeof environmentVariables>
-	}
-
 	namespace Express {
 		interface Request {
 			user: ILoginUser

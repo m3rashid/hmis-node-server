@@ -4,7 +4,6 @@ import http from "http"
 
 import compression from 'compression'
 import cors from 'cors'
-import eiows from "eiows"
 import express from 'express'
 import helmet from 'helmet'
 import mongoose from 'mongoose'
@@ -32,7 +31,7 @@ const io = new SocketServer<
   ServerToClientEvents,
   InterServerEvents,
   SocketData
->(server, { cors: config.cors, wsEngine: eiows.Server });
+>(server, { cors: config.cors });
 
 io.engine.use(helmet());
 io.use(checkSocketAuth);
