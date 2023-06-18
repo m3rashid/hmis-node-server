@@ -24,6 +24,7 @@ import {
 } from 'controllers/inventory'
 import { getNotifications } from 'controllers/notification'
 import { createProfile, updateProfile } from 'controllers/profile'
+import { getAllResourceTypes } from 'controllers/resource'
 import {
 	createRole,
 	deleteRole,
@@ -78,6 +79,8 @@ router.post('/role/edit', checkAuth, useRoute(editRole))
 router.get('/role/all', checkAuth, useRoute(getRoles))
 router.post('/role/details', checkAuth, useRoute(getRoleDetails))
 router.get('/roles/all-with-deleted', checkAuth, useRoute(getRoleWithDeleted))
+
+router.get('/resource/all', checkAuth, useRoute(getAllResourceTypes));
 
 router.post('/profile/create', checkAuth, useRoute(createProfile))
 router.post('/profile/update', checkAuth, useRoute(updateProfile))
