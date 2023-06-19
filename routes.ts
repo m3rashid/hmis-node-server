@@ -17,10 +17,16 @@ import {
 	updatePassword
 } from 'controllers/auth'
 import {
+	addConsumable,
+	addNonConsumable,
+	editConsumable,
+	editNonConsumable,
 	getAllConsumables,
 	getAllConsumablesDeleted,
 	getAllNonConsumables,
-	getAllNonConsumablesDeleted
+	getAllNonConsumablesDeleted,
+	removeConsumable,
+	removeNonConsumable
 } from 'controllers/inventory'
 import { getNotifications } from 'controllers/notification'
 import { createProfile, updateProfile } from 'controllers/profile'
@@ -88,8 +94,15 @@ router.post('/profile/update', checkAuth, useRoute(updateProfile))
 router.get('/notification/all', checkAuth, useRoute(getNotifications))
 
 router.get('/inventory/consumable/all', checkAuth, useRoute(getAllConsumables))
+router.post('/inventory/consumable/add', checkAuth, useRoute(addConsumable));
+router.post('/inventory/consumable/edit', checkAuth, useRoute(editConsumable));
+router.post('/inventory/consumable/remove', checkAuth, useRoute(removeConsumable));
 router.get('/inventory/consumable/removed', checkAuth, useRoute(getAllConsumablesDeleted))
+
 router.get('/inventory/non-consumable/all', checkAuth, useRoute(getAllNonConsumables))
+router.post('/inventory/non-consumable/add', checkAuth, useRoute(addNonConsumable));
+router.post('/inventory/non-consumable/edit', checkAuth, useRoute(editNonConsumable));
+router.post('/inventory/non-consumable/remove', checkAuth, useRoute(removeNonConsumable));
 router.get('/inventory/non-consumable/removed', checkAuth, useRoute(getAllNonConsumablesDeleted))
 
 export default router
