@@ -15,11 +15,10 @@
     "preserveWatchOutput": true,
     "skipLibCheck": true,
     "strict": true,
-		"target": "es2016",
-		"outDir": "dist",
-		"baseUrl": ".",
-		"typeRoots": ["./node_modules/@types", "./types"]
+    "target": "es2016",
+    "outDir": "dist",
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
-	"include": ["./**/*.ts", "../build/Release/**.node"],
+  "include": ["./**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

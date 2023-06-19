@@ -1,4 +1,4 @@
-import type { IUser } from 'models/user';
+import type { IUser } from '@hmis/gatekeeper/models';
 
 /**
  * @description These types are used on io.emit

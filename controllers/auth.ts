@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt';
 import type { Request, Response } from 'express';
 
-import { UserModel } from 'models/user';
-import { newError } from 'utils/errors';
-import { issueJWT, revalidateJWT } from 'utils/jwt';
-import type { LoginBody } from 'validators/auth';
+import { UserModel } from '../models/user';
+import { ERRORS } from '@hmis/gatekeeper';
+import type { authValidator } from '@hmis/gatekeeper';
+import { issueJWT, revalidateJWT } from '../utils/jwt';
 
 export const login = async (
-  req: Request<any, any, LoginBody>,
+  req: Request<any, any, authValidator.LoginBody>,
   res: Response
 ) => {
   const { email, password } = req.body;
@@ -17,9 +17,9 @@ export const login = async (
     .populate('profile')
     .lean();
 
-  if (!user) throw newError('User not found');
+  if (!user) throw ERRORS.newError('User not found');
   const match = await bcrypt.compare(password, user.password);
-  if (!match) throw newError('Invalid Credentials');
+  if (!match) throw ERRORS.newError('Invalid Credentials');
 
   const { accessToken, refreshToken } = issueJWT(user);
   return res.status(200).json({
@@ -31,12 +31,12 @@ export const login = async (
 
 export const revalidateToken = async (req: Request, res: Response) => {
   const rfToken = req.headers.authorization;
-  if (!rfToken) throw newError('No token Provided');
+  if (!rfToken) throw ERRORS.newError('No token Provided');
 
   const { valid, expired, payload } = revalidateJWT(rfToken);
   if (!valid || expired) throw new Error('Unauthorized');
   const userId = (payload?.sub as any)?._id;
-  if (!userId) throw newError('No user found');
+  if (!userId) throw ERRORS.newError('No user found');
 
   const user = await UserModel.findById(userId)
     .populate('roles')
@@ -44,7 +44,7 @@ export const revalidateToken = async (req: Request, res: Response) => {
     .populate('profile')
     .lean();
 
-  if (!user) throw newError('User not found');
+  if (!user) throw ERRORS.newError('User not found');
   const { accessToken, refreshToken } = issueJWT(user);
   return res.status(200).json({
     user,

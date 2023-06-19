@@ -1,15 +1,8 @@
 import type { Request, Response } from 'express';
 
-import { ConsumableModel } from 'models/consumable';
-import { NonConsumableModel } from 'models/nonConsumables';
-import type {
-  CreateConsumableBody,
-  CreateNonConsumableBody,
-  DeleteConsumableBody,
-  DeleteNonConsumableBody,
-  UpdateConsumableBody,
-  UpdateNonConsumableBody,
-} from 'validators/inventory';
+import { ConsumableModel } from '../models/consumable';
+import { NonConsumableModel } from '../models/nonConsumables';
+import type { inventoryValidator } from '@hmis/gatekeeper';
 
 import type { RequestWithBody } from './base';
 
@@ -37,7 +30,7 @@ export const getAllNonConsumablesDeleted = async (
 };
 
 export const addConsumable = async (
-  req: RequestWithBody<CreateConsumableBody>,
+  req: RequestWithBody<inventoryValidator.CreateConsumableBody>,
   res: Response
 ) => {
   const consumable = new ConsumableModel({ ...req.body });
@@ -46,7 +39,7 @@ export const addConsumable = async (
 };
 
 export const removeConsumable = async (
-  req: RequestWithBody<DeleteConsumableBody>,
+  req: RequestWithBody<inventoryValidator.DeleteConsumableBody>,
   res: Response
 ) => {
   const deletedConsumable = await ConsumableModel.findByIdAndUpdate(
@@ -58,7 +51,7 @@ export const removeConsumable = async (
 };
 
 export const editConsumable = async (
-  req: RequestWithBody<UpdateConsumableBody>,
+  req: RequestWithBody<inventoryValidator.UpdateConsumableBody>,
   res: Response
 ) => {
   const updatedConsumable = await ConsumableModel.findByIdAndUpdate(
@@ -70,7 +63,7 @@ export const editConsumable = async (
 };
 
 export const addNonConsumable = async (
-  req: RequestWithBody<CreateNonConsumableBody>,
+  req: RequestWithBody<inventoryValidator.CreateNonConsumableBody>,
   res: Response
 ) => {
   const nonConsumable = new NonConsumableModel({ ...req.body });
@@ -79,7 +72,7 @@ export const addNonConsumable = async (
 };
 
 export const removeNonConsumable = async (
-  req: RequestWithBody<DeleteNonConsumableBody>,
+  req: RequestWithBody<inventoryValidator.DeleteNonConsumableBody>,
   res: Response
 ) => {
   const deletedNonConsumable = await NonConsumableModel.findByIdAndUpdate(
@@ -91,7 +84,7 @@ export const removeNonConsumable = async (
 };
 
 export const editNonConsumable = async (
-  req: RequestWithBody<UpdateNonConsumableBody>,
+  req: RequestWithBody<inventoryValidator.UpdateNonConsumableBody>,
   res: Response
 ) => {
   const updatedNonConsumable = await NonConsumableModel.findByIdAndUpdate(

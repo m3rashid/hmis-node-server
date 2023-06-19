@@ -1,14 +1,11 @@
 import type { Request, Response } from 'express';
 
-import { RoleModel } from 'models/role';
-import type {
-  CreateRoleBody,
-  DeleteRoleBody,
-  EditRoleBody,
-} from 'validators/role';
+import { RoleModel } from '../models/role';
+import type { roleValidator } from '@hmis/gatekeeper';
+import type { RequestWithBody } from './base';
 
 export const createRole = async (
-  req: Request<any, any, CreateRoleBody>,
+  req: RequestWithBody<roleValidator.CreateRoleBody>,
   res: Response
 ) => {
   const { name, description, permissions } = req.body;
@@ -23,7 +20,7 @@ export const createRole = async (
 };
 
 export const editRole = async (
-  req: Request<any, any, EditRoleBody>,
+  req: RequestWithBody<roleValidator.EditRoleBody>,
   res: Response
 ) => {
   const { name, description, permissions, roleId } = req.body;
@@ -36,7 +33,7 @@ export const editRole = async (
 };
 
 export const deleteRole = async (
-  req: Request<any, any, DeleteRoleBody>,
+  req: RequestWithBody<roleValidator.DeleteRoleBody>,
   res: Response
 ) => {
   const { roleId } = req.body;
@@ -65,7 +62,7 @@ export const getRoleWithDeleted = async (req: Request, res: Response) => {
 };
 
 export const getRoleDetails = async (
-  req: Request<any, any, DeleteRoleBody>,
+  req: RequestWithBody<roleValidator.DeleteRoleBody>,
   res: Response
 ) => {
   const { roleId } = req.body;

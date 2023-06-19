@@ -1,41 +1,41 @@
-import Queue from 'bull'
-import nodemailer from 'nodemailer'
-import type { SendMailOptions } from 'nodemailer'
+import Queue from 'bull';
+import nodemailer from 'nodemailer';
+import type { SendMailOptions } from 'nodemailer';
 
-import { config } from 'utils/config'
+import { config } from './config';
 
 // TODO: Add a queue for sending emails
 export const emailQueue = new Queue('email', {
-	defaultJobOptions: {
-		attempts: 3,
-		removeOnComplete: true
-	},
-	settings: {
-		retryProcessDelay: 1000 * 60 * 5 // 5 minutes
-	}
-})
+  defaultJobOptions: {
+    attempts: 3,
+    removeOnComplete: true,
+  },
+  settings: {
+    retryProcessDelay: 1000 * 60 * 5, // 5 minutes
+  },
+});
 
 const transporter = nodemailer.createTransport({
-	host: process.env.MAILER_HOST,
-	port: 587,
-	auth: {
-		user: process.env.MAILER_USER,
-		pass: process.env.MAILER_PASSWORD
-	}
-})
+  host: process.env.MAILER_HOST,
+  port: 587,
+  auth: {
+    user: process.env.MAILER_USER,
+    pass: process.env.MAILER_PASSWORD,
+  },
+});
 
 interface ISendMailOptions extends SendMailOptions {
-	to: Required<SendMailOptions['to']>
-	subject: Required<SendMailOptions['subject']>
-	text: Required<SendMailOptions['text']>
+  to: Required<SendMailOptions['to']>;
+  subject: Required<SendMailOptions['subject']>;
+  text: Required<SendMailOptions['text']>;
 }
 
 export const sendMail = (props: ISendMailOptions) => {
-	// TODO: do not make it async, use email queue
-	transporter
-		.sendMail({
-			from: props.from ?? `"${config.appName}" <${process.env.MAILER_USER}>`,
-			...props
-		})
-		.catch(console.log)
-}
+  // TODO: do not make it async, use email queue
+  transporter
+    .sendMail({
+      from: props.from ?? `"${config.appName}" <${process.env.MAILER_USER}>`,
+      ...props,
+    })
+    .catch(console.log);
+};

@@ -1,7 +1,7 @@
 import type { Socket } from 'socket.io';
 
-import type { IO } from 'sockets';
-import { logger } from 'utils/logger';
+import type { IO } from './index';
+import { logger } from '../utils/logger';
 
 const safeSocket =
   (handler: any) =>

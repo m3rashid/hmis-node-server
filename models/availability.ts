@@ -1,33 +1,32 @@
-import mongoose from 'mongoose'
-import paginate from 'mongoose-paginate-v2'
+import mongoose from 'mongoose';
+import paginate from 'mongoose-paginate-v2';
 
-import type { Document, IBaseModel, PaginateModel } from 'models'
-import { baseModelSchema, modelNames } from 'models'
-import type { IProfile } from 'models/profile'
-
-export const DAYS: readonly string[] = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
-
-export interface IAvailability extends IBaseModel {
-	day: string
-	startTime: string
-	endTime: string
-	profile: IProfile
-}
+import type {
+  Document,
+  PaginateModel,
+  IAvailability,
+} from '@hmis/gatekeeper/models';
+import { modelNames, DAYS } from '@hmis/gatekeeper/models';
+import { baseModelSchema } from './index';
 
 const availabilitySchema = new mongoose.Schema<IAvailability>(
-	{
-		...baseModelSchema,
-		day: { type: String, required: true, enum: DAYS },
-		startTime: { type: String, required: true },
-		endTime: { type: String, required: true },
-		profile: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.profile, required: true }
-	},
-	{ timestamps: true }
-)
+  {
+    ...baseModelSchema,
+    day: { type: String, required: true, enum: DAYS },
+    startTime: { type: String, required: true },
+    endTime: { type: String, required: true },
+    profile: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: modelNames.profile,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
-availabilitySchema.plugin(paginate)
+availabilitySchema.plugin(paginate);
 
 export const AvailabilityModel = mongoose.model<
-	Document<IAvailability>,
-	PaginateModel<IAvailability>
->(modelNames.availability, availabilitySchema)
+  Document<IAvailability>,
+  PaginateModel<IAvailability>
+>(modelNames.availability, availabilitySchema);

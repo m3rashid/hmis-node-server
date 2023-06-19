@@ -5,7 +5,7 @@ import type {
   InterServerEvents,
   ServerToClientEvents,
   SocketData,
-} from 'sockets/types';
+} from './types';
 
 export type IO = Server<
   ClientToServerEvents,
@@ -21,7 +21,7 @@ export type SocketType = Socket<
 >;
 
 const socketHandler = (io: IO, socket: SocketType) => {
-	// 
+  //
 };
 
 export default socketHandler;
