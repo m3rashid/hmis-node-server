@@ -1,15 +1,11 @@
 import mongoose from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 
-import { TIME_OF_DAY, modelNames } from '@hmis/gatekeeper/models';
-import type {
-  Document,
-  IPrescription,
-  PaginateModel,
-} from '@hmis/gatekeeper/models';
+import { ENUMS, modelNames } from '@hmis/gatekeeper';
+import type { MODELS } from '@hmis/gatekeeper';
 import { baseModelSchema } from './index';
 
-const prescriptionSchema = new mongoose.Schema<IPrescription>(
+const prescriptionSchema = new mongoose.Schema<MODELS.IPrescription>(
   {
     ...baseModelSchema,
     remarks: { type: String },
@@ -27,7 +23,7 @@ const prescriptionSchema = new mongoose.Schema<IPrescription>(
         },
         dosage: {
           perDay: { type: Number, required: true },
-          timeOfDay: { type: String, enum: TIME_OF_DAY },
+          timeOfDay: { type: String, enum: ENUMS.TIME_OF_DAY },
           durationInDays: { type: Number },
           perWeek: { type: Number, default: 7 },
         },
@@ -40,6 +36,6 @@ const prescriptionSchema = new mongoose.Schema<IPrescription>(
 prescriptionSchema.plugin(paginate);
 
 export const PrescriptionModel = mongoose.model<
-  Document<IPrescription>,
-  PaginateModel<IPrescription>
+  MODELS.Document<MODELS.IPrescription>,
+  MODELS.PaginateModel<MODELS.IPrescription>
 >(modelNames.prescription, prescriptionSchema);

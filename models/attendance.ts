@@ -1,14 +1,10 @@
 import mongoose from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 
-import type {
-  Document,
-  PaginateModel,
-  IAttendance,
-} from '@hmis/gatekeeper/models';
-import { modelNames } from '@hmis/gatekeeper/models';
+import type { MODELS } from '@hmis/gatekeeper';
+import { modelNames } from '@hmis/gatekeeper';
 
-const attendanceSchema = new mongoose.Schema<IAttendance>({
+const attendanceSchema = new mongoose.Schema<MODELS.IAttendance>({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: modelNames.user,
@@ -26,6 +22,6 @@ const attendanceSchema = new mongoose.Schema<IAttendance>({
 attendanceSchema.plugin(paginate);
 
 export const AttendanceModel = mongoose.model<
-  Document<IAttendance>,
-  PaginateModel<IAttendance>
+  MODELS.Document<MODELS.IAttendance>,
+  MODELS.PaginateModel<MODELS.IAttendance>
 >(modelNames.attendance, attendanceSchema);

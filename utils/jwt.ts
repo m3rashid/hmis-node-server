@@ -1,14 +1,14 @@
-import type { ILoginUser, IUser } from '@hmis/gatekeeper/models';
+import type { MODELS } from '@hmis/gatekeeper';
 import JWT from 'jsonwebtoken';
 
-export const issueJWT = (user: IUser) => {
+export const issueJWT = (user: MODELS.IUser) => {
   const payload = {
     sub: {
       _id: user._id,
       roles: user.roles,
       name: user.name,
       email: user.email,
-    } as ILoginUser,
+    } as MODELS.ILoginUser,
     iat: Date.now(),
   };
 

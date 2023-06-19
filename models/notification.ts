@@ -1,15 +1,11 @@
 import mongoose from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 
-import { modelNames as models } from '@hmis/gatekeeper/models';
-import type {
-  Document,
-  INotification,
-  PaginateModel,
-} from '@hmis/gatekeeper/models';
+import { modelNames } from '@hmis/gatekeeper';
+import type { MODELS } from '@hmis/gatekeeper';
 import { baseModelSchema } from './index';
 
-const notificationSchema = new mongoose.Schema<INotification>(
+const notificationSchema = new mongoose.Schema<MODELS.INotification>(
   {
     ...baseModelSchema,
     title: { type: String, required: true },
@@ -21,6 +17,6 @@ const notificationSchema = new mongoose.Schema<INotification>(
 notificationSchema.plugin(paginate);
 
 export const NotificationModel = mongoose.model<
-  Document<INotification>,
-  PaginateModel<INotification>
->(models.notification, notificationSchema);
+  MODELS.Document<MODELS.INotification>,
+  MODELS.PaginateModel<MODELS.INotification>
+>(modelNames.notification, notificationSchema);

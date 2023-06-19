@@ -4,13 +4,13 @@ import mongoose from 'mongoose';
 import { dummyMedicines, dummyOtherAssets } from '../data/medicines';
 import { ConsumableModel } from '../models/consumable';
 import { NonConsumableModel } from '../models/nonConsumables';
-import type { IConsumable, INonConsumable } from '@hmis/gatekeeper/models';
+import type { MODELS } from '@hmis/gatekeeper';
 
 type InventoryArr<T> = Array<Omit<T, '_id' | 'createdAt' | 'updatedAt'>>;
 
 const fakeConsumables = (count: number, devId: string) => {
   const medicines = Array.from(new Set(dummyMedicines));
-  const consumablesArray: InventoryArr<IConsumable> = [];
+  const consumablesArray: InventoryArr<MODELS.IConsumable> = [];
   for (let i = 0; i < count; i++) {
     consumablesArray.push({
       name: medicines[i],
@@ -31,7 +31,7 @@ const fakeConsumables = (count: number, devId: string) => {
 
 const fakeNonConsumables = (count: number, devId: string) => {
   const nonMedicines = Array.from(new Set(dummyOtherAssets));
-  const nonConsumablesArray: InventoryArr<INonConsumable> = [];
+  const nonConsumablesArray: InventoryArr<MODELS.INonConsumable> = [];
   for (let i = 0; i < count; i++) {
     nonConsumablesArray.push({
       name: nonMedicines[i],

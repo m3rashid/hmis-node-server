@@ -1,4 +1,4 @@
-import type { IUser } from '@hmis/gatekeeper/models';
+import type { MODELS } from '@hmis/gatekeeper';
 
 /**
  * @description These types are used on io.emit
@@ -19,5 +19,5 @@ export interface InterServerEvents {
 export interface SocketData {
   name: string;
   age: number;
-  user: IUser;
+  user: MODELS.IUser;
 }

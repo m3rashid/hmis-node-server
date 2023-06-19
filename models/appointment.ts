@@ -1,15 +1,11 @@
 import mongoose from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 
-import type {
-  Document,
-  PaginateModel,
-  IAppointment,
-} from '@hmis/gatekeeper/models';
-import { modelNames, APPOINTMENT_STATUS } from '@hmis/gatekeeper/models';
+import type { MODELS } from '@hmis/gatekeeper';
+import { ENUMS, modelNames } from '@hmis/gatekeeper';
 import { baseModelSchema } from './index';
 
-const appointmentSchema = new mongoose.Schema<IAppointment>(
+const appointmentSchema = new mongoose.Schema<MODELS.IAppointment>(
   {
     ...baseModelSchema,
     doctor: {
@@ -22,7 +18,11 @@ const appointmentSchema = new mongoose.Schema<IAppointment>(
       ref: modelNames.user,
       required: true,
     },
-    status: { type: String, enum: APPOINTMENT_STATUS, default: 'PENDING' },
+    status: {
+      type: String,
+      enum: ENUMS.APPOINTMENT_STATUS,
+      default: 'PENDING',
+    },
     chats: [
       {
         time: { type: Date, required: true },
@@ -46,6 +46,6 @@ const appointmentSchema = new mongoose.Schema<IAppointment>(
 appointmentSchema.plugin(paginate);
 
 export const AppointmentModel = mongoose.model<
-  Document<IAppointment>,
-  PaginateModel<IAppointment>
+  MODELS.Document<MODELS.IAppointment>,
+  MODELS.PaginateModel<MODELS.IAppointment>
 >(modelNames.appointment, appointmentSchema);

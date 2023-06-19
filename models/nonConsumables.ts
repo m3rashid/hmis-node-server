@@ -1,15 +1,11 @@
 import mongoose from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 
-import { modelNames } from '@hmis/gatekeeper/models';
-import type {
-  Document,
-  INonConsumable,
-  PaginateModel,
-} from '@hmis/gatekeeper/models';
+import { modelNames } from '@hmis/gatekeeper';
+import type { MODELS } from '@hmis/gatekeeper';
 import { baseModelSchema } from './index';
 
-const nonConsumableSchema = new mongoose.Schema<INonConsumable>(
+const nonConsumableSchema = new mongoose.Schema<MODELS.INonConsumable>(
   {
     ...baseModelSchema,
     name: { type: String, unique: true, required: true },
@@ -24,6 +20,6 @@ const nonConsumableSchema = new mongoose.Schema<INonConsumable>(
 nonConsumableSchema.plugin(paginate);
 
 export const NonConsumableModel = mongoose.model<
-  Document<INonConsumable>,
-  PaginateModel<INonConsumable>
+  MODELS.Document<MODELS.INonConsumable>,
+  MODELS.PaginateModel<MODELS.INonConsumable>
 >(modelNames.nonConsumable, nonConsumableSchema);

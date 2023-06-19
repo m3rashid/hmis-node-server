@@ -1,18 +1,14 @@
 import mongoose from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 
-import type {
-  Document,
-  PaginateModel,
-  IAvailability,
-} from '@hmis/gatekeeper/models';
-import { modelNames, DAYS } from '@hmis/gatekeeper/models';
+import type { MODELS } from '@hmis/gatekeeper';
+import { modelNames, ENUMS } from '@hmis/gatekeeper';
 import { baseModelSchema } from './index';
 
-const availabilitySchema = new mongoose.Schema<IAvailability>(
+const availabilitySchema = new mongoose.Schema<MODELS.IAvailability>(
   {
     ...baseModelSchema,
-    day: { type: String, required: true, enum: DAYS },
+    day: { type: String, required: true, enum: ENUMS.DAYS },
     startTime: { type: String, required: true },
     endTime: { type: String, required: true },
     profile: {
@@ -27,6 +23,6 @@ const availabilitySchema = new mongoose.Schema<IAvailability>(
 availabilitySchema.plugin(paginate);
 
 export const AvailabilityModel = mongoose.model<
-  Document<IAvailability>,
-  PaginateModel<IAvailability>
+  MODELS.Document<MODELS.IAvailability>,
+  MODELS.PaginateModel<MODELS.IAvailability>
 >(modelNames.availability, availabilitySchema);

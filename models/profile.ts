@@ -1,34 +1,25 @@
 import mongoose from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 
-import {
-  BLOOD_GROUPS,
-  MARITAL_STATUS,
-  SEX,
-  modelNames,
-} from '@hmis/gatekeeper/models';
-import type {
-  Document,
-  IProfile,
-  PaginateModel,
-} from '@hmis/gatekeeper/models';
+import { ENUMS, modelNames } from '@hmis/gatekeeper';
+import type { MODELS } from '@hmis/gatekeeper';
 import { baseModelSchema } from './index';
 
-const profileSchema = new mongoose.Schema<IProfile>(
+const profileSchema = new mongoose.Schema<MODELS.IProfile>(
   {
     ...baseModelSchema,
     bio: { type: String },
     roomNumber: { type: String },
     age: { type: Number },
-    sex: { type: String, required: true, enum: SEX },
+    sex: { type: String, required: true, enum: ENUMS.SEX },
     phone: { type: String },
     phoneVerified: { type: Boolean, default: false },
-    maritalStatus: { type: String, enum: MARITAL_STATUS },
+    maritalStatus: { type: String, enum: ENUMS.MARITAL_STATUS },
     profilePicture: { type: String },
     addresses: [
       { type: mongoose.Schema.Types.ObjectId, ref: modelNames.address },
     ],
-    bloodGroup: { type: String, enum: BLOOD_GROUPS },
+    bloodGroup: { type: String, enum: ENUMS.BLOOD_GROUPS },
     origin: { type: String },
     lastVisit: { type: Date },
     designation: { type: String },
@@ -59,6 +50,6 @@ const profileSchema = new mongoose.Schema<IProfile>(
 profileSchema.plugin(paginate);
 
 export const ProfileModel = mongoose.model<
-  Document<IProfile>,
-  PaginateModel<IProfile>
+  MODELS.Document<MODELS.IProfile>,
+  MODELS.PaginateModel<MODELS.IProfile>
 >(modelNames.profile, profileSchema);

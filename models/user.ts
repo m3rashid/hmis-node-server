@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 
-import { modelNames } from '@hmis/gatekeeper/models';
-import type { Document, IUser, PaginateModel } from '@hmis/gatekeeper/models';
+import { modelNames } from '@hmis/gatekeeper';
+import type { MODELS } from '@hmis/gatekeeper';
 import { baseModelSchema } from './index';
 
-const userSchema = new mongoose.Schema<IUser>(
+const userSchema = new mongoose.Schema<MODELS.IUser>(
   {
     ...baseModelSchema,
     name: { type: String, required: true },
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema<IUser>(
 
 userSchema.plugin(paginate);
 
-export const UserModel = mongoose.model<Document<IUser>, PaginateModel<IUser>>(
-  modelNames.user,
-  userSchema
-);
+export const UserModel = mongoose.model<
+  MODELS.Document<MODELS.IUser>,
+  MODELS.PaginateModel<MODELS.IUser>
+>(modelNames.user, userSchema);

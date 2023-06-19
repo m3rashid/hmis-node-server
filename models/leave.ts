@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 
-import type { Document, ILeave, PaginateModel } from '@hmis/gatekeeper/models';
-import { modelNames, LEAVE_STATUS } from '@hmis/gatekeeper/models';
+import type { MODELS } from '@hmis/gatekeeper';
+import { modelNames, ENUMS } from '@hmis/gatekeeper';
 import { baseModelSchema } from './index';
 
-const leaveSchema = new mongoose.Schema<ILeave>(
+const leaveSchema = new mongoose.Schema<MODELS.ILeave>(
   {
     ...baseModelSchema,
     startDate: { type: Date, required: true },
@@ -16,7 +16,7 @@ const leaveSchema = new mongoose.Schema<ILeave>(
       ref: modelNames.user,
       required: true,
     },
-    status: { type: String, enum: LEAVE_STATUS, default: 'PENDING' },
+    status: { type: String, enum: ENUMS.LEAVE_STATUS, default: 'PENDING' },
   },
   { timestamps: true }
 );
@@ -24,6 +24,6 @@ const leaveSchema = new mongoose.Schema<ILeave>(
 leaveSchema.plugin(paginate);
 
 export const LeaveModel = mongoose.model<
-  Document<ILeave>,
-  PaginateModel<ILeave>
+  MODELS.Document<MODELS.ILeave>,
+  MODELS.PaginateModel<MODELS.ILeave>
 >(modelNames.leave, leaveSchema);

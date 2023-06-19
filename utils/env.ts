@@ -1,4 +1,4 @@
-import type { ILoginUser } from '@hmis/gatekeeper/models';
+import type { MODELS } from '@hmis/gatekeeper';
 import 'dotenv/config';
 import { z } from 'zod';
 
@@ -25,7 +25,7 @@ environmentVariables.parse(process.env);
 declare global {
   namespace Express {
     interface Request {
-      user: ILoginUser;
+      user: MODELS.ILoginUser;
       isAuthenticated: boolean;
     }
   }
