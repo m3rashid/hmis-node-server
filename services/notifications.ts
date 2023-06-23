@@ -1,10 +1,16 @@
-import { NotificationModel } from "../models/notification";
+import { NotificationModel } from '../models/notification';
 
-export const createNotification = async () => {
-	const notification = new NotificationModel({
-    // title: req.body.title,
-    // description: req.body.description,
-  });
-  const newNotification = await notification.save();
-	return newNotification;
+export interface CreateNotification {
+  title: string;
+  description: string;
+  createdBy: string;
 }
+export const createNotification = async ({
+  createdBy,
+  description,
+  title,
+}: CreateNotification) => {
+  const notification = new NotificationModel({ title, description, createdBy });
+  const newNotification = await notification.save();
+  return newNotification;
+};

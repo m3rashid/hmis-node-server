@@ -43,7 +43,7 @@ export const removeConsumable = async (
   res: Response
 ) => {
   const deletedConsumable = await ConsumableModel.findByIdAndUpdate(
-    req.body.consumableId,
+    req.body._id,
     { $set: { deleted: true, lastUpdatedBy: req.user._id } },
     { new: true }
   );
@@ -55,7 +55,7 @@ export const editConsumable = async (
   res: Response
 ) => {
   const updatedConsumable = await ConsumableModel.findByIdAndUpdate(
-    req.body.consumableId,
+    req.body._id,
     { ...req.body },
     { new: true }
   );
@@ -76,7 +76,7 @@ export const removeNonConsumable = async (
   res: Response
 ) => {
   const deletedNonConsumable = await NonConsumableModel.findByIdAndUpdate(
-    req.body.nonConsumableId,
+    req.body._id,
     { $set: { deleted: true, lastUpdatedBy: req.user._id } },
     { new: true }
   );
@@ -88,7 +88,7 @@ export const editNonConsumable = async (
   res: Response
 ) => {
   const updatedNonConsumable = await NonConsumableModel.findByIdAndUpdate(
-    req.body.nonConsumableId,
+    req.body._id,
     { ...req.body },
     { new: true }
   );

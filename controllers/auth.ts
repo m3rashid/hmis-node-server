@@ -6,9 +6,10 @@ import { ERRORS } from '@hmis/gatekeeper';
 import type { authValidator } from '@hmis/gatekeeper';
 import { issueJWT, revalidateJWT } from '../utils/jwt';
 import { OtpModel } from '../models/otp';
+import type { RequestWithBody } from './base';
 
 export const login = async (
-  req: Request<any, any, authValidator.LoginBody>,
+  req: RequestWithBody<authValidator.LoginBody>,
   res: Response
 ) => {
   const { email, password } = req.body;
@@ -73,15 +74,18 @@ export const currentUserAllDetails = async (req: Request, res: Response) => {
   res.status(200).json(user);
 };
 
-export const signupUser = async (req: Request, res: Response) => {
-  const hashedPassword = await bcrypt.hash(req.body.confirmPassword, 12);
-	const newUser = new UserModel({
-		name: req.body.name,
-		email: req.body.email,
-		password: hashedPassword,
-		roles: req.body.roles,
-	})
-	await newUser.save()
+export const signupUser = async (
+  req: RequestWithBody<authValidator.UserSignupBody>,
+  res: Response
+) => {
+  const hashedPassword = await bcrypt.hash(req.body.password, 12);
+  const newUser = new UserModel({
+    name: req.body.name,
+    email: req.body.email,
+    password: hashedPassword,
+    roles: req.body.roles,
+  });
+  await newUser.save();
   res.status(200).json(newUser);
 };
 
@@ -113,7 +117,10 @@ export const updatePassword = async (req: Request, res: Response) => {
   res.status(200).json(updatedUser);
 };
 
-export const forgotPassword = async (req: Request, res: Response) => {
+export const forgotPassword = async (
+  req: RequestWithBody<authValidator.ForgotPasswordBody>,
+  res: Response
+) => {
   const foundOtp = await OtpModel.findOne({ email: req.body.email }).lean();
   let otp: string;
   if (!foundOtp) {
@@ -131,7 +138,10 @@ export const forgotPassword = async (req: Request, res: Response) => {
   res.status(200).json('Otp sent to your email');
 };
 
-export const resetPassword = async (req: Request, res: Response) => {
+export const resetPassword = async (
+  req: RequestWithBody<authValidator.ResetPasswordBody>,
+  res: Response
+) => {
   const otpFound = await OtpModel.findOne({ email: req.body.email }).lean();
   if (!otpFound) throw ERRORS.newError('OTP not found');
   if (otpFound.otp !== req.body.otp) throw ERRORS.newError('Invalid OTP');

@@ -28,7 +28,7 @@ import {
   removeConsumable,
   removeNonConsumable,
 } from './controllers/inventory';
-import { getNotifications } from './controllers/notification';
+import { getNotifications, addNotification } from './controllers/notification';
 import { createProfile, updateProfile } from './controllers/profile';
 import { getAllResourceTypes } from './controllers/resource';
 import {
@@ -41,7 +41,14 @@ import {
 } from './controllers/role';
 import { appConfig } from './data/config';
 import { checkAuth } from './middlewares/auth';
-import { Validator, ERRORS, authValidator } from '@hmis/gatekeeper';
+import {
+  Validator,
+  ERRORS,
+  authValidator,
+  notificationValidator,
+  roleValidator,
+  inventoryValidator,
+} from '@hmis/gatekeeper';
 
 const router: Router = Router();
 
@@ -79,34 +86,100 @@ router.post(
   checkAuth,
   useRoute(currentUserAllDetails)
 );
-router.post('/auth/user/forgot-password', useRoute(forgotPassword));
-router.post('/auth/user/reset-password', useRoute(resetPassword));
-router.post('/auth/patient/signup-init', useRoute(signupPatientInit));
-router.post('/auth/patient/signup-two', useRoute(signupPatientStepTwo));
-router.post('/auth/patient/signup-final', useRoute(signupPatientFinalize));
-router.post('/auth/user/signup', useRoute(signupUser));
+router.post(
+  '/auth/user/forgot-password',
+  Validator.validate(authValidator.forgotPasswordSchema),
+  useRoute(forgotPassword)
+);
+router.post(
+  '/auth/user/reset-password',
+  Validator.validate(authValidator.resetPasswordSchema),
+  useRoute(resetPassword)
+);
+router.post(
+  '/auth/patient/signup-init',
+  Validator.validate(authValidator.patientSignupInitSchema),
+  useRoute(signupPatientInit)
+);
+router.post(
+  '/auth/patient/signup-two',
+  Validator.validate(authValidator.patientSignupTwoSchema),
+  useRoute(signupPatientStepTwo)
+);
+router.post(
+  '/auth/patient/signup-final',
+  Validator.validate(authValidator.patientSignupFinalSchema),
+  useRoute(signupPatientFinalize)
+);
+router.post(
+  '/auth/user/signup',
+  Validator.validate(authValidator.userSignupSchema),
+  useRoute(signupUser)
+);
 router.post('/auth/user/update-password', useRoute(updatePassword));
 
-router.post('/role/create', checkAuth, useRoute(createRole));
-router.post('/role/delete', checkAuth, useRoute(deleteRole));
-router.post('/role/edit', checkAuth, useRoute(editRole));
+router.post(
+  '/role/create',
+  checkAuth,
+  Validator.validate(roleValidator.createRoleSchema),
+  useRoute(createRole)
+);
+router.post(
+  '/role/delete',
+  checkAuth,
+  Validator.validate(roleValidator.deleteRoleSchema),
+  useRoute(deleteRole)
+);
+router.post(
+  '/role/edit',
+  checkAuth,
+  Validator.validate(roleValidator.editRoleSchema),
+  useRoute(editRole)
+);
 router.get('/role/all', checkAuth, useRoute(getRoles));
 router.post('/role/details', checkAuth, useRoute(getRoleDetails));
 router.get('/roles/all-with-deleted', checkAuth, useRoute(getRoleWithDeleted));
 
 router.get('/resource/all', checkAuth, useRoute(getAllResourceTypes));
 
-router.post('/profile/create', checkAuth, useRoute(createProfile));
-router.post('/profile/update', checkAuth, useRoute(updateProfile));
+router.post(
+  '/profile/create',
+  checkAuth,
+  Validator.validate(authValidator.createProfileSchema),
+  useRoute(createProfile)
+);
+router.post(
+  '/profile/update',
+  checkAuth,
+  Validator.validate(authValidator.updateProfileSchema),
+  useRoute(updateProfile)
+);
 
 router.get('/notification/all', checkAuth, useRoute(getNotifications));
+router.post(
+  '/notification/add',
+  checkAuth,
+  Validator.validate(notificationValidator.createNotificationSchema),
+  useRoute(addNotification)
+);
 
 router.get('/consumable/all', checkAuth, useRoute(getAllConsumables));
-router.post('/consumable/add', checkAuth, useRoute(addConsumable));
-router.post('/consumable/edit', checkAuth, useRoute(editConsumable));
+router.post(
+  '/consumable/add',
+  checkAuth,
+  Validator.validate(inventoryValidator.createConsumableSchema),
+  useRoute(addConsumable)
+);
+router.post(
+  '/consumable/edit',
+  checkAuth,
+  Validator.validate(inventoryValidator.updateConsumableSchema),
+  useRoute(editConsumable)
+);
 router.post(
   '/consumable/remove',
   checkAuth,
+  Validator.validate(inventoryValidator.deleteConsumableSchema),
   useRoute(removeConsumable)
 );
 router.get(
@@ -115,24 +188,23 @@ router.get(
   useRoute(getAllConsumablesDeleted)
 );
 
-router.get(
-  '/non-consumable/all',
-  checkAuth,
-  useRoute(getAllNonConsumables)
-);
+router.get('/non-consumable/all', checkAuth, useRoute(getAllNonConsumables));
 router.post(
   '/non-consumable/add',
   checkAuth,
+  Validator.validate(inventoryValidator.createNonConsumableSchema),
   useRoute(addNonConsumable)
 );
 router.post(
   '/non-consumable/edit',
   checkAuth,
+  Validator.validate(inventoryValidator.updateNonConsumableSchema),
   useRoute(editNonConsumable)
 );
 router.post(
   '/non-consumable/remove',
   checkAuth,
+  Validator.validate(inventoryValidator.deleteNonConsumableSchema),
   useRoute(removeNonConsumable)
 );
 router.get(
