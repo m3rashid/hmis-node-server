@@ -23,10 +23,13 @@ export const editRole = async (
   req: RequestWithBody<roleValidator.EditRoleBody>,
   res: Response
 ) => {
-  const { name, description, permissions, roleId } = req.body;
   const role = await RoleModel.findByIdAndUpdate(
-    roleId,
-    { displayName: name, description, permissions },
+    req.body._id,
+    {
+      displayName: req.body.name,
+      description: req.body.description,
+      permissions: req.body.permissions,
+    },
     { new: true }
   );
   return res.json(role);
@@ -36,8 +39,11 @@ export const deleteRole = async (
   req: RequestWithBody<roleValidator.DeleteRoleBody>,
   res: Response
 ) => {
-  const { roleId } = req.body;
-  await RoleModel.findByIdAndUpdate(roleId, { deleted: true }, { new: true });
+  await RoleModel.findByIdAndUpdate(
+    req.body._id,
+    { deleted: true },
+    { new: true }
+  );
   return res.json('Role deleted successfully');
 };
 
@@ -65,9 +71,8 @@ export const getRoleDetails = async (
   req: RequestWithBody<roleValidator.DeleteRoleBody>,
   res: Response
 ) => {
-  const { roleId } = req.body;
   const role = await RoleModel.aggregate([
-    { $match: { _id: roleId } },
+    { $match: { _id: req.body._id } },
     {
       $lookup: {
         from: 'permissions',

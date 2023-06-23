@@ -5,39 +5,36 @@ import type { MODELS } from '@hmis/gatekeeper';
 import { ENUMS, modelNames } from '@hmis/gatekeeper';
 import { baseModelSchema } from './index';
 
-const appointmentSchema = new mongoose.Schema<MODELS.IAppointment>(
+const opdSchema = new mongoose.Schema<MODELS.IOpd>(
   {
     ...baseModelSchema,
-    doctor: {
+    appointment: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: modelNames.user,
+      ref: modelNames.appointment,
       required: true,
     },
-    patient: {
+    prescription: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: modelNames.user,
+      ref: modelNames.prescription,
       required: true,
     },
     status: {
       type: String,
-      enum: ENUMS.APPOINTMENT_STATUS,
+      enum: ENUMS.OPD_STATUS,
       default: 'PENDING',
     },
     payment: {
       type: mongoose.Schema.Types.ObjectId,
       ref: modelNames.payment,
     },
-    type: {
-      type: String,
-      enum: ENUMS.APPOINTMENT_TYPE,
-    },
+    nextDate: { type: String },
   },
   { timestamps: true }
 );
 
-appointmentSchema.plugin(paginate);
+opdSchema.plugin(paginate);
 
-export const AppointmentModel = mongoose.model<
-  MODELS.Document<MODELS.IAppointment>,
-  MODELS.PaginateModel<MODELS.IAppointment>
->(modelNames.appointment, appointmentSchema);
+export const OpdModel = mongoose.model<
+  MODELS.Document<MODELS.IOpd>,
+  MODELS.PaginateModel<MODELS.IOpd>
+>(modelNames.opd, opdSchema);
