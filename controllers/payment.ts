@@ -4,18 +4,18 @@ import { ERRORS, Validator, paymentValidator } from '@hmis/gatekeeper';
 import { checkAuth } from '../middlewares/auth';
 import { PaymentModel } from '../models/payment';
 
-const addPayment = async (
-  req: RequestWithBody<paymentValidator.CreatePaymentSchemaBody>,
-  res: Response
-) => {
-  if (!req.isAuthenticated) throw ERRORS.newError('No user found');
-  const newPayment = new PaymentModel({
-    ...req.body,
-    createdBy: req.user._id,
-  });
-  const payment = await newPayment.save();
-  return res.status(200).json(payment);
-};
+// const addPayment = async (
+//   req: RequestWithBody<paymentValidator.CreatePaymentSchemaBody>,
+// 	 res: Response
+// ) => {
+//   if (!req.isAuthenticated) throw ERRORS.newError('No user found');
+//   const newPayment = new PaymentModel({
+//     ...req.body,
+//     createdBy: req.user._id,
+//   });
+//   const payment = await newPayment.save();
+//   return res.status(200).json(payment);
+// };
 
 const updatePayment = async (
   req: RequestWithBody<paymentValidator.UpdatePaymentSchemaBody>,
@@ -51,12 +51,12 @@ const getPaymentDetails = async (
 const paymentRouter: Router = Router();
 const useRoute = ERRORS.useRoute;
 
-paymentRouter.post(
-  '/add',
-  checkAuth,
-  Validator.validate(paymentValidator.createPaymentSchema),
-  useRoute(addPayment)
-);
+// paymentRouter.post(
+//   '/add',
+//   checkAuth,
+//   Validator.validate(paymentValidator.createPaymentSchema),
+//   useRoute(addPayment)
+// );
 paymentRouter.post(
   '/edit',
   checkAuth,

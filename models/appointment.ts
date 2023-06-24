@@ -24,14 +24,8 @@ const appointmentSchema = new mongoose.Schema<MODELS.IAppointment>(
       enum: ENUMS.APPOINTMENT_STATUS,
       default: 'PENDING',
     },
-    payment: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: modelNames.payment,
-    },
-    type: {
-      type: String,
-      enum: ENUMS.APPOINTMENT_TYPE,
-    },
+    payment: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.payment },
+    type: { type: String, enum: ENUMS.APPOINTMENT_TYPE },
     date: { type: Date, required: true },
   },
   { timestamps: true }

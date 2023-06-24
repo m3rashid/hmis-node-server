@@ -18,6 +18,8 @@ const environmentVariables = z.object({
   S3_SECRET_ACCESS_KEY: z.string(),
   S3_BUCKET_NAME: z.string(),
   S3_REGION: z.string(),
+  RAZORPAY_SECRET: z.string(),
+  RAZORPAY_KEY_ID: z.string(),
 });
 
 environmentVariables.parse(process.env);

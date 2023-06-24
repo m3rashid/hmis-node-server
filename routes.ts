@@ -18,6 +18,7 @@ import opdRouter from './controllers/opd';
 import paymentRouter from './controllers/payment';
 import prescriptionRouter from './controllers/prescription';
 import testRouter from './controllers/test';
+import searchRouter from './controllers/search';
 
 const router: Router = Router();
 
@@ -46,6 +47,7 @@ router.use('/auth', authRouter);
 router.use('/user', userRouter);
 router.use('/role', roleRouter);
 router.use('/leave', leaveRouter);
+router.use('/search', searchRouter);
 router.use('/patient', patientRouter);
 router.use('/address', addressRouter);
 router.use('/profile', profileRouter);

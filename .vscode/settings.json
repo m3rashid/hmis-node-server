@@ -11,7 +11,8 @@
 		"NAPI",
 		"paren",
 		"Parens",
-		"precommit"
+		"precommit",
+		"RAZORPAY"
 	],
 	"cSpell.ignorePaths": [
 		"package-lock.json",
