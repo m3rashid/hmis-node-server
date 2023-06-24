@@ -11,8 +11,7 @@ const createRole = async (
 ) => {
   if (!req.isAuthenticated) throw ERRORS.newError('No user found');
   const role = new RoleModel({
-    actualName: req.body.name.toUpperCase(),
-    displayName: req.body.name,
+    name: req.body.name,
     description: req.body.description,
     permissions: req.body.permissions,
     createdBy: req.user._id,
@@ -30,7 +29,7 @@ const editRole = async (
     req.body._id,
     {
       $set: {
-        displayName: req.body.name,
+        name: req.body.name,
         description: req.body.description,
         permissions: req.body.permissions,
         lastUpdatedBy: req.user._id,
@@ -56,21 +55,18 @@ const deleteRole = async (
 
 // ERROR: not working
 const getRoles = async (req: Request, res: Response) => {
-  const roles = await RoleModel.paginate({ deleted: false });
+  const roles = await RoleModel.paginate(
+    { deleted: false },
+    { sort: { createdAt: -1 } }
+  );
   return res.json(roles);
 };
 
 const getRoleWithDeleted = async (req: Request, res: Response) => {
-  const roles = await RoleModel.aggregate([
-    {
-      $lookup: {
-        from: 'permissions',
-        localField: 'permissions',
-        foreignField: '_id',
-        as: 'permissions',
-      },
-    },
-  ]);
+  const roles = await RoleModel.paginate(
+    {},
+    { populate: 'permissions', sort: { createdAt: -1 } }
+  );
   return res.json(roles);
 };
 
@@ -78,17 +74,7 @@ const getRoleDetails = async (
   req: RequestWithBody<roleValidator.DeleteRoleBody>,
   res: Response
 ) => {
-  const role = await RoleModel.aggregate([
-    { $match: { _id: req.body._id } },
-    {
-      $lookup: {
-        from: 'permissions',
-        localField: 'permissions',
-        foreignField: '_id',
-        as: 'permissions',
-      },
-    },
-  ]);
+  const role = await RoleModel.findById(req.body._id).populate('permissions');
   return res.json(role);
 };
 

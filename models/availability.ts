@@ -11,9 +11,9 @@ const availabilitySchema = new mongoose.Schema<MODELS.IAvailability>(
     day: { type: String, required: true, enum: ENUMS.DAYS },
     startTime: { type: String, required: true },
     endTime: { type: String, required: true },
-    profile: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: modelNames.profile,
+      ref: modelNames.user,
       required: true,
     },
   },

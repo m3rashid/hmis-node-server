@@ -5,7 +5,7 @@ import { modelNames } from '@hmis/gatekeeper';
 import type { MODELS } from '@hmis/gatekeeper';
 import { baseModelSchema } from './index';
 
-const notificationSchema = new mongoose.Schema<MODELS.INotification>(
+const notificationSchema = new mongoose.Schema<MODELS.IAnnouncement>(
   {
     ...baseModelSchema,
     title: { type: String, required: true },
@@ -16,7 +16,7 @@ const notificationSchema = new mongoose.Schema<MODELS.INotification>(
 
 notificationSchema.plugin(paginate);
 
-export const NotificationModel = mongoose.model<
-  MODELS.Document<MODELS.INotification>,
-  MODELS.PaginateModel<MODELS.INotification>
->(modelNames.notification, notificationSchema);
+export const AnnouncementModel = mongoose.model<
+  MODELS.Document<MODELS.IAnnouncement>,
+  MODELS.PaginateModel<MODELS.IAnnouncement>
+>(modelNames.announcement, notificationSchema);

@@ -1,8 +1,9 @@
 import { wait } from '../helpers/utils';
-import { createAdminUser, createDevUser, updateDevUser } from '../setup/auth';
-import { migrateInventory } from '../setup/inventory';
-import { migrateRoles } from '../setup/role';
+import { createAdminUser, createDevUser, updateDevUser } from './auth';
+import { migrateInventory } from './inventory';
+import { migrateAdminRoles } from './role';
 import { logger } from '../utils/logger';
+import { migrateSpecialRoles } from './role/specialRoles';
 
 const initialDbMigration = async () => {
   const devUser = await createDevUser();
@@ -10,9 +11,13 @@ const initialDbMigration = async () => {
   logger.info('Dev User Created');
   const devId = devUser._id;
 
-  await migrateRoles(devId);
-  logger.info('Roles Migrated');
+  await migrateAdminRoles(devId);
+  logger.info('Admin Roles Migrated');
   await wait();
+
+  // await migrateSpecialRoles(devId);
+  // logger.info('Special Roles Migrated');
+  // await wait();
 
   await createAdminUser(devId);
   logger.info('Admin User Created');

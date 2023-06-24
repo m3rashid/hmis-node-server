@@ -8,8 +8,7 @@ import { baseModelSchema } from '.';
 const roleSchema = new mongoose.Schema<MODELS.IRole>(
   {
     ...baseModelSchema,
-    displayName: { type: String, required: true },
-    actualName: { type: String, unique: true, required: true },
+    name: { type: String, required: true },
     description: { type: String },
     permissions: { type: mongoose.Schema.Types.Mixed, required: true },
   },

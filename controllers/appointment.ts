@@ -4,6 +4,8 @@ import { appointmentValidator } from '@hmis/gatekeeper';
 import { ERRORS, Validator } from '@hmis/gatekeeper';
 import { checkAuth } from '../middlewares/auth';
 import { AppointmentModel } from '../models/appointment';
+import { UserModel } from '../models/user';
+import { AvailabilityModel } from '../models/availability';
 
 const addAppointment = async (
   req: RequestWithBody<appointmentValidator.CreateAppointmentBody>,
@@ -81,10 +83,37 @@ const getAppointmentDetails = async (
   return res.status(200).json(appointment);
 };
 
-const appointmentsSearch = async (req: Request, res: Response) => {
-	const appointments: Array<{ label: string, value: string }> = []
-	return res.status(200).json(appointments)
-}
+const doctorsSearch = async (
+  req: RequestWithBody<{ text: string }>,
+  res: Response
+) => {
+  const foundDoctors = await UserModel.find({
+    deleted: false,
+    isDoctor: true,
+    origin: 'INTERNAL',
+    $text: { $search: req.body.text },
+  }).lean();
+
+  const doctors = foundDoctors.map((doc) => ({
+    value: doc._id,
+    name: doc.name,
+    email: doc.email,
+    profileId: doc.profile,
+  }));
+
+  return res.status(200).json(doctors);
+};
+
+const getDoctorAvailability = async (
+  req: RequestWithBody<{ _id: string }>,
+  res: Response
+) => {
+  const [doctorAvailability, doctorAppointments] = await Promise.all([
+    await AvailabilityModel.find({ user: req.body._id, deleted: false }),
+    await AppointmentModel.find({ doctor: req.body._id, deleted: false }),
+  ]);
+	// TODO: merge the two to get doctors slots
+};
 
 const getAllAppointments = async (req: Request, res: Response) => {
   const appointments = await AppointmentModel.paginate(
@@ -115,6 +144,11 @@ appointmentRouter.post(
 );
 appointmentRouter.post('/details', checkAuth, useRoute(getAppointmentDetails));
 appointmentRouter.post('/all', checkAuth, useRoute(getAllAppointments));
-appointmentRouter.post('/search', checkAuth, useRoute(appointmentsSearch));
+appointmentRouter.post('/doctors-search', checkAuth, useRoute(doctorsSearch));
+appointmentRouter.post(
+  '/doctor-timings',
+  checkAuth,
+  useRoute(getDoctorAvailability)
+);
 
 export default appointmentRouter;

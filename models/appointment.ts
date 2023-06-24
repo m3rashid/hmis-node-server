@@ -18,6 +18,7 @@ const appointmentSchema = new mongoose.Schema<MODELS.IAppointment>(
       ref: modelNames.user,
       required: true,
     },
+    timeMinutes: { type: Number, required: true }, // expected time in minutes
     status: {
       type: String,
       enum: ENUMS.APPOINTMENT_STATUS,
