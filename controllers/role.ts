@@ -1,59 +1,66 @@
-import type { Request, Response } from 'express';
+import { Router, type Request, type Response } from 'express';
 
 import { RoleModel } from '../models/role';
-import type { roleValidator } from '@hmis/gatekeeper';
+import { ERRORS, Validator, roleValidator } from '@hmis/gatekeeper';
 import type { RequestWithBody } from './base';
+import { checkAuth } from '../middlewares/auth';
 
-export const createRole = async (
+const createRole = async (
   req: RequestWithBody<roleValidator.CreateRoleBody>,
   res: Response
 ) => {
-  const { name, description, permissions } = req.body;
+  if (!req.isAuthenticated) throw ERRORS.newError('No user found');
   const role = new RoleModel({
-    actualName: name.toUpperCase(),
-    displayName: name,
-    description,
-    permissions,
+    actualName: req.body.name.toUpperCase(),
+    displayName: req.body.name,
+    description: req.body.description,
+    permissions: req.body.permissions,
+    createdBy: req.user._id,
   });
   const savedRole = await role.save();
   return res.json(savedRole);
 };
 
-export const editRole = async (
+const editRole = async (
   req: RequestWithBody<roleValidator.EditRoleBody>,
   res: Response
 ) => {
+  if (!req.isAuthenticated) throw ERRORS.newError('No user found');
   const role = await RoleModel.findByIdAndUpdate(
     req.body._id,
     {
-      displayName: req.body.name,
-      description: req.body.description,
-      permissions: req.body.permissions,
+      $set: {
+        displayName: req.body.name,
+        description: req.body.description,
+        permissions: req.body.permissions,
+        lastUpdatedBy: req.user._id,
+      },
     },
     { new: true }
   );
   return res.json(role);
 };
 
-export const deleteRole = async (
+const deleteRole = async (
   req: RequestWithBody<roleValidator.DeleteRoleBody>,
   res: Response
 ) => {
+  if (!req.isAuthenticated) throw ERRORS.newError('No user found');
   await RoleModel.findByIdAndUpdate(
     req.body._id,
-    { deleted: true },
+    { $set: { deleted: true, lastUpdatedBy: req.user._id } },
     { new: true }
   );
   return res.json('Role deleted successfully');
 };
 
 // ERROR: not working
-export const getRoles = async (req: Request, res: Response) => {
+const getRoles = async (req: Request, res: Response) => {
   const roles = await RoleModel.paginate({ deleted: false });
   return res.json(roles);
 };
 
-export const getRoleWithDeleted = async (req: Request, res: Response) => {
+const getRoleWithDeleted = async (req: Request, res: Response) => {
   const roles = await RoleModel.aggregate([
     {
       $lookup: {
@@ -67,7 +74,7 @@ export const getRoleWithDeleted = async (req: Request, res: Response) => {
   return res.json(roles);
 };
 
-export const getRoleDetails = async (
+const getRoleDetails = async (
   req: RequestWithBody<roleValidator.DeleteRoleBody>,
   res: Response
 ) => {
@@ -84,3 +91,30 @@ export const getRoleDetails = async (
   ]);
   return res.json(role);
 };
+
+const roleRouter: Router = Router();
+const useRoute = ERRORS.useRoute;
+
+roleRouter.post(
+  '/create',
+  checkAuth,
+  Validator.validate(roleValidator.createRoleSchema),
+  useRoute(createRole)
+);
+roleRouter.post(
+  '/delete',
+  checkAuth,
+  Validator.validate(roleValidator.deleteRoleSchema),
+  useRoute(deleteRole)
+);
+roleRouter.post(
+  '/edit',
+  checkAuth,
+  Validator.validate(roleValidator.editRoleSchema),
+  useRoute(editRole)
+);
+roleRouter.get('/all', checkAuth, useRoute(getRoles));
+roleRouter.post('/details', checkAuth, useRoute(getRoleDetails));
+roleRouter.get('/all-with-deleted', checkAuth, useRoute(getRoleWithDeleted));
+
+export default roleRouter;

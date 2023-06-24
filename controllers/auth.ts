@@ -1,14 +1,14 @@
 import bcrypt from 'bcrypt';
-import type { Request, Response } from 'express';
+import { Router, type Request, type Response } from 'express';
 
 import { UserModel } from '../models/user';
-import { ERRORS } from '@hmis/gatekeeper';
-import type { authValidator } from '@hmis/gatekeeper';
+import { ERRORS, Validator } from '@hmis/gatekeeper';
+import { authValidator } from '@hmis/gatekeeper';
 import { issueJWT, revalidateJWT } from '../utils/jwt';
 import { OtpModel } from '../models/otp';
 import type { RequestWithBody } from './base';
 
-export const login = async (
+const login = async (
   req: RequestWithBody<authValidator.LoginBody>,
   res: Response
 ) => {
@@ -31,7 +31,7 @@ export const login = async (
   });
 };
 
-export const revalidateToken = async (req: Request, res: Response) => {
+const revalidateToken = async (req: Request, res: Response) => {
   const rfToken = req.headers.authorization;
   if (!rfToken) throw ERRORS.newError('No token Provided');
 
@@ -55,69 +55,24 @@ export const revalidateToken = async (req: Request, res: Response) => {
   });
 };
 
-export const logout = async (req: Request, res: Response) => {
+const logout = async (req: Request, res: Response) => {
   return res.sendStatus(200);
 };
 
-export const currentUser = async (req: Request, res: Response) => {
-  if (!req.user) throw ERRORS.newError('User not found');
-  const user = await UserModel.findById(req.user._id).lean();
-  res.status(200).json(user);
-};
-
-export const currentUserAllDetails = async (req: Request, res: Response) => {
-  if (!req.user) throw ERRORS.newError('User not found');
-  const user = await UserModel.findById(req.user._id)
-    .populate('profile')
-    .populate('roles')
-    .lean();
-  res.status(200).json(user);
-};
-
-export const signupUser = async (
-  req: RequestWithBody<authValidator.UserSignupBody>,
-  res: Response
-) => {
-  const hashedPassword = await bcrypt.hash(req.body.password, 12);
-  const newUser = new UserModel({
-    name: req.body.name,
-    email: req.body.email,
-    password: hashedPassword,
-    roles: req.body.roles,
-  });
-  await newUser.save();
-  res.status(200).json(newUser);
-};
-
-export const signupPatientInit = async (req: Request, res: Response) => {
-  console.log('Hello');
-  res.status(200).json('Hello');
-};
-
-export const signupPatientStepTwo = async (req: Request, res: Response) => {
-  console.log('Hello');
-  res.status(200).json('Hello');
-};
-
-export const signupPatientFinalize = async (req: Request, res: Response) => {
-  console.log('Hello');
-  res.status(200).json('Hello');
-};
-
-export const updatePassword = async (req: Request, res: Response) => {
+const updatePassword = async (req: Request, res: Response) => {
   if (!req.user) throw ERRORS.newError('User not found');
   if (req.body.password !== req.body.confirmPassword)
     throw ERRORS.newError('Passwords do not match');
   const hashedPassword = await bcrypt.hash(req.body.confirmPassword, 12);
   const updatedUser = await UserModel.findByIdAndUpdate(
     req.user._id,
-    { password: hashedPassword },
+    { $set: { password: hashedPassword, lastUpdatedBy: req.user._id } },
     { new: true }
   ).lean();
   res.status(200).json(updatedUser);
 };
 
-export const forgotPassword = async (
+const forgotPassword = async (
   req: RequestWithBody<authValidator.ForgotPasswordBody>,
   res: Response
 ) => {
@@ -138,46 +93,53 @@ export const forgotPassword = async (
   res.status(200).json('Otp sent to your email');
 };
 
-export const resetPassword = async (
+const resetPassword = async (
   req: RequestWithBody<authValidator.ResetPasswordBody>,
   res: Response
 ) => {
   const otpFound = await OtpModel.findOne({ email: req.body.email }).lean();
   if (!otpFound) throw ERRORS.newError('OTP not found');
   if (otpFound.otp !== req.body.otp) throw ERRORS.newError('Invalid OTP');
+
+  const foundUser = await UserModel.findOne({ email: req.body.email }).lean();
+  if (!foundUser) throw ERRORS.newError('User not found');
   // TODO: handle check OTP expiry
   // if (otpFound.expiry < Date.now()) throw ERRORS.newError('OTP expired');
 
   const hashedPassword = await bcrypt.hash(req.body.password, 12);
   const updatedUser = await UserModel.findOneAndUpdate(
     { email: req.body.email },
-    { password: hashedPassword },
+    { $set: { password: hashedPassword, lastUpdatedBy: foundUser._id } },
     { new: true }
   ).lean();
-  if (!updatedUser) throw ERRORS.newError('User not found');
+  if (!updatedUser) throw ERRORS.newError('Password not updated');
   res.status(200).json(updatedUser);
 };
 
-export const getAllUsers = async (req: Request, res: Response) => {
-  const users = await UserModel.paginate(
-    { deleted: false },
-    { populate: 'roles' }
-  );
-  return res.json(users);
-};
+const authRouter: Router = Router();
+const useRoute = ERRORS.useRoute;
 
-export const getAllUsersWithDeleted = async (req: Request, res: Response) => {
-  /*
-		totalDocs: 0,
-		limit: 15,
-		totalPages: 1,
-		page: 1,
-		pagingCounter: 1,
-		hasPrevPage: false,
-		hasNextPage: false,
-		prevPage: null,
-		nextPage: null,
-	*/
-  const users = await UserModel.paginate({}, { populate: 'roles' });
-  return res.json(users);
-};
+authRouter.post(
+  '/login',
+  Validator.validate(authValidator.loginSchema),
+  useRoute(login)
+);
+authRouter.post('/logout', useRoute(logout));
+authRouter.post('/revalidate', useRoute(revalidateToken));
+authRouter.post(
+  '/forgot-password',
+  Validator.validate(authValidator.forgotPasswordSchema),
+  useRoute(forgotPassword)
+);
+authRouter.post(
+  '/update-password',
+  // Validator.validate(authValidator.forgotPasswordSchema),
+  useRoute(updatePassword)
+);
+authRouter.post(
+  '/reset-password',
+  Validator.validate(authValidator.resetPasswordSchema),
+  useRoute(resetPassword)
+);
+
+export default authRouter;

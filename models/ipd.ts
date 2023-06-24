@@ -47,9 +47,20 @@ const ipdSchema = new mongoose.Schema<MODELS.IIpd>(
     ],
     tests: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: modelNames.test,
-        required: true,
+        test: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: modelNames.test,
+          required: true,
+        },
+        remarks: { type: String },
+        suggestedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: modelNames.user,
+        },
+        payment: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: modelNames.payment,
+        },
       },
     ],
     referredBy: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.user },

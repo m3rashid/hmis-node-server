@@ -11,12 +11,6 @@ const testSchema = new mongoose.Schema<MODELS.ITest>(
     name: { type: String, required: true },
     description: { type: String },
     costINR: { type: Number, required: true },
-    suggestedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: modelNames.user,
-    },
-    testReports: [{ type: String, required: true }],
-    payment: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.payment },
   },
   { timestamps: true }
 );
