@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 
-import { MODELS } from '@hmis/gatekeeper';
+import type { MODELS } from '@hmis/gatekeeper';
 import { ENUMS, modelNames } from '@hmis/gatekeeper';
 import { baseModelSchema } from './index';
 
@@ -13,16 +13,9 @@ const ipdSchema = new mongoose.Schema<MODELS.IIpd>(
       ref: modelNames.user,
       required: true,
     },
-    status: {
-      type: String,
-      enum: ENUMS.IPD_STATUS,
-      default: 'ADMITTED',
-    },
+    status: { type: String, enum: ENUMS.IPD_STATUS, default: 'ADMITTED' },
     payments: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: modelNames.payment,
-      },
+      { type: mongoose.Schema.Types.ObjectId, ref: modelNames.payment },
     ],
     history: [
       {
@@ -59,17 +52,16 @@ const ipdSchema = new mongoose.Schema<MODELS.IIpd>(
         required: true,
       },
     ],
-    referredBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: modelNames.user,
-    },
+    referredBy: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.user },
     chats: [
       {
         time: { type: String, required: true },
         remarks: { type: String },
-        from: { type: String, enum: MODELS.IUser },
+        from: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.user },
       },
     ],
+    fromDate: { type: Date, required: true },
+    toDate: { type: Date, required: true },
   },
   { timestamps: true }
 );

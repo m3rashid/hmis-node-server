@@ -31,6 +31,7 @@ const appointmentSchema = new mongoose.Schema<MODELS.IAppointment>(
       type: String,
       enum: ENUMS.APPOINTMENT_TYPE,
     },
+    date: { type: Date, required: true },
   },
   { timestamps: true }
 );

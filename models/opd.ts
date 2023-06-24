@@ -27,6 +27,7 @@ const opdSchema = new mongoose.Schema<MODELS.IOpd>(
       type: mongoose.Schema.Types.ObjectId,
       ref: modelNames.payment,
     },
+    date: { type: Date, required: true },
     nextDate: { type: String },
   },
   { timestamps: true }
