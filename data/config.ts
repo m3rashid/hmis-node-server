@@ -3,7 +3,7 @@ export const appConfig = {
     name: 'HMIS',
     version: '1.0.0',
     fullName: 'Health Management and Informatics System',
-    theme: 'light',
+    theme: 'dark',
   },
   appColors: {
     primary: '#6366f1',
