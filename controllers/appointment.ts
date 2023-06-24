@@ -81,6 +81,11 @@ const getAppointmentDetails = async (
   return res.status(200).json(appointment);
 };
 
+const appointmentsSearch = async (req: Request, res: Response) => {
+	const appointments: Array<{ label: string, value: string }> = []
+	return res.status(200).json(appointments)
+}
+
 const getAllAppointments = async (req: Request, res: Response) => {
   const appointments = await AppointmentModel.paginate(
     { deleted: false },
@@ -110,5 +115,6 @@ appointmentRouter.post(
 );
 appointmentRouter.post('/details', checkAuth, useRoute(getAppointmentDetails));
 appointmentRouter.post('/all', checkAuth, useRoute(getAllAppointments));
+appointmentRouter.post('/search', checkAuth, useRoute(appointmentsSearch));
 
 export default appointmentRouter;
