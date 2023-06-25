@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-import { resourceTypes } from '../../data/resource';
-import { toSentenceCase } from '../../helpers/strings';
 import { RoleModel } from '../../models/role';
+import { resourceTypes } from '../../data/resource';
+import { logger } from '../../utils/logger';
 
 const defaultRoles = [
   {
@@ -26,12 +26,12 @@ export const migrateAdminRoles = async (devId: string) => {
       permissions: resourceTypes.reduce(
         (acc, perm) => ({
           ...acc,
-          [perm.name]: {
+          [perm.name]: [
             ...perm.availablePermissions.independent.map((t) => ({
               [t]: 'INDEPENDENT',
             })),
             ...perm.availablePermissions.actions.map((t) => ({ [t]: 'ALL' })),
-          },
+          ],
         }),
         {}
       ),
@@ -39,5 +39,9 @@ export const migrateAdminRoles = async (devId: string) => {
     });
     promises.push(r.save());
   });
-  await Promise.all(promises);
+	
+  const roles = await Promise.all(promises);
+	logger.info('Admin Roles Migrated');
+  
+	return roles.map((role) => ({ name: role.name, _id: role._id }))
 };

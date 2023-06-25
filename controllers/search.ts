@@ -65,7 +65,7 @@ const patientSearch = async (
   const foundPatients = await UserModel.find({
     deleted: false,
     isDoctor: false,
-    $text: { $search: req.body.text },
+    $text: { $search: req.body.text || '' },
   }).lean();
 
   const patients = foundPatients.map((doc) => ({
@@ -81,8 +81,8 @@ const patientSearch = async (
 const searchRouter: Router = Router();
 const useRoute = ERRORS.useRoute;
 
-searchRouter.post('/doctors-search', checkAuth, useRoute(doctorsSearch));
-searchRouter.post('/patient-search', checkAuth, useRoute(patientSearch));
+searchRouter.post('/doctors', checkAuth, useRoute(doctorsSearch));
+searchRouter.post('/patient', checkAuth, useRoute(patientSearch));
 searchRouter.post(
   '/doctor-timings',
   checkAuth,

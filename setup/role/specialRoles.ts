@@ -1,22 +1,29 @@
 import mongoose from 'mongoose';
 
-import { resourceTypes } from '../../data/resource';
-import { toSentenceCase } from '../../helpers/strings';
 import { RoleModel } from '../../models/role';
+import { defaultDoctorPermissions } from './doctor';
+import { defaultReceptionistPermissions } from './receptionist';
+import { logger } from '../../utils/logger';
+import { defaultPatientPermissions } from './patient';
 
 const specialRoles = [
   {
     name: 'DOCTOR',
     description:
       'This is the doctor, he/she can handle appointments, consults patients etc',
-    permissions: {},
+    permissions: defaultDoctorPermissions,
   },
   {
     name: 'RECEPTIONIST',
     description:
       'This is the receptionist, he/she can schedule,reschedule appointments, answer to queries etc',
-    permissions: {},
+    permissions: defaultReceptionistPermissions,
   },
+	{
+		name: "PATIENT",
+		description: "This is the patient role and is given to the patients by default in the hospital",
+		permissions: defaultPatientPermissions
+	}
 ];
 
 export const migrateSpecialRoles = async (devId: string) => {
@@ -25,21 +32,13 @@ export const migrateSpecialRoles = async (devId: string) => {
     const r = new RoleModel({
       name: role.name,
       description: role.description,
-      // permissions: resourceTypes.reduce(
-      //   (acc, perm) => ({
-      //     ...acc,
-      //     [perm.name]: {
-      //       ...perm.availablePermissions.independent.map((t) => ({
-      //         [t]: 'INDEPENDENT',
-      //       })),
-      //       ...perm.availablePermissions.actions.map((t) => ({ [t]: 'ALL' })),
-      //     },
-      //   }),
-      //   {}
-      // ),
+      permissions: role.permissions,
       createdBy: new mongoose.Types.ObjectId(devId),
     });
     promises.push(r.save());
   });
-  await Promise.all(promises);
+  const roles = await Promise.all(promises);
+  logger.info('Doctor and Receptionist Roles created');
+
+  return roles.map((role) => ({ name: role.name, _id: role._id }));
 };

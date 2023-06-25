@@ -10,8 +10,6 @@ const environmentVariables = z.object({
   MAILER_USER: z.string(),
   MAILER_HOST: z.string(),
   MAILER_PASSWORD: z.string(),
-  DEV_PASSWORD: z.string(),
-  ADMIN_PASSWORD: z.string(),
   ACCESS_SECRET: z.string(),
   REFRESH_SECRET: z.string(),
   S3_ACCESS_KEY_ID: z.string(),

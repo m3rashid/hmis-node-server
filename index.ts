@@ -19,7 +19,7 @@ import type {
   SocketData,
 } from './sockets/types';
 import { config } from './utils/config';
-// import initialDbMigration from './setup';
+import initialDbMigration from './setup';
 mongoose.set('debug', process.env.NODE_ENV !== 'production');
 mongoose.plugin(paginate);
 

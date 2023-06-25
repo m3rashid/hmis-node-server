@@ -5,6 +5,7 @@ import { dummyMedicines, dummyOtherAssets } from '../data/medicines';
 import { ConsumableModel } from '../models/consumable';
 import { NonConsumableModel } from '../models/nonConsumables';
 import type { MODELS } from '@hmis/gatekeeper';
+import { logger } from '../utils/logger';
 
 type InventoryArr<T> = Array<Omit<T, '_id' | 'createdAt' | 'updatedAt'>>;
 
@@ -23,7 +24,6 @@ const fakeConsumables = (count: number, devId: string) => {
       lastOrderDate: faker.date.past(),
       nextOrderDate: faker.date.future(),
       createdBy: new mongoose.Types.ObjectId(devId) as any,
-      lastUpdatedBy: new mongoose.Types.ObjectId(devId) as any,
     });
   }
   return consumablesArray;
@@ -40,22 +40,28 @@ const fakeNonConsumables = (count: number, devId: string) => {
       nextServicingDate: faker.date.future(),
       deleted: faker.datatype.boolean(),
       createdBy: new mongoose.Types.ObjectId(devId) as any,
-      lastUpdatedBy: new mongoose.Types.ObjectId(devId) as any,
     });
   }
   return nonConsumablesArray;
 };
 
 export const migrateInventory = async (devId: string) => {
-  const promises: Array<Promise<any>> = [];
+  const consumablesPromise: Array<Promise<any>> = [];
   fakeConsumables(60, devId).forEach((c) => {
     const p = new ConsumableModel(c);
-    promises.push(p.save());
+    consumablesPromise.push(p.save());
   });
+  const cons = await Promise.all(consumablesPromise);
+  const consArr = cons.map((t) => t._id);
 
+  const nonConsumablesPromise: Array<Promise<any>> = [];
   fakeNonConsumables(60, devId).forEach((c) => {
     const p = new NonConsumableModel(c);
-    promises.push(p.save());
+    nonConsumablesPromise.push(p.save());
   });
-  await Promise.all(promises);
+  const nonCons = await Promise.all(nonConsumablesPromise);
+  const nonConsArr = nonCons.map((t) => t._id);
+  
+	logger.info('Inventory Migrated');
+  return { consumables: consArr, nonConsumables: nonConsArr };
 };
