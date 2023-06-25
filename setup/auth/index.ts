@@ -65,6 +65,7 @@ export const createExternalUsers = async (devId: string) => {
       password: password,
       isDoctor: false,
       roles: new mongoose.Types.ObjectId(role?._id),
+      createdBy: new mongoose.Types.ObjectId(devId),
     });
     patientsPromise.push(newUser.save());
   }

@@ -20,7 +20,7 @@ export const migrateProfiles = async (
     }
 
     const newProfile = new ProfileModel({
-      bio: faker.string.sample({ min: 100, max: 300 }),
+      bio: faker.lorem.paragraph(),
       roomNumber: faker.number.int(),
       age: faker.number.int({ min: 0, max: 100 }),
       sex: faker.string.fromCharacters(ENUMS.SEX),
