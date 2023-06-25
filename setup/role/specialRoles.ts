@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 
+import { logger } from '../../utils/logger';
 import { RoleModel } from '../../models/role';
 import { defaultDoctorPermissions } from './doctor';
-import { defaultReceptionistPermissions } from './receptionist';
-import { logger } from '../../utils/logger';
 import { defaultPatientPermissions } from './patient';
+import { defaultReceptionistPermissions } from './receptionist';
 
 const specialRoles = [
   {

@@ -18,7 +18,7 @@ const dummyDbMigration = async () => {
   await migrateSpecialRoles(devUserId);
   await migrateTests(devUserId);
 
-	const doctors = await createInternalUsers(devUserId);
+  const doctors = await createInternalUsers(devUserId);
   await updateDevUser(devUserId);
 
   const doctorIds = doctors
@@ -30,9 +30,7 @@ const dummyDbMigration = async () => {
   });
 
   await migrateInventory(devUserId);
-
   await migrateAnnouncements(devUserId);
-
   const patients = await createExternalUsers(devUserId);
   const patientAddressIds = await createAddress(patients);
   await migrateProfiles(patients, patientAddressIds, {

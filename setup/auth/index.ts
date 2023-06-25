@@ -14,7 +14,7 @@ export const createDevUser = async () => {
     name: devUser.name,
     email: devUser.email,
     password: pwd,
-		origin: 'INTERNAL'
+    origin: 'INTERNAL',
   });
   const user = await dev.save();
   logger.info('Dev user created');
@@ -43,7 +43,7 @@ export const createInternalUsers = async (devId: string) => {
       email: user.email,
       password: pwd,
       role: new mongoose.Types.ObjectId(role?._id),
-			emailVerified: faker.datatype.boolean(),
+      emailVerified: faker.datatype.boolean(),
       origin: 'INTERNAL',
       isDoctor: user.isDoctor,
       createdBy: new mongoose.Types.ObjectId(devId),
@@ -68,7 +68,7 @@ export const createExternalUsers = async (devId: string) => {
       emailVerified: faker.datatype.boolean(),
       password: password,
       isDoctor: false,
-      roles: new mongoose.Types.ObjectId(role?._id),
+      role: new mongoose.Types.ObjectId(role?._id),
       createdBy: new mongoose.Types.ObjectId(devId),
     });
     patientsPromise.push(newUser.save());
