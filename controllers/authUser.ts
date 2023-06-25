@@ -7,14 +7,14 @@ import type { RequestWithBody } from "./base";
 import { checkAuth } from "../middlewares/auth";
 
 const getAllUsersWithDeleted = async (req: Request, res: Response) => {
-  const users = await UserModel.paginate({}, { populate: 'roles' });
+  const users = await UserModel.paginate({}, { populate: 'role' });
   return res.json(users);
 };
 
 const getAllUsers = async (req: Request, res: Response) => {
   const users = await UserModel.paginate(
     { deleted: false },
-    { populate: 'roles' }
+    { populate: 'role' }
   );
   return res.json(users);
 };
@@ -29,7 +29,7 @@ const currentUserAllDetails = async (req: Request, res: Response) => {
   if (!req.user) throw ERRORS.newError('User not found');
   const user = await UserModel.findById(req.user._id)
     .populate('profile')
-    .populate('roles')
+    .populate('role')
     .lean();
   res.status(200).json(user);
 };
@@ -43,7 +43,7 @@ const signupUser = async (
     name: req.body.name,
     email: req.body.email,
     password: hashedPassword,
-    roles: req.body.roles,
+    role: req.body.role,
   });
   await newUser.save();
   res.status(200).json(newUser);

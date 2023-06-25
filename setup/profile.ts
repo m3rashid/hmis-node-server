@@ -4,13 +4,21 @@ import type { MODELS } from '@hmis/gatekeeper';
 import { ENUMS } from '@hmis/gatekeeper';
 import mongoose from 'mongoose';
 import { logger } from '../utils/logger';
+import { createAvailability } from './availability';
 
 export const migrateProfiles = async (
   userIds: string[],
-  addressIds: string[]
+  addressIds: string[],
+  { createAvailabilities }: { createAvailabilities: boolean }
 ) => {
   const profilePromises: Array<Promise<MODELS.IProfile>> = [];
   for (let i = 0; i < userIds.length; i++) {
+    const availabilityIds: string[] = [];
+    if (createAvailabilities) {
+      const availabilities = await createAvailability(userIds[i]);
+      availabilities.map((t) => availabilityIds.push(t));
+    }
+
     const newProfile = new ProfileModel({
       bio: faker.string.sample({ min: 100, max: 300 }),
       roomNumber: faker.number.int(),
@@ -29,7 +37,7 @@ export const migrateProfiles = async (
       userHealthId: faker.string.nanoid(),
       user: new mongoose.Types.ObjectId(userIds[i]),
       leaves: [],
-      availabilities: [],
+      availabilities: availabilityIds || [],
       appointmentsAsDoctor: [],
       appointmentsAsPatient: [],
       appointmentsAsReferredBy: [],

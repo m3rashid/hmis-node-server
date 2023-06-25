@@ -5,7 +5,7 @@ export const issueJWT = (user: MODELS.IUser) => {
   const payload = {
     sub: {
       _id: user._id,
-      roles: user.roles,
+      role: user.role,
       name: user.name,
       email: user.email,
     } as MODELS.ILoginUser,

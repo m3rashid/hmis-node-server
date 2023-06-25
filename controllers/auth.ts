@@ -14,8 +14,8 @@ const login = async (
 ) => {
   const { email, password } = req.body;
   const user = await UserModel.findOne({ email })
-    .populate('roles')
-    .populate('roles.permissions')
+    .populate('role')
+    .populate('role.permissions')
     .populate('profile')
     .lean();
 
@@ -41,8 +41,8 @@ const revalidateToken = async (req: Request, res: Response) => {
   if (!userId) throw ERRORS.newError('No user found');
 
   const user = await UserModel.findById(userId)
-    .populate('roles')
-    .populate('roles.permissions')
+    .populate('role')
+    .populate('role.permissions')
     .populate('profile')
     .lean();
 

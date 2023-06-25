@@ -14,7 +14,6 @@ export const createDevUser = async () => {
     name: devUser.name,
     email: devUser.email,
     password: pwd,
-    roles: [],
   });
   const user = await dev.save();
   logger.info('Dev user created');
@@ -22,9 +21,9 @@ export const createDevUser = async () => {
 };
 
 export const updateDevUser = async (devId: string) => {
-  const roles = await RoleModel.find({ name: devUser.role }).select({ _id: 1 });
-  await UserModel.findByIdAndUpdate(devId, {
-    roles: roles.map((t) => t._id),
+  const role = await RoleModel.findOne({ name: devUser.role })
+	await UserModel.findByIdAndUpdate(devId, {
+    role: new mongoose.Types.ObjectId(role?._id),
     createdBy: new mongoose.Types.ObjectId(devId),
     lastUpdatedBy: new mongoose.Types.ObjectId(devId),
   });
@@ -37,14 +36,12 @@ export const createInternalUsers = async (devId: string) => {
   for (let i = 0; i < otherUsers.length; i++) {
     const user = otherUsers[i];
     const pwd = await bcrypt.hash(user.password, 12);
-    const role = await RoleModel.findOne({ name: user.role }).select({
-      _id: 1,
-    });
+    const role = await RoleModel.findOne({ name: user.role })
     const newUser = new UserModel({
       name: user.name,
       email: user.email,
       password: pwd,
-      roles: new mongoose.Types.ObjectId(role?._id),
+      role: new mongoose.Types.ObjectId(role?._id),
       isDoctor: user.isDoctor,
       createdBy: new mongoose.Types.ObjectId(devId),
     });
@@ -64,10 +61,10 @@ export const createExternalUsers = async (devId: string) => {
     const name = faker.internet.displayName();
     const newUser = new UserModel({
       name: name,
-      email: faker.internet.exampleEmail({ firstName: name }),
+      email: faker.internet.exampleEmail({ firstName: name }).toLowerCase(),
       password: password,
       isDoctor: false,
-      roles: [new mongoose.Types.ObjectId(role?._id)],
+      roles: new mongoose.Types.ObjectId(role?._id),
     });
     patientsPromise.push(newUser.save());
   }

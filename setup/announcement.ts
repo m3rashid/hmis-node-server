@@ -15,6 +15,7 @@ export const migrateAnnouncements = async (devId: string) => {
     announcements.push(newAnnouncement.save());
   }
   const ans = await Promise.all(announcements);
+	
   logger.info('Announcements Created');
   return ans.map((t) => t._id);
 };

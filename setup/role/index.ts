@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-
+import { logger } from '../../utils/logger';
 import { RoleModel } from '../../models/role';
 import { resourceTypes } from '../../data/resource';
-import { logger } from '../../utils/logger';
 
 const defaultRoles = [
   {
@@ -42,6 +41,6 @@ export const migrateAdminRoles = async (devId: string) => {
 	
   const roles = await Promise.all(promises);
 	logger.info('Admin Roles Migrated');
-  
+	
 	return roles.map((role) => ({ name: role.name, _id: role._id }))
 };

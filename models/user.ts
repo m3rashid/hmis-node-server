@@ -14,19 +14,13 @@ const userSchema = new mongoose.Schema<MODELS.IUser>(
     password: { type: String, required: true },
     origin: { type: String, enum: ENUMS.USER_ORIGIN, default: 'EXTERNAL' },
     isDoctor: { type: Boolean, default: false },
-    roles: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: modelNames.role,
-        required: true,
-      },
-    ],
+    role: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.role },
     profile: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.profile },
   },
   { timestamps: true }
 );
 
-userSchema.index({ name: "text", email: "text" })
+userSchema.index({ name: 'text', email: 'text', role: 1 });
 userSchema.plugin(paginate);
 
 export const UserModel = mongoose.model<

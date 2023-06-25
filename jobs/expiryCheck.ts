@@ -3,35 +3,43 @@ import cron from 'node-cron';
 import { ConsumableModel } from '../models/consumable';
 import { NonConsumableModel } from '../models/nonConsumables';
 import { logger } from '../utils/logger';
+import mongoose from 'mongoose';
+import { UserModel } from '../models/user';
+import { RoleModel } from '../models/role';
 
 const expiryCheckOnInventoryJob = async () => {
+	const role = await RoleModel.findOne({ name: 'SUPER_ADMIN' });
+  const devUser = await UserModel.findOne({
+    role: new mongoose.Types.ObjectId(role?._id),
+  });
+
   const consumables = await ConsumableModel.updateMany(
+    { expiryDate: { $lt: new Date() } },
     {
-      expiryDate: { $lt: new Date() },
-    },
-    // TODO: also update the lastUpdatedBy field to the APP user
-    { deleted: true }
+      $set: {
+        deleted: true,
+        lastUpdatedBy: new mongoose.Types.ObjectId(devUser?._id),
+      },
+    }
   );
 
   const nonConsumables = await NonConsumableModel.updateMany(
+    { nextServicingDate: { $lt: new Date() } },
     {
-      nextServicingDate: { $lt: new Date() },
-    },
-    // TODO: also update the lastUpdatedBy field to the APP user
-    { deleted: true }
+      $set: {
+        deleted: true,
+        lastUpdatedBy: new mongoose.Types.ObjectId(devUser?._id),
+      },
+    }
   );
 
-  // TODO: send mail to the inventory manager with the list of items that are expiring
-
+  // TODO: send mail to the admin with the list of items that are expiring
   await Promise.all([consumables, nonConsumables]);
 };
 
-// RUN Job at 12:00 AM everyday
 cron.schedule('* * 0 * * *', () => {
-  logger.info('Leave Job started');
+  logger.info('Expiry Check Job started');
   expiryCheckOnInventoryJob()
-    .then(() => {
-      logger.info('Leave Job completed');
-    })
+    .then(() => logger.info('Expiry Check Job completed'))
     .catch(console.log);
 });
