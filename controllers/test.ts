@@ -1,5 +1,5 @@
 import { Router, type Request, type Response } from 'express';
-import type { RequestWithBody } from './base';
+import type { PaginatedRequestQueryParams, RequestWithBody } from './base';
 import { ERRORS, Validator, testValidator } from '@hmis/gatekeeper';
 import { checkAuth } from '../middlewares/auth';
 import {TestModel} from "../models/test"
@@ -30,10 +30,15 @@ const updateTest = async (
   return res.status(200).json(test);
 };
 
-const getAllTests = async (req: Request, res: Response) => {
+const getAllTests = async (req: PaginatedRequestQueryParams, res: Response) => {
   const test = await TestModel.paginate(
     { deleted: false },
-    { sort: { createdAt: -1 } }
+    {
+      sort: { createdAt: -1 },
+      lean: true,
+      page: req.query.pageNumber,
+      limit: req.query.pageSize,
+    }
   );
   return res.status(200).json(test);
 };

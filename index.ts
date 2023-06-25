@@ -19,7 +19,7 @@ import type {
   SocketData,
 } from './sockets/types';
 import { config } from './utils/config';
-// import dummyDbMigration from './setup';
+import dummyDbMigration from './setup';
 mongoose.set('debug', process.env.NODE_ENV !== 'production');
 mongoose.plugin(paginate);
 
@@ -54,9 +54,9 @@ const startServer = async () => {
     const PORT = process.env.PORT ?? 4000;
     await mongoose.connect(process.env.DATABASE_URL as string);
     console.log('Connection Established Successfully');
-    // await mongoose.connection.db.dropDatabase()
-    // console.log('Database Dropped Successfully')
-    // await dummyDbMigration()
+    await mongoose.connection.db.dropDatabase()
+    console.log('Database Dropped Successfully')
+    await dummyDbMigration()
     app.listen(PORT, () => {
       console.log(`Server ON :${PORT}`);
     });

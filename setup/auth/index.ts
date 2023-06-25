@@ -14,6 +14,7 @@ export const createDevUser = async () => {
     name: devUser.name,
     email: devUser.email,
     password: pwd,
+		origin: 'INTERNAL'
   });
   const user = await dev.save();
   logger.info('Dev user created');
@@ -21,8 +22,8 @@ export const createDevUser = async () => {
 };
 
 export const updateDevUser = async (devId: string) => {
-  const role = await RoleModel.findOne({ name: devUser.role })
-	await UserModel.findByIdAndUpdate(devId, {
+  const role = await RoleModel.findOne({ name: devUser.role });
+  await UserModel.findByIdAndUpdate(devId, {
     role: new mongoose.Types.ObjectId(role?._id),
     createdBy: new mongoose.Types.ObjectId(devId),
     lastUpdatedBy: new mongoose.Types.ObjectId(devId),
@@ -36,12 +37,14 @@ export const createInternalUsers = async (devId: string) => {
   for (let i = 0; i < otherUsers.length; i++) {
     const user = otherUsers[i];
     const pwd = await bcrypt.hash(user.password, 12);
-    const role = await RoleModel.findOne({ name: user.role })
+    const role = await RoleModel.findOne({ name: user.role });
     const newUser = new UserModel({
       name: user.name,
       email: user.email,
       password: pwd,
       role: new mongoose.Types.ObjectId(role?._id),
+			emailVerified: faker.datatype.boolean(),
+      origin: 'INTERNAL',
       isDoctor: user.isDoctor,
       createdBy: new mongoose.Types.ObjectId(devId),
     });
@@ -62,6 +65,7 @@ export const createExternalUsers = async (devId: string) => {
     const newUser = new UserModel({
       name: name,
       email: faker.internet.exampleEmail({ firstName: name }).toLowerCase(),
+      emailVerified: faker.datatype.boolean(),
       password: password,
       isDoctor: false,
       roles: new mongoose.Types.ObjectId(role?._id),

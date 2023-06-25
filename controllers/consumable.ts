@@ -1,16 +1,35 @@
-import { Router, type Request, type Response } from "express";
-import { ConsumableModel } from "../models/consumable";
-import type { RequestWithBody } from "./base";
-import { ERRORS, Validator, inventoryValidator,  } from "@hmis/gatekeeper";
-import { checkAuth } from "../middlewares/auth";
+import { Router, type Request, type Response } from 'express';
+import { ConsumableModel } from '../models/consumable';
+import type { PaginatedRequestQueryParams, RequestWithBody } from './base';
+import { ERRORS, Validator, inventoryValidator } from '@hmis/gatekeeper';
+import { checkAuth } from '../middlewares/auth';
 
-const getAllConsumables = async (req: Request, res: Response) => {
-  const consumables = await ConsumableModel.paginate({ deleted: false });
+const getAllConsumables = async (req: PaginatedRequestQueryParams, res: Response) => {
+  const consumables = await ConsumableModel.paginate(
+    { deleted: false },
+    {
+      $sort: { createdAt: -1 },
+      lean: true,
+      page: req.query.pageNumber,
+      limit: req.query.pageSize,
+    }
+  );
   res.status(200).json(consumables);
 };
 
-const getAllConsumablesDeleted = async (req: Request, res: Response) => {
-  const consumables = await ConsumableModel.paginate({ deleted: true });
+const getAllConsumablesDeleted = async (
+  req: PaginatedRequestQueryParams,
+  res: Response
+) => {
+  const consumables = await ConsumableModel.paginate(
+    { deleted: true },
+    {
+      $sort: { createdAt: -1 },
+      lean: true,
+      page: req.query.pageNumber,
+      limit: req.query.pageSize,
+    }
+  );
   res.status(200).json(consumables);
 };
 
@@ -74,10 +93,6 @@ consumableRouter.post(
   Validator.validate(inventoryValidator.deleteConsumableSchema),
   useRoute(removeConsumable)
 );
-consumableRouter.get(
-  '/removed',
-  checkAuth,
-  useRoute(getAllConsumablesDeleted)
-);
+consumableRouter.get('/removed', checkAuth, useRoute(getAllConsumablesDeleted));
 
-export default consumableRouter
+export default consumableRouter;

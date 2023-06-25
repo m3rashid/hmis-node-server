@@ -3,11 +3,19 @@ import { Router, type Request, type Response } from 'express';
 import { AnnouncementModel } from '../models/announcement';
 import { createAnnouncement } from '../services/notifications';
 import { ERRORS, Validator, announcementValidator } from '@hmis/gatekeeper';
-import type { RequestWithBody } from './base';
+import type { PaginatedRequestQueryParams, RequestWithBody } from './base';
 import { checkAuth } from '../middlewares/auth';
 
-const getAnnouncements = async (req: Request, res: Response) => {
-  const announcements = await AnnouncementModel.paginate({ deleted: false });
+const getAnnouncements = async (req: PaginatedRequestQueryParams, res: Response) => {
+  const announcements = await AnnouncementModel.paginate(
+    { deleted: false },
+    {
+      $sort: { createdAt: -1 },
+      lean: true,
+      page: req.query.pageNumber,
+      limit: req.query.pageSize,
+    }
+  );
   return res.status(200).json(announcements);
 };
 
@@ -27,11 +35,7 @@ const addAnnouncement = async (
 const notificationRouter: Router = Router();
 const useRoute = ERRORS.useRoute;
 
-notificationRouter.get(
-  '/all',
-  checkAuth,
-  useRoute(getAnnouncements)
-);
+notificationRouter.get('/all', checkAuth, useRoute(getAnnouncements));
 notificationRouter.post(
   '/add',
   checkAuth,

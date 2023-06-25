@@ -2,7 +2,7 @@ import { Router, type Request, type Response } from 'express';
 
 import { RoleModel } from '../models/role';
 import { ERRORS, Validator, roleValidator } from '@hmis/gatekeeper';
-import type { RequestWithBody } from './base';
+import type { PaginatedRequestQueryParams, RequestWithBody } from './base';
 import { checkAuth } from '../middlewares/auth';
 
 const createRole = async (
@@ -54,18 +54,29 @@ const deleteRole = async (
 };
 
 // ERROR: not working
-const getRoles = async (req: Request, res: Response) => {
+const getRoles = async (req: PaginatedRequestQueryParams, res: Response) => {
   const roles = await RoleModel.paginate(
     { deleted: false },
-    { sort: { createdAt: -1 } }
+    {
+      sort: { createdAt: -1 },
+      lean: true,
+      page: req.query.pageNumber,
+      limit: req.query.pageSize,
+    }
   );
   return res.json(roles);
 };
 
-const getRoleWithDeleted = async (req: Request, res: Response) => {
+const getRoleWithDeleted = async (req: PaginatedRequestQueryParams, res: Response) => {
   const roles = await RoleModel.paginate(
     {},
-    { populate: 'permissions', sort: { createdAt: -1 } }
+    {
+      sort: { createdAt: -1 },
+      populate: 'permissions',
+      lean: true,
+      page: req.query.pageNumber,
+      limit: req.query.pageSize,
+    }
   );
   return res.json(roles);
 };

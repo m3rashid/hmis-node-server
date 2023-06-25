@@ -1,6 +1,6 @@
 import type { Request } from 'express';
 import { Router, type Response } from 'express';
-import type { RequestWithBody } from './base';
+import type { PaginatedRequestQueryParams, RequestWithBody } from './base';
 import { opdValidator } from '@hmis/gatekeeper';
 import { ERRORS, Validator } from '@hmis/gatekeeper';
 import { checkAuth } from '../middlewares/auth';
@@ -29,10 +29,15 @@ const updateOpd = async (
   return res.status(200).json(opd);
 };
 
-const getAllOpd = async (req: Request, res: Response) => {
+const getAllOpd = async (req: PaginatedRequestQueryParams, res: Response) => {
   const opd = await OpdModel.paginate(
     { deleted: false },
-    { sort: { createdAt: -1 } }
+    {
+      sort: { createdAt: -1 },
+      lean: true,
+      page: req.query.pageNumber,
+      limit: req.query.pageSize,
+    }
   );
   return res.status(200).json(opd);
 };

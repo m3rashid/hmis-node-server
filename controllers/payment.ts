@@ -1,5 +1,5 @@
 import { Router, type Request, type Response } from 'express';
-import type { RequestWithBody } from './base';
+import type { PaginatedRequestQueryParams, RequestWithBody } from './base';
 import { ERRORS, Validator, paymentValidator } from '@hmis/gatekeeper';
 import { checkAuth } from '../middlewares/auth';
 import { PaymentModel } from '../models/payment';
@@ -30,10 +30,15 @@ const updatePayment = async (
   return res.status(200).json(payment);
 };
 
-const getAllPayments = async (req: Request, res: Response) => {
+const getAllPayments = async (req: PaginatedRequestQueryParams, res: Response) => {
   const payment = await PaymentModel.paginate(
     { deleted: false },
-    { sort: { createdAt: -1 } }
+    {
+      sort: { createdAt: -1 },
+      lean: true,
+      page: req.query.pageNumber,
+      limit: req.query.pageSize,
+    }
   );
   return res.status(200).json(payment);
 };

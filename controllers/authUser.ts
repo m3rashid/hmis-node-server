@@ -1,20 +1,38 @@
-import { Router, type Request, type Response } from "express";
-import { UserModel } from "../models/user";
-import { authValidator } from "@hmis/gatekeeper";
+import { Router, type Request, type Response } from 'express';
+import { UserModel } from '../models/user';
+import { authValidator } from '@hmis/gatekeeper';
 import bcrypt from 'bcrypt';
 import { ERRORS, Validator } from '@hmis/gatekeeper';
-import type { RequestWithBody } from "./base";
-import { checkAuth } from "../middlewares/auth";
+import type { PaginatedRequestQueryParams, RequestWithBody } from './base';
+import { checkAuth } from '../middlewares/auth';
 
-const getAllUsersWithDeleted = async (req: Request, res: Response) => {
-  const users = await UserModel.paginate({}, { populate: 'role' });
+const getAllInternalUsersWithDeleted = async (
+  req: PaginatedRequestQueryParams,
+  res: Response
+) => {
+  const users = await UserModel.paginate(
+    { origin: 'INTERNAL' },
+    {
+      $sort: { createdAt: -1 },
+      lean: true,
+      populate: 'role',
+      page: req.query.pageNumber,
+      limit: req.query.pageSize,
+    }
+  );
   return res.json(users);
 };
 
-const getAllUsers = async (req: Request, res: Response) => {
+const getAllInternalUsers = async (req: PaginatedRequestQueryParams, res: Response) => {
   const users = await UserModel.paginate(
-    { deleted: false },
-    { populate: 'role' }
+    { deleted: false, origin: 'INTERNAL' },
+    {
+      $sort: { createdAt: -1 },
+      lean: true,
+      populate: 'role',
+      page: req.query.pageNumber,
+      limit: req.query.pageSize,
+    }
   );
   return res.json(users);
 };
@@ -52,14 +70,10 @@ const signupUser = async (
 const userRouter: Router = Router();
 const useRoute = ERRORS.useRoute;
 
-userRouter.get('/all-with-deleted', useRoute(getAllUsersWithDeleted));
-userRouter.get('/all', useRoute(getAllUsers));
+userRouter.get('/all-with-deleted', useRoute(getAllInternalUsersWithDeleted));
+userRouter.get('/all', useRoute(getAllInternalUsers));
 userRouter.get('/me', checkAuth, useRoute(currentUser));
-userRouter.get(
-  '/me-details',
-  checkAuth,
-  useRoute(currentUserAllDetails)
-);
+userRouter.get('/me-details', checkAuth, useRoute(currentUserAllDetails));
 userRouter.post(
   '/signup',
   Validator.validate(authValidator.userSignupSchema),

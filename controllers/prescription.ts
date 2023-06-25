@@ -1,5 +1,5 @@
 import { Router, type Request, type Response } from 'express';
-import type { RequestWithBody } from './base';
+import type { PaginatedRequestQueryParams, RequestWithBody } from './base';
 import { ERRORS, Validator, prescriptionValidator } from '@hmis/gatekeeper';
 import { checkAuth } from '../middlewares/auth';
 import {  } from '../models/payment';
@@ -31,10 +31,15 @@ const updatePrescription = async (
   return res.status(200).json(prescription);
 };
 
-const getAllPrescriptions = async (req: Request, res: Response) => {
+const getAllPrescriptions = async (req: PaginatedRequestQueryParams, res: Response) => {
   const prescription = await PrescriptionModel.paginate(
     { deleted: false },
-    { sort: { createdAt: -1 } }
+    {
+      sort: { createdAt: -1 },
+      lean: true,
+      page: req.query.pageNumber,
+      limit: req.query.pageSize,
+    }
   );
   return res.status(200).json(prescription);
 };
