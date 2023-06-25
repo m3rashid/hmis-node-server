@@ -54,8 +54,8 @@ const useRoute = ERRORS.useRoute;
 
 userRouter.get('/all-with-deleted', useRoute(getAllUsersWithDeleted));
 userRouter.get('/all', useRoute(getAllUsers));
-userRouter.post('/me', checkAuth, useRoute(currentUser));
-userRouter.post(
+userRouter.get('/me', checkAuth, useRoute(currentUser));
+userRouter.get(
   '/me-details',
   checkAuth,
   useRoute(currentUserAllDetails)

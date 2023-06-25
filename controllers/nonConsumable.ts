@@ -59,30 +59,30 @@ const nonConsumableRouter: Router = Router();
 const useRoute = ERRORS.useRoute;
 
 nonConsumableRouter.get(
-  '/non-consumable/all',
+  '/all',
   checkAuth,
   useRoute(getAllNonConsumables)
 );
 nonConsumableRouter.post(
-  '/non-consumable/add',
+  '/add',
   checkAuth,
   Validator.validate(inventoryValidator.createNonConsumableSchema),
   useRoute(addNonConsumable)
 );
 nonConsumableRouter.post(
-  '/non-consumable/edit',
+  '/edit',
   checkAuth,
   Validator.validate(inventoryValidator.updateNonConsumableSchema),
   useRoute(editNonConsumable)
 );
 nonConsumableRouter.post(
-  '/non-consumable/remove',
+  '/remove',
   checkAuth,
   Validator.validate(inventoryValidator.deleteNonConsumableSchema),
   useRoute(removeNonConsumable)
 );
 nonConsumableRouter.get(
-  '/non-consumable/removed',
+  '/removed',
   checkAuth,
   useRoute(getAllNonConsumablesDeleted)
 );

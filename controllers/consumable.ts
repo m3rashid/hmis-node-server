@@ -55,27 +55,27 @@ const editConsumable = async (
 const consumableRouter: Router = Router();
 const useRoute = ERRORS.useRoute;
 
-consumableRouter.get('/consumable/all', checkAuth, useRoute(getAllConsumables));
+consumableRouter.get('/all', checkAuth, useRoute(getAllConsumables));
 consumableRouter.post(
-  '/consumable/add',
+  '/add',
   checkAuth,
   Validator.validate(inventoryValidator.createConsumableSchema),
   useRoute(addConsumable)
 );
 consumableRouter.post(
-  '/consumable/edit',
+  '/edit',
   checkAuth,
   Validator.validate(inventoryValidator.updateConsumableSchema),
   useRoute(editConsumable)
 );
 consumableRouter.post(
-  '/consumable/remove',
+  '/remove',
   checkAuth,
   Validator.validate(inventoryValidator.deleteConsumableSchema),
   useRoute(removeConsumable)
 );
 consumableRouter.get(
-  '/consumable/removed',
+  '/removed',
   checkAuth,
   useRoute(getAllConsumablesDeleted)
 );

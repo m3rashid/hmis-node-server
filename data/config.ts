@@ -2,15 +2,11 @@ export const appConfig = {
   app: {
     name: 'HMIS',
     version: '1.0.0',
-    fullName: 'Health Management and Informatics System',
-    theme: 'dark',
+    fullName: 'Hospital Management and Informatics System',
   },
-  appColors: {
-    primary: '#6366f1',
-    primaryHoverLight: '#818cf8',
-    primaryHoverDark: '#312e81',
-  },
-  colors: {
+  theme: {
+    mode: 'dark',
+    primaryColor: '#6366f1',
     success: '#22C55E',
     warning: '#F59E0B',
     danger: '#F43F5E',
