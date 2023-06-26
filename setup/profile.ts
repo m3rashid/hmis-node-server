@@ -1,17 +1,16 @@
 import { faker } from '@faker-js/faker';
 import { ProfileModel } from '../models/profile';
-import type { MODELS } from '@hmis/gatekeeper';
 import { ENUMS } from '@hmis/gatekeeper';
 import mongoose from 'mongoose';
 import { logger } from '../utils/logger';
 import { createAvailability } from './availability';
+import { UserModel } from '../models/user';
 
 export const migrateProfiles = async (
   userIds: string[],
   addressIds: string[],
   { createAvailabilities }: { createAvailabilities: boolean }
 ) => {
-  const profilePromises: Array<Promise<MODELS.IProfile>> = [];
   for (let i = 0; i < userIds.length; i++) {
     const availabilityIds: string[] = [];
     if (createAvailabilities) {
@@ -44,9 +43,10 @@ export const migrateProfiles = async (
       createdBy: new mongoose.Types.ObjectId(userIds[i]),
     });
 
-    profilePromises.push(newProfile.save());
+    const profile = await newProfile.save();
+    await UserModel.findByIdAndUpdate(userIds[i], {
+      $set: { profile: profile._id },
+    });
   }
-
-  await Promise.all(profilePromises);
   logger.info('Profiles created Successfully');
 };

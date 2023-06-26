@@ -23,7 +23,10 @@ const getAllInternalUsersWithDeleted = async (
   return res.json(users);
 };
 
-const getAllInternalUsers = async (req: PaginatedRequestQueryParams, res: Response) => {
+const getAllInternalUsers = async (
+  req: PaginatedRequestQueryParams,
+  res: Response
+) => {
   const users = await UserModel.paginate(
     { deleted: false, origin: 'INTERNAL' },
     {
@@ -46,7 +49,10 @@ const currentUser = async (req: Request, res: Response) => {
 const currentUserAllDetails = async (req: Request, res: Response) => {
   if (!req.user) throw ERRORS.newError('User not found');
   const user = await UserModel.findById(req.user._id)
-    .populate('profile')
+    .populate({
+      path: 'profile',
+      populate: ['addresses', 'availabilities'],
+    })
     .populate('role')
     .lean();
   res.status(200).json(user);
