@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 
 import { ERRORS } from '@hmis/gatekeeper';
-import { verifyJWT } from '../utils/jwt';
+import { verifyJWT } from '../modules/user/helpers/jwt';
 import type { ILoginUser } from '@hmis/gatekeeper/models';
 
 export const actualAuthCheck = (req: Request): Request => {
