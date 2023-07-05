@@ -9,6 +9,14 @@ import { baseModelSchema } from '../../../utils/models';
 const subTaskSchema = new mongoose.Schema<MODELS.ISubTask>(
   {
     ...baseModelSchema,
+    title: { type: String, required: true },
+    description: { type: String },
+    image: { type: String },
+    status: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: modelNames.taskStatus,
+    },
+    expectedCompletionTime: { type: Date, required: true },
   },
   { timestamps: true }
 );
