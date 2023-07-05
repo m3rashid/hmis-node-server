@@ -18,7 +18,7 @@ const projectSchema = new mongoose.Schema<MODELS.IProject>(
   { timestamps: true }
 );
 
-export const SubTaskModel = paginatedCompiledModel<MODELS.IProject>(
+export const ProjectModel = paginatedCompiledModel<MODELS.IProject>(
   modelNames.project,
   projectSchema
 );
