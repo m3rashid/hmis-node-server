@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
-import { modelNames } from '@hmis/gatekeeper';
 import type { MODELS } from '@hmis/gatekeeper';
 import { baseModelSchema } from '../../../utils/models';
+import { modelNames, paginatedCompiledModel } from '@hmis/gatekeeper';
 
 const testSchema = new mongoose.Schema<MODELS.ITest>(
   {
@@ -14,9 +13,7 @@ const testSchema = new mongoose.Schema<MODELS.ITest>(
   { timestamps: true }
 );
 
-testSchema.plugin(paginate);
-
-export const TestModel = mongoose.model<
-  MODELS.Document<MODELS.ITest>,
-  MODELS.PaginateModel<MODELS.ITest>
->(modelNames.test, testSchema);
+export const TestModel = paginatedCompiledModel<MODELS.ITest>(
+  modelNames.test,
+  testSchema
+);

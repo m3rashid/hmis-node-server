@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
 import type { MODELS } from '@hmis/gatekeeper';
-import { ENUMS, modelNames } from '@hmis/gatekeeper';
 import { baseModelSchema } from '../../../utils/models';
+import { ENUMS, modelNames, paginatedCompiledModel } from '@hmis/gatekeeper';
 
 const prescriptionSchema = new mongoose.Schema<MODELS.IPrescription>(
   {
@@ -32,9 +31,7 @@ const prescriptionSchema = new mongoose.Schema<MODELS.IPrescription>(
   { timestamps: true }
 );
 
-prescriptionSchema.plugin(paginate);
-
-export const PrescriptionModel = mongoose.model<
-  MODELS.Document<MODELS.IPrescription>,
-  MODELS.PaginateModel<MODELS.IPrescription>
->(modelNames.prescription, prescriptionSchema);
+export const PrescriptionModel = paginatedCompiledModel<MODELS.IPrescription>(
+  modelNames.prescription,
+  prescriptionSchema
+);

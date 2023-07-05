@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
-import { modelNames } from '@hmis/gatekeeper';
 import type { MODELS } from '@hmis/gatekeeper';
 import { baseModelSchema } from '../../../utils/models';
+import { modelNames, paginatedCompiledModel } from '@hmis/gatekeeper';
 
 const notificationSchema = new mongoose.Schema<MODELS.IAnnouncement>(
   {
@@ -13,9 +12,7 @@ const notificationSchema = new mongoose.Schema<MODELS.IAnnouncement>(
   { timestamps: true }
 );
 
-notificationSchema.plugin(paginate);
-
-export const AnnouncementModel = mongoose.model<
-  MODELS.Document<MODELS.IAnnouncement>,
-  MODELS.PaginateModel<MODELS.IAnnouncement>
->(modelNames.announcement, notificationSchema);
+export const AnnouncementModel = paginatedCompiledModel<MODELS.IAnnouncement>(
+  modelNames.announcement,
+  notificationSchema
+);

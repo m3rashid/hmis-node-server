@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
 import type { MODELS } from '@hmis/gatekeeper';
-import { ENUMS, modelNames } from '@hmis/gatekeeper';
 import { baseModelSchema } from '../../../utils/models';
+import { ENUMS, modelNames, paginatedCompiledModel } from '@hmis/gatekeeper';
 
 const appointmentSchema = new mongoose.Schema<MODELS.IAppointment>(
   {
@@ -30,9 +29,7 @@ const appointmentSchema = new mongoose.Schema<MODELS.IAppointment>(
   { timestamps: true }
 );
 
-appointmentSchema.plugin(paginate);
-
-export const AppointmentModel = mongoose.model<
-  MODELS.Document<MODELS.IAppointment>,
-  MODELS.PaginateModel<MODELS.IAppointment>
->(modelNames.appointment, appointmentSchema);
+export const AppointmentModel = paginatedCompiledModel<MODELS.IAppointment>(
+  modelNames.appointment,
+  appointmentSchema
+);

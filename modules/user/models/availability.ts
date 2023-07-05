@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
 import type { MODELS } from '@hmis/gatekeeper';
-import { modelNames, ENUMS } from '@hmis/gatekeeper';
 import { baseModelSchema } from '../../../utils/models';
+import { modelNames, ENUMS, paginatedCompiledModel } from '@hmis/gatekeeper';
 
 const availabilitySchema = new mongoose.Schema<MODELS.IAvailability>(
   {
@@ -19,9 +18,7 @@ const availabilitySchema = new mongoose.Schema<MODELS.IAvailability>(
   { timestamps: true }
 );
 
-availabilitySchema.plugin(paginate);
-
-export const AvailabilityModel = mongoose.model<
-  MODELS.Document<MODELS.IAvailability>,
-  MODELS.PaginateModel<MODELS.IAvailability>
->(modelNames.availability, availabilitySchema);
+export const AvailabilityModel = paginatedCompiledModel<MODELS.IAvailability>(
+  modelNames.availability,
+  availabilitySchema
+);

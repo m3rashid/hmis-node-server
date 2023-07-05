@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
 import type { MODELS } from '@hmis/gatekeeper';
-import { modelNames, ENUMS } from '@hmis/gatekeeper';
 import { baseModelSchema } from '../../../utils/models';
+import { modelNames, ENUMS, paginatedCompiledModel } from '@hmis/gatekeeper';
 
 const leaveSchema = new mongoose.Schema<MODELS.ILeave>(
   {
@@ -20,9 +19,7 @@ const leaveSchema = new mongoose.Schema<MODELS.ILeave>(
   { timestamps: true }
 );
 
-leaveSchema.plugin(paginate);
-
-export const LeaveModel = mongoose.model<
-  MODELS.Document<MODELS.ILeave>,
-  MODELS.PaginateModel<MODELS.ILeave>
->(modelNames.leave, leaveSchema);
+export const LeaveModel = paginatedCompiledModel<MODELS.ILeave>(
+  modelNames.leave,
+  leaveSchema
+);

@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
-import { modelNames } from '@hmis/gatekeeper';
 import type { MODELS } from '@hmis/gatekeeper';
 import { baseModelSchema } from '../../../utils/models';
+import { modelNames, paginatedCompiledModel } from '@hmis/gatekeeper';
 
 const addressSchema = new mongoose.Schema<MODELS.IAddress>(
   {
@@ -22,9 +21,7 @@ const addressSchema = new mongoose.Schema<MODELS.IAddress>(
   { timestamps: true }
 );
 
-addressSchema.plugin(paginate);
-
-export const AddressModel = mongoose.model<
-  MODELS.Document<MODELS.IAddress>,
-  MODELS.PaginateModel<MODELS.IAddress>
->(modelNames.address, addressSchema);
+export const AddressModel = paginatedCompiledModel<MODELS.IAddress>(
+  modelNames.address,
+  addressSchema
+);

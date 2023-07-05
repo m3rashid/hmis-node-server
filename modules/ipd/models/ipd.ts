@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
 import type { MODELS } from '@hmis/gatekeeper';
-import { ENUMS, modelNames } from '@hmis/gatekeeper';
 import { baseModelSchema } from '../../../utils/models';
+import { ENUMS, modelNames, paginatedCompiledModel } from '@hmis/gatekeeper';
 
 const ipdSchema = new mongoose.Schema<MODELS.IIpd>(
   {
@@ -76,9 +75,7 @@ const ipdSchema = new mongoose.Schema<MODELS.IIpd>(
   { timestamps: true }
 );
 
-ipdSchema.plugin(paginate);
-
-export const IpdModel = mongoose.model<
-  MODELS.Document<MODELS.IIpd>,
-  MODELS.PaginateModel<MODELS.IIpd>
->(modelNames.ipd, ipdSchema);
+export const IpdModel = paginatedCompiledModel<MODELS.IIpd>(
+  modelNames.ipd,
+  ipdSchema
+);

@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
 import type { MODELS } from '@hmis/gatekeeper';
-import { ENUMS, modelNames } from '@hmis/gatekeeper';
 import { baseModelSchema } from '../../../utils/models';
+import { ENUMS, modelNames, paginatedCompiledModel } from '@hmis/gatekeeper';
 
 const paymentSchema = new mongoose.Schema<MODELS.IPayment>(
   {
@@ -19,9 +18,7 @@ const paymentSchema = new mongoose.Schema<MODELS.IPayment>(
   { timestamps: true }
 );
 
-paymentSchema.plugin(paginate);
-
-export const PaymentModel = mongoose.model<
-  MODELS.Document<MODELS.IPayment>,
-  MODELS.PaginateModel<MODELS.IPayment>
->(modelNames.payment, paymentSchema);
+export const PaymentModel = paginatedCompiledModel<MODELS.IPayment>(
+  modelNames.payment,
+  paymentSchema
+);

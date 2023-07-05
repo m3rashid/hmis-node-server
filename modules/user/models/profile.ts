@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
-
 import type { MODELS } from '@hmis/gatekeeper';
-import { ENUMS, modelNames } from '@hmis/gatekeeper';
 import { baseModelSchema } from '../../../utils/models';
+import { ENUMS, modelNames, paginatedCompiledModel } from '@hmis/gatekeeper';
 
 const profileSchema = new mongoose.Schema<MODELS.IProfile>(
   {
@@ -47,9 +45,7 @@ const profileSchema = new mongoose.Schema<MODELS.IProfile>(
   { timestamps: true }
 );
 
-profileSchema.plugin(paginate);
-
-export const ProfileModel = mongoose.model<
-  MODELS.Document<MODELS.IProfile>,
-  MODELS.PaginateModel<MODELS.IProfile>
->(modelNames.profile, profileSchema);
+export const ProfileModel = paginatedCompiledModel<MODELS.IProfile>(
+  modelNames.profile,
+  profileSchema
+);

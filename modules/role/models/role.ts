@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
-
 import type { MODELS } from '@hmis/gatekeeper';
-import { modelNames } from '@hmis/gatekeeper';
 import { baseModelSchema } from '../../../utils/models';
+import { modelNames, paginatedCompiledModel } from '@hmis/gatekeeper';
 
 const roleSchema = new mongoose.Schema<MODELS.IRole>(
   {
@@ -15,9 +13,7 @@ const roleSchema = new mongoose.Schema<MODELS.IRole>(
   { timestamps: true }
 );
 
-roleSchema.plugin(paginate);
-
-export const RoleModel = mongoose.model<
-  MODELS.Document<MODELS.IRole>,
-  MODELS.PaginateModel<MODELS.IRole>
->(modelNames.role, roleSchema);
+export const RoleModel = paginatedCompiledModel<MODELS.IRole>(
+  modelNames.role,
+  roleSchema
+);
