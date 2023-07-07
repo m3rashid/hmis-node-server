@@ -1,25 +1,9 @@
-import type {
-  PaginatedRequestQueryParams,
-  RequestWithBody,
-} from '../../../helpers/types';
+import type { RequestWithBody } from '../../../helpers/types';
 import type { Response } from 'express';
 import { ERRORS } from '@hmis/gatekeeper';
 import { PaymentModel } from '../models/payment';
 import type { MODELS, paymentValidator } from '@hmis/gatekeeper';
 import List from '../../default/list';
-
-// const addPayment = async (
-//   req: RequestWithBody<paymentValidator.CreatePaymentSchemaBody>,
-// 	 res: Response
-// ) => {
-//   if (!req.isAuthenticated) throw ERRORS.newError('No user found');
-//   const newPayment = new PaymentModel({
-//     ...req.body,
-//     createdBy: req.user._id,
-//   });
-//   const payment = await newPayment.save();
-//   return res.status(200).json(payment);
-// };
 
 export const updatePayment = async (
   req: RequestWithBody<paymentValidator.UpdatePaymentSchemaBody>,

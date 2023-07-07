@@ -10,12 +10,6 @@ import { ERRORS, Validator, paymentValidator } from '@hmis/gatekeeper';
 const paymentRouter: Router = Router();
 const useRoute = ERRORS.useRoute;
 
-// paymentRouter.post(
-//   '/add',
-//   checkAuth,
-//   Validator.validate(paymentValidator.createPaymentSchema),
-//   useRoute(addPayment)
-// );
 paymentRouter.post(
   '/edit',
   checkAuth,

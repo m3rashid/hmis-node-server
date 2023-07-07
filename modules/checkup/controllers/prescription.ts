@@ -31,21 +31,6 @@ export const updatePrescription = async (
   return res.status(200).json(prescription);
 };
 
-// export const getAllPrescriptions = async (
-//   req: PaginatedRequestQueryParams,
-//   res: Response
-// ) => {
-//   const prescription = await PrescriptionModel.paginate(
-//     { deleted: false },
-//     {
-//       sort: { createdAt: -1 },
-//       lean: true,
-//       page: req.query.pageNumber,
-//       limit: req.query.pageSize,
-//     }
-//   );
-//   return res.status(200).json(prescription);
-// };
 export const getAllPrescriptions = List<MODELS.IPrescription>(
   PrescriptionModel,
   {}

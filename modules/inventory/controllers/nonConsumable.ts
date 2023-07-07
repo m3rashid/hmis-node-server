@@ -1,6 +1,4 @@
-import type {
-  RequestWithBody,
-} from '../../../helpers/types';
+import type { RequestWithBody } from '../../../helpers/types';
 import type { Response } from 'express';
 import { ERRORS } from '@hmis/gatekeeper';
 import type { MODELS, inventoryValidator } from '@hmis/gatekeeper';
@@ -11,22 +9,6 @@ export const getAllNonConsumables = List<MODELS.INonConsumable>(
   NonConsumableModel,
   {}
 );
-
-// export const getAllNonConsumablesDeleted = async (
-//   req: PaginatedRequestQueryParams,
-//   res: Response
-// ) => {
-//   const nonConsumables = await NonConsumableModel.paginate(
-//     { deleted: false },
-//     {
-//       $sort: { createdAt: -1 },
-//       lean: true,
-//       page: req.query.pageNumber,
-//       limit: req.query.pageSize,
-//     }
-//   );
-//   res.status(200).json(nonConsumables);
-// };
 
 export const addNonConsumable = async (
   req: RequestWithBody<inventoryValidator.CreateNonConsumableBody>,
