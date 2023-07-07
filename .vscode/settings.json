@@ -6,6 +6,8 @@
 	},
 	"cSpell.words": [
 		"eiows",
+		"hget",
+		"hmset",
 		"includepaths",
 		"middlewares",
 		"NAPI",

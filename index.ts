@@ -1,4 +1,5 @@
 import 'utils/env';
+import './utils/redis'
 import http from 'http';
 import compression from 'compression';
 import cors from 'cors';
@@ -67,6 +68,4 @@ const startServer = async () => {
   }
 };
 
-startServer().catch((err: any) => {
-  console.log(err);
-});
+startServer().catch((err: any) => console.log(err));
