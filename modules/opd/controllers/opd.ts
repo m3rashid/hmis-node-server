@@ -5,7 +5,8 @@ import type {
 import type { Response } from 'express';
 import { ERRORS } from '@hmis/gatekeeper';
 import { OpdModel } from '../models/opd';
-import type { opdValidator } from '@hmis/gatekeeper';
+import type { MODELS, opdValidator } from '@hmis/gatekeeper';
+import List from '../../default/list';
 
 export const addOpd = async (
   req: RequestWithBody<opdValidator.AddOpdSchemaBody>,
@@ -30,21 +31,7 @@ export const updateOpd = async (
   return res.status(200).json(opd);
 };
 
-export const getAllOpd = async (
-  req: PaginatedRequestQueryParams,
-  res: Response
-) => {
-  const opd = await OpdModel.paginate(
-    { deleted: false },
-    {
-      sort: { createdAt: -1 },
-      lean: true,
-      page: req.query.pageNumber,
-      limit: req.query.pageSize,
-    }
-  );
-  return res.status(200).json(opd);
-};
+export const getAllOpd = List<MODELS.IOpd>(OpdModel, {});
 
 export const getOpdDetails = async (
   req: RequestWithBody<opdValidator.DeleteOpdSchemaBody>,

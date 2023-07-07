@@ -23,7 +23,7 @@ testRouter.post(
   Validator.validate(testValidator.updateTestSchema),
   useRoute(updateTest)
 );
-testRouter.get('/', checkAuth, useRoute(getAllTests));
+testRouter.post('/all', checkAuth, useRoute(getAllTests));
 testRouter.post(
   '/details',
   checkAuth,

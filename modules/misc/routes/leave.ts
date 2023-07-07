@@ -23,7 +23,7 @@ leaveRouter.post(
   Validator.validate(leaveValidator.updateLeaveSchema),
   useRoute(updateLeave)
 );
-leaveRouter.get('/', checkAuth, useRoute(getAllLeaves));
+leaveRouter.post('/all', checkAuth, useRoute(getAllLeaves));
 leaveRouter.post(
   '/details',
   checkAuth,

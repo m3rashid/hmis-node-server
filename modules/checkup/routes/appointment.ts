@@ -24,6 +24,6 @@ appointmentRouter.post(
   useRoute(updateAppointment)
 );
 appointmentRouter.post('/details', checkAuth, useRoute(getAppointmentDetails));
-appointmentRouter.get('/all', checkAuth, useRoute(getAllAppointments));
+appointmentRouter.post('/all', checkAuth, useRoute(getAllAppointments));
 
 export default appointmentRouter;

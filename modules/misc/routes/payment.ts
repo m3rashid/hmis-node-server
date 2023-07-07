@@ -22,7 +22,7 @@ paymentRouter.post(
   Validator.validate(paymentValidator.updatePaymentSchema),
   useRoute(updatePayment)
 );
-paymentRouter.get('/', checkAuth, useRoute(getAllPayments));
+paymentRouter.post('/all', checkAuth, useRoute(getAllPayments));
 paymentRouter.post(
   '/details',
   checkAuth,

@@ -1,46 +1,12 @@
-import type {
-  RequestWithBody,
-  PaginatedRequestQueryParams,
-} from '../../../helpers/types';
+import type { RequestWithBody } from '../../../helpers/types';
 import bcrypt from 'bcrypt';
 import { UserModel } from '../models/user';
 import type { Request, Response } from 'express';
-import type { authValidator } from '@hmis/gatekeeper';
-import { ERRORS } from '@hmis/gatekeeper';
+import type { MODELS, authValidator } from '@hmis/gatekeeper';
+import { ERRORS, convertPermissionToReadable } from '@hmis/gatekeeper';
+import List from '../../default/list';
 
-export const getAllInternalUsersWithDeleted = async (
-  req: PaginatedRequestQueryParams,
-  res: Response
-) => {
-  const users = await UserModel.paginate(
-    { origin: 'INTERNAL' },
-    {
-      $sort: { createdAt: -1 },
-      lean: true,
-      populate: 'role',
-      page: req.query.pageNumber,
-      limit: req.query.pageSize,
-    }
-  );
-  return res.json(users);
-};
-
-export const getAllInternalUsers = async (
-  req: PaginatedRequestQueryParams,
-  res: Response
-) => {
-  const users = await UserModel.paginate(
-    { deleted: false, origin: 'INTERNAL' },
-    {
-      $sort: { createdAt: -1 },
-      lean: true,
-      populate: 'role',
-      page: req.query.pageNumber,
-      limit: req.query.pageSize,
-    }
-  );
-  return res.json(users);
-};
+export const getAllInternalUsers = List<MODELS.IUser>(UserModel, {});
 
 export const currentUser = async (req: Request, res: Response) => {
   if (!req.user) throw ERRORS.newError('User not found');
@@ -57,7 +23,18 @@ export const currentUserAllDetails = async (req: Request, res: Response) => {
     })
     .populate('role')
     .lean();
-  res.status(200).json(user);
+
+  const transformedUser = {
+    ...user,
+    role: {
+      ...user?.role,
+      permissions: convertPermissionToReadable(
+        JSON.parse(JSON.stringify(user?.role?.permissions))
+      ),
+    },
+  };
+
+  res.status(200).json(transformedUser);
 };
 
 export const signupUser = async (

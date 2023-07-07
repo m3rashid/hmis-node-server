@@ -1,6 +1,5 @@
 import {
 	getAllExternalUsers,
-  getAllExternalUsersWithDeleted,
   signupPatientFinalize,
   signupPatientInit,
   signupPatientStepTwo,
@@ -26,10 +25,6 @@ patientRouter.post(
   Validator.validate(authValidator.patientSignupFinalSchema),
   useRoute(signupPatientFinalize)
 );
-patientRouter.get(
-  '/all-with-deleted',
-  useRoute(getAllExternalUsersWithDeleted)
-);
-patientRouter.get('/all', useRoute(getAllExternalUsers));
+patientRouter.post('/all', useRoute(getAllExternalUsers));
 
 export default patientRouter;

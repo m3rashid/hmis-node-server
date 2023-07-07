@@ -5,7 +5,8 @@ import type {
 import type { Response } from 'express';
 import { ERRORS } from '@hmis/gatekeeper';
 import { PaymentModel } from '../models/payment';
-import type { paymentValidator } from '@hmis/gatekeeper';
+import type { MODELS, paymentValidator } from '@hmis/gatekeeper';
+import List from '../../default/list';
 
 // const addPayment = async (
 //   req: RequestWithBody<paymentValidator.CreatePaymentSchemaBody>,
@@ -33,21 +34,7 @@ export const updatePayment = async (
   return res.status(200).json(payment);
 };
 
-export const getAllPayments = async (
-  req: PaginatedRequestQueryParams,
-  res: Response
-) => {
-  const payment = await PaymentModel.paginate(
-    { deleted: false },
-    {
-      sort: { createdAt: -1 },
-      lean: true,
-      page: req.query.pageNumber,
-      limit: req.query.pageSize,
-    }
-  );
-  return res.status(200).json(payment);
-};
+export const getAllPayments = List<MODELS.IPayment>(PaymentModel, {});
 
 export const getPaymentDetails = async (
   req: RequestWithBody<paymentValidator.DeletePaymentSchemaBody>,

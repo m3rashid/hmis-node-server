@@ -2,7 +2,6 @@ import {
   addConsumable,
   editConsumable,
   getAllConsumables,
-  getAllConsumablesDeleted,
   removeConsumable,
 } from '../controllers/consumable';
 import { Router } from 'express';
@@ -12,7 +11,7 @@ import { ERRORS, Validator, inventoryValidator } from '@hmis/gatekeeper';
 const consumableRouter: Router = Router();
 const useRoute = ERRORS.useRoute;
 
-consumableRouter.get('/all', checkAuth, useRoute(getAllConsumables));
+consumableRouter.post('/all', checkAuth, useRoute(getAllConsumables));
 consumableRouter.post(
   '/add',
   checkAuth,
@@ -31,6 +30,5 @@ consumableRouter.post(
   Validator.validate(inventoryValidator.deleteConsumableSchema),
   useRoute(removeConsumable)
 );
-consumableRouter.get('/removed', checkAuth, useRoute(getAllConsumablesDeleted));
 
 export default consumableRouter;

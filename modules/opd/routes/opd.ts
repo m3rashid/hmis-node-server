@@ -23,7 +23,7 @@ opdRouter.post(
   Validator.validate(opdValidator.updateOpdSchema),
   useRoute(updateOpd)
 );
-opdRouter.get('/', checkAuth, useRoute(getAllOpd));
+opdRouter.post('/all', checkAuth, useRoute(getAllOpd));
 opdRouter.post(
   '/details',
   checkAuth,

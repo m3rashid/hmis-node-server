@@ -1,13 +1,10 @@
 import {
-	createDevUser,
+  createDevUser,
   updateDevUser,
   createExternalUsers,
   createInternalUsers,
 } from '../modules/user/dummy/auth';
-import {
-	migrateAdminRoles,
-	migrateSpecialRoles,
-} from '../modules/role/dummy/role';
+import { migrateRoles } from '../modules/role/dummy/role';
 import { migrateTests } from '../modules/checkup/dummy/test';
 import { createAddress } from '../modules/user/dummy/address';
 import { migrateProfiles } from '../modules/user/dummy/profile';
@@ -16,8 +13,7 @@ import { migrateAnnouncements } from '../modules/misc/dummy/announcement';
 
 const dummyDbMigration = async () => {
   const devUserId = await createDevUser();
-  await migrateAdminRoles(devUserId);
-  await migrateSpecialRoles(devUserId);
+  await migrateRoles(devUserId);
   await migrateTests(devUserId);
 
   const doctors = await createInternalUsers(devUserId);

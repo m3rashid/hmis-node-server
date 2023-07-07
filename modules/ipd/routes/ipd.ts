@@ -23,7 +23,7 @@ ipdRouter.post(
   Validator.validate(ipdValidator.updateIpdSchema),
   useRoute(updateIpd)
 );
-ipdRouter.get('/', checkAuth, useRoute(getAllIpd));
+ipdRouter.post('/all', checkAuth, useRoute(getAllIpd));
 ipdRouter.post(
   '/details',
   checkAuth,

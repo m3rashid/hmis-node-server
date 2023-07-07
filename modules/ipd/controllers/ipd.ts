@@ -5,7 +5,8 @@ import type {
 import type { Response } from 'express';
 import { IpdModel } from '../models/ipd';
 import { ERRORS } from '@hmis/gatekeeper';
-import type { ipdValidator } from '@hmis/gatekeeper';
+import type { MODELS, ipdValidator } from '@hmis/gatekeeper';
+import List from '../../default/list';
 
 export const addIpd = async (
   req: RequestWithBody<ipdValidator.AddIpdSchemaBody>,
@@ -30,21 +31,7 @@ export const updateIpd = async (
   return res.status(200).json(ipd);
 };
 
-export const getAllIpd = async (
-  req: PaginatedRequestQueryParams,
-  res: Response
-) => {
-  const ipd = await IpdModel.paginate(
-    { deleted: false },
-    {
-      sort: { createdAt: -1 },
-      lean: true,
-      page: req.query.pageNumber,
-      limit: req.query.pageSize,
-    }
-  );
-  return res.status(200).json(ipd);
-};
+export const getAllIpd = List<MODELS.IIpd>(IpdModel, {});
 
 export const getIpdDetails = async (
   req: RequestWithBody<ipdValidator.DeleteIpdSchemaBody>,

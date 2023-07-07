@@ -1,11 +1,10 @@
-import type {
-  RequestWithBody,
-  PaginatedRequestQueryParams,
-} from '../../../helpers/types';
+import type { RequestWithBody } from '../../../helpers/types';
 import type { Response } from 'express';
 import { ERRORS } from '@hmis/gatekeeper';
 import { AppointmentModel } from '../models/appointment';
 import type { appointmentValidator } from '@hmis/gatekeeper';
+import List from '../../default/list';
+import type { MODELS } from '@hmis/gatekeeper';
 
 export const addAppointment = async (
   req: RequestWithBody<appointmentValidator.CreateAppointmentBody>,
@@ -83,19 +82,7 @@ export const getAppointmentDetails = async (
   return res.status(200).json(appointment);
 };
 
-export const getAllAppointments = async (
-  req: PaginatedRequestQueryParams,
-  res: Response
-) => {
-  const appointments = await AppointmentModel.paginate(
-    { deleted: false },
-    {
-      sort: { createdAt: -1 },
-      lean: true,
-      populate: ['doctor', 'patient'],
-      page: req.query.pageNumber,
-      limit: req.query.pageSize,
-    }
-  );
-  return res.status(200).json(appointments);
-};
+export const getAllAppointments = List<MODELS.IAppointment>(
+  AppointmentModel,
+  {}
+);

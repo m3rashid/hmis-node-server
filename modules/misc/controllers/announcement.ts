@@ -1,23 +1,12 @@
 import type { Response } from "express";
 import type { PaginatedRequestQueryParams, RequestWithBody } from "../../../helpers/types";
 import { AnnouncementModel } from "../models/announcement";
-import type { announcementValidator } from "@hmis/gatekeeper";
+import type { MODELS, announcementValidator } from "@hmis/gatekeeper";
 import { ERRORS } from "@hmis/gatekeeper";
 import { createAnnouncement } from "../helpers/announcement";
+import List from "../../default/list";
 
-
-export const getAnnouncements = async (req: PaginatedRequestQueryParams, res: Response) => {
-  const announcements = await AnnouncementModel.paginate(
-    { deleted: false },
-    {
-      $sort: { createdAt: -1 },
-      lean: true,
-      page: req.query.pageNumber,
-      limit: req.query.pageSize,
-    }
-  );
-  return res.status(200).json(announcements);
-};
+export const getAnnouncements = List<MODELS.IAnnouncement>(AnnouncementModel, {});
 
 export const addAnnouncement = async (
   req: RequestWithBody<announcementValidator.CreateAnnouncementBody>,

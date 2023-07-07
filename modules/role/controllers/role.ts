@@ -1,11 +1,9 @@
-import type {
-  PaginatedRequestQueryParams,
-  RequestWithBody,
-} from '../../../helpers/types';
+import type { RequestWithBody } from '../../../helpers/types';
 import type { Response } from 'express';
 import { ERRORS } from '@hmis/gatekeeper';
 import { RoleModel } from '../models/role';
-import type { roleValidator } from '@hmis/gatekeeper';
+import type { MODELS, roleValidator } from '@hmis/gatekeeper';
+import List from '../../default/list';
 
 export const createRole = async (
   req: RequestWithBody<roleValidator.CreateRoleBody>,
@@ -55,39 +53,7 @@ export const deleteRole = async (
   return res.json('Role deleted successfully');
 };
 
-// ERROR: not working
-export const getRoles = async (
-  req: PaginatedRequestQueryParams,
-  res: Response
-) => {
-  const roles = await RoleModel.paginate(
-    { deleted: false },
-    {
-      sort: { createdAt: -1 },
-      lean: true,
-      page: req.query.pageNumber,
-      limit: req.query.pageSize,
-    }
-  );
-  return res.json(roles);
-};
-
-export const getRoleWithDeleted = async (
-  req: PaginatedRequestQueryParams,
-  res: Response
-) => {
-  const roles = await RoleModel.paginate(
-    {},
-    {
-      sort: { createdAt: -1 },
-      populate: 'permissions',
-      lean: true,
-      page: req.query.pageNumber,
-      limit: req.query.pageSize,
-    }
-  );
-  return res.json(roles);
-};
+export const getRoles = List<MODELS.IRole>(RoleModel, {});
 
 export const getRoleDetails = async (
   req: RequestWithBody<roleValidator.DeleteRoleBody>,

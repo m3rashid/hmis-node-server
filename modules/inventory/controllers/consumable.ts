@@ -1,43 +1,14 @@
 import type {
-	PaginatedRequestQueryParams,
+  PaginatedRequestQueryParams,
   RequestWithBody,
 } from '../../../helpers/types';
 import type { Response } from 'express';
 import { ERRORS } from '@hmis/gatekeeper';
 import { ConsumableModel } from '../models/consumable';
-import type { inventoryValidator } from '@hmis/gatekeeper';
+import type { MODELS, inventoryValidator } from '@hmis/gatekeeper';
+import List from '../../default/list';
 
-export const getAllConsumables = async (
-  req: PaginatedRequestQueryParams,
-  res: Response
-) => {
-  const consumables = await ConsumableModel.paginate(
-    { deleted: false },
-    {
-      $sort: { createdAt: -1 },
-      lean: true,
-      page: req.query.pageNumber,
-      limit: req.query.pageSize,
-    }
-  );
-  res.status(200).json(consumables);
-};
-
-export const getAllConsumablesDeleted = async (
-  req: PaginatedRequestQueryParams,
-  res: Response
-) => {
-  const consumables = await ConsumableModel.paginate(
-    { deleted: true },
-    {
-      $sort: { createdAt: -1 },
-      lean: true,
-      page: req.query.pageNumber,
-      limit: req.query.pageSize,
-    }
-  );
-  res.status(200).json(consumables);
-};
+export const getAllConsumables = List<MODELS.IConsumable>(ConsumableModel, {});
 
 export const addConsumable = async (
   req: RequestWithBody<inventoryValidator.CreateConsumableBody>,

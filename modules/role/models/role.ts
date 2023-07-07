@@ -7,7 +7,6 @@ const roleSchema = new mongoose.Schema<MODELS.IRole>(
   {
     ...baseModelSchema,
     name: { type: String, required: true },
-    description: { type: String },
     permissions: { type: mongoose.Schema.Types.Mixed, required: true },
   },
   { timestamps: true }

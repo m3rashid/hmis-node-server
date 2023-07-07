@@ -1,9 +1,8 @@
 import {
-	createRole,
+  createRole,
   deleteRole,
   editRole,
   getRoleDetails,
-  getRoleWithDeleted,
   getRoles,
 } from '../controllers/role';
 import { Router } from 'express';
@@ -31,8 +30,7 @@ roleRouter.post(
   Validator.validate(roleValidator.editRoleSchema),
   useRoute(editRole)
 );
-roleRouter.get('/all', checkAuth, useRoute(getRoles));
+roleRouter.post('/all', checkAuth, useRoute(getRoles));
 roleRouter.post('/details', checkAuth, useRoute(getRoleDetails));
-roleRouter.get('/all-with-deleted', checkAuth, useRoute(getRoleWithDeleted));
 
 export default roleRouter;

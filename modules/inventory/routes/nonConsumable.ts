@@ -2,7 +2,6 @@ import {
   addNonConsumable,
   editNonConsumable,
   getAllNonConsumables,
-  getAllNonConsumablesDeleted,
   removeNonConsumable,
 } from '../controllers/nonConsumable';
 import { Router } from 'express';
@@ -12,7 +11,7 @@ import { ERRORS, Validator, inventoryValidator } from '@hmis/gatekeeper';
 const nonConsumableRouter: Router = Router();
 const useRoute = ERRORS.useRoute;
 
-nonConsumableRouter.get('/all', checkAuth, useRoute(getAllNonConsumables));
+nonConsumableRouter.post('/all', checkAuth, useRoute(getAllNonConsumables));
 nonConsumableRouter.post(
   '/add',
   checkAuth,
@@ -30,11 +29,6 @@ nonConsumableRouter.post(
   checkAuth,
   Validator.validate(inventoryValidator.deleteNonConsumableSchema),
   useRoute(removeNonConsumable)
-);
-nonConsumableRouter.get(
-  '/removed',
-  checkAuth,
-  useRoute(getAllNonConsumablesDeleted)
 );
 
 export default nonConsumableRouter;
