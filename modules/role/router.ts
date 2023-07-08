@@ -79,3 +79,5 @@ roleRouter.get(
     return res.status(200).json(permissionTypes);
   })
 );
+
+export default roleRouter
