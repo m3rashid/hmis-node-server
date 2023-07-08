@@ -1,7 +1,10 @@
 import { Router } from 'express';
+import Edit from '../../default/edit';
+import Create from '../../default/create';
+import type { MODELS } from '@hmis/gatekeeper';
+import { ProfileModel } from '../models/profile';
 import { checkAuth } from '../../../middlewares/auth';
 import { ERRORS, Validator, authValidator } from '@hmis/gatekeeper';
-import { createProfile, updateProfile } from '../controllers/profile';
 
 const profileRouter: Router = Router();
 const useRoute = ERRORS.useRoute;
@@ -10,13 +13,13 @@ profileRouter.post(
   '/create',
   checkAuth,
   Validator.validate(authValidator.createProfileSchema),
-  useRoute(createProfile)
+  useRoute(Create<MODELS.IProfile>(ProfileModel, {}))
 );
 profileRouter.post(
   '/update',
   checkAuth,
   Validator.validate(authValidator.updateProfileSchema),
-  useRoute(updateProfile)
+  useRoute(Edit<MODELS.IProfile>(ProfileModel, {}))
 );
 
 export default profileRouter;

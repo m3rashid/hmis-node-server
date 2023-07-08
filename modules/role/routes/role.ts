@@ -1,11 +1,11 @@
-import {
-  createRole,
-  deleteRole,
-  editRole,
-  getRoleDetails,
-  getRoles,
-} from '../controllers/role';
 import { Router } from 'express';
+import Get from '../../default/get';
+import Edit from '../../default/edit';
+import List from '../../default/list';
+import Delete from '../../default/delete';
+import Create from '../../default/create';
+import { RoleModel } from '../models/role';
+import type { MODELS } from '@hmis/gatekeeper';
 import { checkAuth } from '../../../middlewares/auth';
 import { ERRORS, Validator, roleValidator } from '@hmis/gatekeeper';
 
@@ -16,21 +16,29 @@ roleRouter.post(
   '/create',
   checkAuth,
   Validator.validate(roleValidator.createRoleSchema),
-  useRoute(createRole)
+  useRoute(Create<MODELS.IRole>(RoleModel, {}))
 );
+
 roleRouter.post(
   '/delete',
   checkAuth,
   Validator.validate(roleValidator.deleteRoleSchema),
-  useRoute(deleteRole)
+  useRoute(Delete<MODELS.IRole>(RoleModel, {}))
 );
+
 roleRouter.post(
   '/edit',
   checkAuth,
   Validator.validate(roleValidator.editRoleSchema),
-  useRoute(editRole)
+  useRoute(Edit<MODELS.IRole>(RoleModel, {}))
 );
-roleRouter.post('/all', checkAuth, useRoute(getRoles));
-roleRouter.post('/details', checkAuth, useRoute(getRoleDetails));
+
+roleRouter.post('/all', checkAuth, useRoute(List<MODELS.IRole>(RoleModel, {})));
+
+roleRouter.post(
+  '/details',
+  checkAuth,
+  useRoute(Get<MODELS.IRole>(RoleModel, {}))
+);
 
 export default roleRouter;

@@ -1,10 +1,10 @@
-import {
-  getAllPayments,
-  getPaymentDetails,
-  updatePayment,
-} from '../controllers/payment';
 import { Router } from 'express';
+import List from '../../default/list';
+import Edit from '../../default/edit';
+import type { MODELS } from '@hmis/gatekeeper';
+import { PaymentModel } from '../models/payment';
 import { checkAuth } from '../../../middlewares/auth';
+import { getPaymentDetails } from '../controllers/payment';
 import { ERRORS, Validator, paymentValidator } from '@hmis/gatekeeper';
 
 const paymentRouter: Router = Router();
@@ -14,9 +14,15 @@ paymentRouter.post(
   '/edit',
   checkAuth,
   Validator.validate(paymentValidator.updatePaymentSchema),
-  useRoute(updatePayment)
+  useRoute(Edit<MODELS.IPayment>(PaymentModel, {}))
 );
-paymentRouter.post('/all', checkAuth, useRoute(getAllPayments));
+
+paymentRouter.post(
+  '/all',
+  checkAuth,
+  useRoute(List<MODELS.IPayment>(PaymentModel, {}))
+);
+
 paymentRouter.post(
   '/details',
   checkAuth,

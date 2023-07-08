@@ -1,8 +1,9 @@
-import type { MODELS } from '@hmis/gatekeeper';
+import { ERRORS, type MODELS } from '@hmis/gatekeeper';
 import type { Request, Response } from 'express';
 import type { FilterQuery, Model } from 'mongoose';
 
 interface GetControllerParams<DbType> {
+  requireAuth?: boolean;
   reqTransformer?: (req: Request) => Promise<Request>;
   filterQueryTransformer?: (_: {
     user: MODELS.ILoginUser;
@@ -18,6 +19,7 @@ interface GetControllerParams<DbType> {
 function Get<DbType>(
   model: Model<DbType> | MODELS.PaginateModel<DbType>,
   {
+    requireAuth = true,
     reqTransformer = async (req) => req,
     filterQueryTransformer = async ({ user, filterQuery }) => filterQuery,
     populate = [],
@@ -28,6 +30,9 @@ function Get<DbType>(
     _req: Request<any, any, { query: FilterQuery<DbType> }>,
     res: Response
   ) => {
+    if (requireAuth && !_req.isAuthenticated)
+      throw ERRORS.newError('No user found');
+
     const req = await reqTransformer(_req);
     const user = req.user;
 

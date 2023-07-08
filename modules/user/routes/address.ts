@@ -1,6 +1,9 @@
 import { Router } from 'express';
+import Edit from '../../default/edit';
+import Create from '../../default/create';
+import type { MODELS } from '@hmis/gatekeeper';
+import { AddressModel } from '../models/address';
 import { checkAuth } from '../../../middlewares/auth';
-import { addAddress, updateAddress } from '../controllers/address';
 import { ERRORS, Validator, addressValidator } from '@hmis/gatekeeper';
 
 const addressRouter: Router = Router();
@@ -10,13 +13,13 @@ addressRouter.post(
   '/add',
   checkAuth,
   Validator.validate(addressValidator.createAddressSchema),
-  useRoute(addAddress)
+  useRoute(Create<MODELS.IAddress>(AddressModel, {}))
 );
 addressRouter.post(
   '/edit',
   checkAuth,
   Validator.validate(addressValidator.updateAddressSchema),
-  useRoute(updateAddress)
+  useRoute(Edit<MODELS.IAddress>(AddressModel, {}))
 );
 
 export default addressRouter;

@@ -1,9 +1,10 @@
-import type { MODELS } from '@hmis/gatekeeper';
+import { ERRORS, type MODELS } from '@hmis/gatekeeper';
 import type { Request, Response } from 'express';
 import type { FilterQuery, Model, QueryOptions } from 'mongoose';
 
 interface EditControllerParams<DbType> {
   options?: QueryOptions<DbType>;
+  requireAuth?: boolean;
   reqTransformer?: (req: Request) => Promise<Request>;
   filterQueryTransformer?: (_: {
     user: MODELS.ILoginUser;
@@ -22,6 +23,7 @@ interface EditControllerParams<DbType> {
 function Edit<DbType>(
   model: Model<DbType> | MODELS.PaginateModel<DbType>,
   {
+    requireAuth = true,
     payloadTransformer = async ({ user, payload }) => payload,
     reqTransformer = async (req) => req,
     serializer = async ({ data, user }) => data,
@@ -37,6 +39,9 @@ function Edit<DbType>(
     >,
     res: Response
   ) => {
+    if (requireAuth && !_req.isAuthenticated)
+      throw ERRORS.newError('No user found');
+
     const req = await reqTransformer(_req);
     const user = req.user;
 
