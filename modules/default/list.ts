@@ -55,7 +55,7 @@ function List<DbType>(
       const page = Number((req.body.options || {}).page || 0);
       const options = await optionsTransformer({
         user,
-        options: { ...req.body.options, limit, page, populate },
+        options: { ...req.body.options, limit, page },
       });
 
       const query = await filterQueryTransformer({
