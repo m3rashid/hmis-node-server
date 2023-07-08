@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import Edit from '../../default/edit';
-import List from '../../default/list';
+import Edit from '../default/edit';
+import List from '../default/list';
+import Create from '../default/create';
 import type { Response } from 'express';
-import { OpdModel } from '../models/opd';
-import Create from '../../default/create';
+import { OpdModel } from './models/opd';
 import type { MODELS } from '@hmis/gatekeeper';
-import { checkAuth } from '../../../middlewares/auth';
-import type { RequestWithBody } from '../../../helpers/types';
+import { checkAuth } from '../../middlewares/auth';
+import type { RequestWithBody } from '../../helpers/types';
 import { ERRORS, Validator, opdValidator } from '@hmis/gatekeeper';
 
 const opdRouter: Router = Router();

@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 import { OtpModel } from '../models/otp';
 import { ERRORS } from '@hmis/gatekeeper';
 import { issueJWT } from '../helpers/jwt';
@@ -6,6 +5,7 @@ import { UserModel } from '../models/user';
 import type { Request, Response } from 'express';
 import type { authValidator } from '@hmis/gatekeeper';
 import type { RequestWithBody } from '../../../helpers/types';
+import { compareHash, hashPassword } from '../helpers/bcrypt';
 
 export const login = async (
   req: RequestWithBody<authValidator.LoginBody>,
@@ -19,7 +19,7 @@ export const login = async (
     .lean();
 
   if (!user) throw ERRORS.newError('User not found');
-  const match = await bcrypt.compare(password, user.password);
+	const match = await compareHash(password, user.password);
   if (!match) throw ERRORS.newError('Invalid Credentials');
 
   const { accessToken, refreshToken } = issueJWT(user);
@@ -34,7 +34,7 @@ export const updatePassword = async (req: Request, res: Response) => {
   if (!req.user) throw ERRORS.newError('User not found');
   if (req.body.password !== req.body.confirmPassword)
     throw ERRORS.newError('Passwords do not match');
-  const hashedPassword = await bcrypt.hash(req.body.confirmPassword, 12);
+  const hashedPassword = await hashPassword(req.body.confirmPassword);
   const updatedUser = await UserModel.findByIdAndUpdate(
     req.user._id,
     { $set: { password: hashedPassword, lastUpdatedBy: req.user._id } },
@@ -77,7 +77,7 @@ export const resetPassword = async (
   // TODO: handle check OTP expiry
   // if (otpFound.expiry < Date.now()) throw ERRORS.newError('OTP expired');
 
-  const hashedPassword = await bcrypt.hash(req.body.password, 12);
+  const hashedPassword = await hashPassword(req.body.password);
   const updatedUser = await UserModel.findOneAndUpdate(
     { email: req.body.email },
     { $set: { password: hashedPassword, lastUpdatedBy: foundUser._id } },

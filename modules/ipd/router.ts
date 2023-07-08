@@ -1,15 +1,15 @@
-import type { Response} from 'express';
 import { Router } from 'express';
-import List from '../../default/list';
-import Edit from '../../default/edit';
-import { IpdModel } from '../models/ipd';
-import Create from '../../default/create';
+import List from '../default/list';
+import Edit from '../default/edit';
+import Create from '../default/create';
+import type { Response} from 'express';
+import { IpdModel } from './models/ipd';
 import type { MODELS } from '@hmis/gatekeeper';
-import { checkAuth } from '../../../middlewares/auth';
-import type { RequestWithBody } from '../../../helpers/types';
+import { checkAuth } from '../../middlewares/auth';
+import type { RequestWithBody } from '../../helpers/types';
 import { ERRORS, Validator, ipdValidator } from '@hmis/gatekeeper';
 
-const ipdRouter: Router = Router();
+const ipdRouter = Router();
 const useRoute = ERRORS.useRoute;
 
 ipdRouter.post(
