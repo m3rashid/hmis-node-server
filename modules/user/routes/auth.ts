@@ -1,12 +1,12 @@
 import {
 	login,
-  logout,
   resetPassword,
 	forgotPassword,
   updatePassword,
   revalidateToken,
 } from '../controllers/auth';
 import { Router } from 'express';
+import type { Request, Response} from 'express';
 import { ERRORS, Validator, authValidator } from '@hmis/gatekeeper';
 
 const authRouter: Router = Router();
@@ -18,7 +18,12 @@ authRouter.post(
   useRoute(login)
 );
 
-authRouter.post('/logout', useRoute(logout));
+authRouter.post(
+  '/logout',
+  useRoute(async (req: Request, res: Response) => {
+    return res.sendStatus(200);
+  })
+);
 
 authRouter.post('/revalidate', useRoute(revalidateToken));
 

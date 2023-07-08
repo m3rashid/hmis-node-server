@@ -5,14 +5,14 @@ import List from '../../default/list';
 import Create from '../../default/create';
 import { UserModel } from '../models/user';
 import type { MODELS } from '@hmis/gatekeeper';
+import type { Request, Response} from 'express';
 import { checkAuth } from '../../../middlewares/auth';
-import { currentUserAllDetails } from '../controllers/authUser';
-import { ERRORS, Validator, authValidator } from '@hmis/gatekeeper';
+import { ERRORS, Validator, authValidator, convertPermissionToReadable } from '@hmis/gatekeeper';
 
 const userRouter: Router = Router();
 const useRoute = ERRORS.useRoute;
 
-userRouter.post('/all', List<MODELS.IUser>(UserModel, {}));
+userRouter.post('/all', checkAuth, List<MODELS.IUser>(UserModel, {}));
 
 userRouter.get(
   '/me',
@@ -22,7 +22,32 @@ userRouter.get(
   })
 );
 
-userRouter.get('/me-details', checkAuth, useRoute(currentUserAllDetails));
+userRouter.get(
+  '/me-details',
+  checkAuth,
+  useRoute(async (req: Request, res: Response) => {
+    if (!req.user) throw ERRORS.newError('User not found');
+    const user = await UserModel.findById(req.user._id)
+      .populate({
+        path: 'profile',
+        populate: ['addresses', 'availabilities'],
+      })
+      .populate('role')
+      .lean();
+
+    const transformedUser = {
+      ...user,
+      role: {
+        ...user?.role,
+        permissions: convertPermissionToReadable(
+          JSON.parse(JSON.stringify(user?.role?.permissions))
+        ),
+      },
+    };
+
+    res.status(200).json(transformedUser);
+  })
+);
 
 userRouter.post(
   '/signup',
