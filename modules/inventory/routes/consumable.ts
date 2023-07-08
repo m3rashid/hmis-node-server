@@ -9,33 +9,32 @@ import { ConsumableModel } from '../models/consumable';
 import { ERRORS, Validator, inventoryValidator } from '@hmis/gatekeeper';
 
 const consumableRouter: Router = Router();
-const useRoute = ERRORS.useRoute;
 
 consumableRouter.post(
   '/all',
   checkAuth,
-  useRoute(List<MODELS.IConsumable>(ConsumableModel, {}))
+  List<MODELS.IConsumable>(ConsumableModel, {})
 );
 
 consumableRouter.post(
   '/add',
   checkAuth,
   Validator.validate(inventoryValidator.createConsumableSchema),
-  useRoute(Create<MODELS.IConsumable>(ConsumableModel, {}))
+  Create<MODELS.IConsumable>(ConsumableModel, {})
 );
 
 consumableRouter.post(
   '/edit',
   checkAuth,
   Validator.validate(inventoryValidator.updateConsumableSchema),
-  useRoute(Edit<MODELS.IConsumable>(ConsumableModel, {}))
+  Edit<MODELS.IConsumable>(ConsumableModel, {})
 );
 
 consumableRouter.post(
   '/remove',
   checkAuth,
   Validator.validate(inventoryValidator.deleteConsumableSchema),
-  useRoute(Delete<MODELS.IConsumable>(ConsumableModel, {}))
+  Delete<MODELS.IConsumable>(ConsumableModel, {})
 );
 
 export default consumableRouter;

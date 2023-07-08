@@ -10,35 +10,30 @@ import { checkAuth } from '../../../middlewares/auth';
 import { ERRORS, Validator, roleValidator } from '@hmis/gatekeeper';
 
 const roleRouter: Router = Router();
-const useRoute = ERRORS.useRoute;
 
 roleRouter.post(
   '/create',
   checkAuth,
   Validator.validate(roleValidator.createRoleSchema),
-  useRoute(Create<MODELS.IRole>(RoleModel, {}))
+  Create<MODELS.IRole>(RoleModel, {})
 );
 
 roleRouter.post(
   '/delete',
   checkAuth,
   Validator.validate(roleValidator.deleteRoleSchema),
-  useRoute(Delete<MODELS.IRole>(RoleModel, {}))
+  Delete<MODELS.IRole>(RoleModel, {})
 );
 
 roleRouter.post(
   '/edit',
   checkAuth,
   Validator.validate(roleValidator.editRoleSchema),
-  useRoute(Edit<MODELS.IRole>(RoleModel, {}))
+  Edit<MODELS.IRole>(RoleModel, {})
 );
 
-roleRouter.post('/all', checkAuth, useRoute(List<MODELS.IRole>(RoleModel, {})));
+roleRouter.post('/all', checkAuth, List<MODELS.IRole>(RoleModel, {}));
 
-roleRouter.post(
-  '/details',
-  checkAuth,
-  useRoute(Get<MODELS.IRole>(RoleModel, {}))
-);
+roleRouter.post('/details', checkAuth, Get<MODELS.IRole>(RoleModel, {}));
 
 export default roleRouter;

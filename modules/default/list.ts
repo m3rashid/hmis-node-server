@@ -1,5 +1,5 @@
-import { ERRORS, type MODELS } from '@hmis/gatekeeper';
 import type { Request, Response } from 'express';
+import { ERRORS, type MODELS } from '@hmis/gatekeeper';
 import type { FilterQuery, Model, PaginateOptions } from 'mongoose';
 
 interface ListControllerParams<DbType> {
@@ -33,43 +33,45 @@ function List<DbType>(
     optionsTransformer = async ({ user, options }) => options,
   }: ListControllerParams<DbType>
 ) {
-  return async (
-    _req: Request<
-      any,
-      any,
-      { query: FilterQuery<DbType>; options: PaginateOptions }
-    >,
-    res: Response<DbType>
-  ) => {
-    if (requireAuth && !_req.isAuthenticated)
-      throw ERRORS.newError('No user found');
+  return ERRORS.useRoute(
+    async (
+      _req: Request<
+        any,
+        any,
+        { query: FilterQuery<DbType>; options: PaginateOptions }
+      >,
+      res: Response<DbType>
+    ) => {
+      if (requireAuth && !_req.isAuthenticated)
+        throw ERRORS.newError('No user found');
 
-    const req = await reqTransformer(_req);
-    const user = req.user;
+      const req = await reqTransformer(_req);
+      const user = req.user;
 
-    const limit = Math.min(
-      Number((req.body.options || {}).limit || 0),
-      maxLimit
-    );
-    const page = Number((req.body.options || {}).page || 0);
-    const options = await optionsTransformer({
-      user,
-      options: { ...req.body.options, limit, page, populate },
-    });
+      const limit = Math.min(
+        Number((req.body.options || {}).limit || 0),
+        maxLimit
+      );
+      const page = Number((req.body.options || {}).page || 0);
+      const options = await optionsTransformer({
+        user,
+        options: { ...req.body.options, limit, page, populate },
+      });
 
-    const query = await filterQueryTransformer({
-      user,
-      filterQuery: req.body.query || {},
-    });
+      const query = await filterQueryTransformer({
+        user,
+        filterQuery: req.body.query || {},
+      });
 
-    // @ts-ignore
-    const listDocs = await model.paginate(query, options);
-    const data = await serializer({
-      user,
-      data: JSON.parse(JSON.stringify(listDocs)),
-    });
-    return res.status(200).json(data);
-  };
+      // @ts-ignore
+      const listDocs = await model.paginate(query, options);
+      const data = await serializer({
+        user,
+        data: JSON.parse(JSON.stringify(listDocs)),
+      });
+      return res.status(200).json(data);
+    }
+  );
 }
 
 export default List;

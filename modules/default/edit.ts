@@ -1,5 +1,5 @@
-import { ERRORS, type MODELS } from '@hmis/gatekeeper';
 import type { Request, Response } from 'express';
+import { ERRORS, type MODELS } from '@hmis/gatekeeper';
 import type { FilterQuery, Model, QueryOptions } from 'mongoose';
 
 interface EditControllerParams<DbType> {
@@ -31,48 +31,50 @@ function Edit<DbType>(
     options = {},
   }: EditControllerParams<DbType>
 ) {
-  return async (
-    _req: Request<
-      any,
-      any,
-      { query: FilterQuery<DbType>; payload: Partial<DbType> }
-    >,
-    res: Response
-  ) => {
-    if (requireAuth && !_req.isAuthenticated)
-      throw ERRORS.newError('No user found');
+  return ERRORS.useRoute(
+    async (
+      _req: Request<
+        any,
+        any,
+        { query: FilterQuery<DbType>; payload: Partial<DbType> }
+      >,
+      res: Response
+    ) => {
+      if (requireAuth && !_req.isAuthenticated)
+        throw ERRORS.newError('No user found');
 
-    const req = await reqTransformer(_req);
-    const user = req.user;
+      const req = await reqTransformer(_req);
+      const user = req.user;
 
-    const payload = await payloadTransformer({
-      user,
-      payload: req.body || {},
-    });
-    const query = await filterQueryTransformer({
-      user,
-      filterQuery: req.body.query || {},
-    });
+      const payload = await payloadTransformer({
+        user,
+        payload: req.body || {},
+      });
+      const query = await filterQueryTransformer({
+        user,
+        filterQuery: req.body.query || {},
+      });
 
-    // @ts-ignore
-    const updateDoc = await model.findOneAndUpdate(
-      query,
-      {
-        $set: {
-          ...payload,
-          ...(req.user ? { lastUpdatedBy: req.user._id } : {}),
+      // @ts-ignore
+      const updateDoc = await model.findOneAndUpdate(
+        query,
+        {
+          $set: {
+            ...payload,
+            ...(req.user ? { lastUpdatedBy: req.user._id } : {}),
+          },
         },
-      },
-      { ...options, new: true }
-    );
+        { ...options, new: true }
+      );
 
-    const data = await serializer({
-      data: JSON.parse(JSON.stringify(updateDoc)),
-      user,
-    });
+      const data = await serializer({
+        data: JSON.parse(JSON.stringify(updateDoc)),
+        user,
+      });
 
-    return res.status(200).json(data);
-  };
+      return res.status(200).json(data);
+    }
+  );
 }
 
 export default Edit;

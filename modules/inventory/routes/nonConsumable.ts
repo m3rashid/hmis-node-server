@@ -9,33 +9,32 @@ import { NonConsumableModel } from '../models/nonConsumable';
 import { ERRORS, Validator, inventoryValidator } from '@hmis/gatekeeper';
 
 const nonConsumableRouter: Router = Router();
-const useRoute = ERRORS.useRoute;
 
 nonConsumableRouter.post(
   '/all',
   checkAuth,
-  useRoute(List<MODELS.INonConsumable>(NonConsumableModel, {}))
+  List<MODELS.INonConsumable>(NonConsumableModel, {})
 );
 
 nonConsumableRouter.post(
   '/add',
   checkAuth,
   Validator.validate(inventoryValidator.createNonConsumableSchema),
-  useRoute(Create<MODELS.INonConsumable>(NonConsumableModel, {}))
+  Create<MODELS.INonConsumable>(NonConsumableModel, {})
 );
 
 nonConsumableRouter.post(
   '/edit',
   checkAuth,
   Validator.validate(inventoryValidator.updateNonConsumableSchema),
-  useRoute(Edit<MODELS.INonConsumable>(NonConsumableModel, {}))
+  Edit<MODELS.INonConsumable>(NonConsumableModel, {})
 );
 
 nonConsumableRouter.post(
   '/remove',
   checkAuth,
   Validator.validate(inventoryValidator.deleteNonConsumableSchema),
-  useRoute(Delete<MODELS.INonConsumable>(NonConsumableModel, {}))
+  Delete<MODELS.INonConsumable>(NonConsumableModel, {})
 );
 
 export default nonConsumableRouter;

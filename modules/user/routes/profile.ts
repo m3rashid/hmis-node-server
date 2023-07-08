@@ -7,19 +7,19 @@ import { checkAuth } from '../../../middlewares/auth';
 import { ERRORS, Validator, authValidator } from '@hmis/gatekeeper';
 
 const profileRouter: Router = Router();
-const useRoute = ERRORS.useRoute;
 
 profileRouter.post(
   '/create',
   checkAuth,
   Validator.validate(authValidator.createProfileSchema),
-  useRoute(Create<MODELS.IProfile>(ProfileModel, {}))
+  Create<MODELS.IProfile>(ProfileModel, {})
 );
+
 profileRouter.post(
   '/update',
   checkAuth,
   Validator.validate(authValidator.updateProfileSchema),
-  useRoute(Edit<MODELS.IProfile>(ProfileModel, {}))
+  Edit<MODELS.IProfile>(ProfileModel, {})
 );
 
 export default profileRouter;

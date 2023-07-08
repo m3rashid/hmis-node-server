@@ -7,19 +7,18 @@ import { AnnouncementModel } from '../models/announcement';
 import { ERRORS, Validator, announcementValidator } from '@hmis/gatekeeper';
 
 const announcementRouter: Router = Router();
-const useRoute = ERRORS.useRoute;
 
 announcementRouter.post(
   '/all',
   checkAuth,
-  useRoute(List<MODELS.IAnnouncement>(AnnouncementModel, {}))
+  List<MODELS.IAnnouncement>(AnnouncementModel, {})
 );
 
 announcementRouter.post(
   '/add',
   checkAuth,
   Validator.validate(announcementValidator.createAnnouncementSchema),
-  useRoute(Create<MODELS.IAnnouncement>(AnnouncementModel, {}))
+  Create<MODELS.IAnnouncement>(AnnouncementModel, {})
 );
 
 export default announcementRouter;

@@ -1,6 +1,6 @@
 import type { Model } from 'mongoose';
-import { ERRORS, type MODELS } from '@hmis/gatekeeper';
 import type { Request, Response } from 'express';
+import { ERRORS, type MODELS } from '@hmis/gatekeeper';
 
 interface CreateControllerParams<DbType> {
   requireAuth?: boolean;
@@ -24,34 +24,33 @@ function Create<DbType>(
     serializer = async ({ data, user }) => data,
   }: CreateControllerParams<DbType>
 ) {
-  return async (
-    _req: Request<any, any, { payload: DbType }>,
-    res: Response
-  ) => {
-    if (requireAuth && !_req.isAuthenticated)
-      throw ERRORS.newError('No user found');
+  return ERRORS.useRoute(
+    async (_req: Request<any, any, { payload: DbType }>, res: Response) => {
+      if (requireAuth && !_req.isAuthenticated)
+        throw ERRORS.newError('No user found');
 
-    const req = await reqTransformer(_req);
-    const user = req.user;
-    const payload = await payloadTransformer({
-      user,
-      payload: req.body.payload || {},
-    });
+      const req = await reqTransformer(_req);
+      const user = req.user;
+      const payload = await payloadTransformer({
+        user,
+        payload: req.body.payload || {},
+      });
 
-    const createDoc = new model({
-      ...payload,
-      ...(req.user
-        ? { createdBy: req.user._id, lastUpdatedBy: req.user._id }
-        : {}),
-    });
-    await createDoc.save();
+      const createDoc = new model({
+        ...payload,
+        ...(req.user
+          ? { createdBy: req.user._id, lastUpdatedBy: req.user._id }
+          : {}),
+      });
+      await createDoc.save();
 
-    const data = await serializer({
-      data: JSON.parse(JSON.stringify(createDoc)),
-      user,
-    });
-    return res.status(201).json(data);
-  };
+      const data = await serializer({
+        data: JSON.parse(JSON.stringify(createDoc)),
+        user,
+      });
+      return res.status(201).json(data);
+    }
+  );
 }
 
 export default Create;
