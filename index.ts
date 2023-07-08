@@ -1,23 +1,23 @@
 import 'utils/env';
 import './utils/redis'
 import http from 'http';
-import compression from 'compression';
 import cors from 'cors';
-import express from 'express';
 import helmet from 'helmet';
-import mongoose from 'mongoose';
-import paginate from 'mongoose-paginate-v2';
 import morgan from 'morgan';
-import { Server as SocketServer } from 'socket.io';
+import express from 'express';
+import mongoose from 'mongoose';
+import compression from 'compression';
 import { ERRORS } from '@hmis/gatekeeper';
+import paginate from 'mongoose-paginate-v2';
+import { Server as SocketServer } from 'socket.io';
 
 import router from './routes';
 import checkSocketAuth from './sockets/auth';
 import type {
-  ClientToServerEvents,
+	SocketData,
   InterServerEvents,
   ServerToClientEvents,
-  SocketData,
+  ClientToServerEvents,
 } from './sockets/types';
 import { config } from './utils/config';
 // import dummyDbMigration from './utils/dummyDbMigration';
