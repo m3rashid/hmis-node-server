@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt';
 import { OtpModel } from '../models/otp';
 import { ERRORS } from '@hmis/gatekeeper';
+import { issueJWT } from '../helpers/jwt';
 import { UserModel } from '../models/user';
 import type { Request, Response } from 'express';
 import type { authValidator } from '@hmis/gatekeeper';
-import { issueJWT, revalidateJWT } from '../helpers/jwt';
 import type { RequestWithBody } from '../../../helpers/types';
 
 export const login = async (
@@ -28,34 +28,6 @@ export const login = async (
     accessToken,
     refreshToken,
   });
-};
-
-export const revalidateToken = async (req: Request, res: Response) => {
-  const rfToken = req.headers.authorization;
-  if (!rfToken) throw ERRORS.newError('No token Provided');
-
-  const { valid, expired, payload } = revalidateJWT(rfToken);
-  if (!valid || expired) throw new Error('Unauthorized');
-  const userId = (payload?.sub as any)?._id;
-  if (!userId) throw ERRORS.newError('No user found');
-
-  const user = await UserModel.findById(userId)
-    .populate('role')
-    .populate('role.permissions')
-    .populate('profile')
-    .lean();
-
-  if (!user) throw ERRORS.newError('User not found');
-  const { accessToken, refreshToken } = issueJWT(user);
-  return res.status(200).json({
-    user,
-    accessToken,
-    refreshToken,
-  });
-};
-
-export const logout = async (req: Request, res: Response) => {
-  return res.sendStatus(200);
 };
 
 export const updatePassword = async (req: Request, res: Response) => {

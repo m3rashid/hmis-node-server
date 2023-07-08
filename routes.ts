@@ -1,24 +1,46 @@
 import { Router } from 'express';
 import { appConfig } from './data/config';
-import ipdRouter from './modules/ipd/routes/ipd';
-import opdRouter from './modules/opd/routes/opd';
-import authRouter from './modules/user/routes/auth';
-import roleRouter from './modules/role/routes/role';
-import leaveRouter from './modules/misc/routes/leave';
+
+// Checkup
 import testRouter from './modules/checkup/routes/test';
+import appointmentRouter from './modules/checkup/routes/appointment';
+import prescriptionRouter from './modules/checkup/routes/prescription';
+
+// Inventory
+import consumableRouter from './modules/inventory/routes/consumable';
+import nonConsumableRouter from './modules/inventory/routes/nonConsumable';
+
+// IPD
+import ipdRouter from './modules/ipd/routes/ipd';
+
+// OPD
+import opdRouter from './modules/opd/routes/opd';
+
+// Misc
+import leaveRouter from './modules/misc/routes/leave';
+import paymentRouter from './modules/misc/routes/payment';
+import announcementRouter from './modules/misc/routes/announcement';
+
+// Project Mgmt
+import goalRouter from './modules/projectMgmt/routes/goal';
+import projectRouter from './modules/projectMgmt/routes/project';
+import subTaskRouter from './modules/projectMgmt/routes/subTask';
+import taskRouter from './modules/projectMgmt/routes/task';
+import taskStatusRouter from './modules/projectMgmt/routes/taskStatus';
+import teamRouter from './modules/projectMgmt/routes/team';
+
+// Role
+import roleRouter from './modules/role/routes/role';
+import resourceRouter from './modules/role/routes/resource';
+
+// User
+import authRouter from './modules/user/routes/auth';
 import userRouter from './modules/user/routes/authUser';
 import searchRouter from './modules/user/routes/search';
 import addressRouter from './modules/user/routes/address';
 import profileRouter from './modules/user/routes/profile';
-import paymentRouter from './modules/misc/routes/payment';
-import resourceRouter from './modules/role/routes/resource';
 import patientRouter from './modules/user/routes/authPatient';
-import announcementRouter from './modules/misc/routes/announcement';
 import availabilityRouter from './modules/user/routes/availability';
-import consumableRouter from './modules/inventory/routes/consumable';
-import appointmentRouter from './modules/checkup/routes/appointment';
-import prescriptionRouter from './modules/checkup/routes/prescription';
-import nonConsumableRouter from './modules/inventory/routes/nonConsumable';
 
 const router: Router = Router();
 
@@ -46,14 +68,20 @@ router.use('/lab', testRouter);
 router.use('/auth', authRouter);
 router.use('/user', userRouter);
 router.use('/role', roleRouter);
+router.use('/goal', goalRouter);
+router.use('/task', taskRouter);
+router.use('/team', teamRouter);
 router.use('/leave', leaveRouter);
 router.use('/search', searchRouter);
 router.use('/patient', patientRouter);
 router.use('/address', addressRouter);
 router.use('/profile', profileRouter);
 router.use('/payment', paymentRouter);
+router.use('/project', projectRouter);
+router.use('/sub-task', subTaskRouter);
 router.use('/resource', resourceRouter);
 router.use('/consumable', consumableRouter);
+router.use('/task-status', taskStatusRouter);
 router.use('/appointment', appointmentRouter);
 router.use('/announcement', announcementRouter);
 router.use('/availability', availabilityRouter);

@@ -4,7 +4,7 @@ import Create from '../../default/create';
 import type { MODELS } from '@hmis/gatekeeper';
 import { checkAuth } from '../../../middlewares/auth';
 import { AvailabilityModel } from '../models/availability';
-import { ERRORS, Validator, availabilityValidator } from '@hmis/gatekeeper';
+import { Validator, availabilityValidator } from '@hmis/gatekeeper';
 
 const availabilityRouter: Router = Router();
 

@@ -4,7 +4,7 @@ import Create from '../../default/create';
 import type { MODELS } from '@hmis/gatekeeper';
 import { ProfileModel } from '../models/profile';
 import { checkAuth } from '../../../middlewares/auth';
-import { ERRORS, Validator, authValidator } from '@hmis/gatekeeper';
+import { Validator, authValidator } from '@hmis/gatekeeper';
 
 const profileRouter: Router = Router();
 

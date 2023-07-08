@@ -1,3 +1,9 @@
+import {
+  ERRORS,
+  Validator,
+  authValidator,
+  convertPermissionToReadable,
+} from '@hmis/gatekeeper';
 import bcrypt from 'bcrypt';
 import { Router } from 'express';
 import Get from '../../default/get';
@@ -5,9 +11,8 @@ import List from '../../default/list';
 import Create from '../../default/create';
 import { UserModel } from '../models/user';
 import type { MODELS } from '@hmis/gatekeeper';
-import type { Request, Response} from 'express';
+import type { Request, Response } from 'express';
 import { checkAuth } from '../../../middlewares/auth';
-import { ERRORS, Validator, authValidator, convertPermissionToReadable } from '@hmis/gatekeeper';
 
 const userRouter: Router = Router();
 const useRoute = ERRORS.useRoute;
@@ -28,10 +33,7 @@ userRouter.get(
   useRoute(async (req: Request, res: Response) => {
     if (!req.user) throw ERRORS.newError('User not found');
     const user = await UserModel.findById(req.user._id)
-      .populate({
-        path: 'profile',
-        populate: ['addresses', 'availabilities'],
-      })
+      .populate({ path: 'profile', populate: ['addresses', 'availabilities'] })
       .populate('role')
       .lean();
 
@@ -45,7 +47,7 @@ userRouter.get(
       },
     };
 
-    res.status(200).json(transformedUser);
+    return res.status(200).json(transformedUser);
   })
 );
 

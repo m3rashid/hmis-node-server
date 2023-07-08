@@ -16,7 +16,7 @@ const teamSchema = new mongoose.Schema<MODELS.ITeam>(
   { timestamps: true }
 );
 
-export const SubTaskModel = paginatedCompiledModel<MODELS.ITeam>(
+export const TeamModel = paginatedCompiledModel<MODELS.ITeam>(
   modelNames.team,
   teamSchema
 );

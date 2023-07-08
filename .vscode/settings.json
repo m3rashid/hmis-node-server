@@ -9,6 +9,7 @@
 		"hget",
 		"hmset",
 		"includepaths",
+		"Mgmt",
 		"middlewares",
 		"NAPI",
 		"paren",
