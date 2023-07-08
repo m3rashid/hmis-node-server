@@ -1,11 +1,11 @@
-import {
-  addPrescription,
-  getAllPrescriptions,
-  getPrescriptionDetails,
-  updatePrescription,
-} from '../controllers/prescription';
 import { Router } from 'express';
+import List from '../../default/list';
+import Edit from '../../default/edit';
+import Create from '../../default/create';
+import type { MODELS } from '@hmis/gatekeeper';
 import { checkAuth } from '../../../middlewares/auth';
+import { PrescriptionModel } from '../models/prescription';
+import { getPrescriptionDetails } from '../controllers/prescription';
 import { ERRORS, Validator, prescriptionValidator } from '@hmis/gatekeeper';
 
 const prescriptionRouter: Router = Router();
@@ -15,15 +15,22 @@ prescriptionRouter.post(
   '/add',
   checkAuth,
   Validator.validate(prescriptionValidator.createPrescriptionSchema),
-  useRoute(addPrescription)
+  useRoute(Create<MODELS.IPrescription>(PrescriptionModel, {}))
 );
+
 prescriptionRouter.post(
   '/edit',
   checkAuth,
   Validator.validate(prescriptionValidator.updatePrescriptionSchema),
-  useRoute(updatePrescription)
+  useRoute(Edit<MODELS.IPrescription>(PrescriptionModel, {}))
 );
-prescriptionRouter.get('/', checkAuth, useRoute(getAllPrescriptions));
+
+prescriptionRouter.get(
+  '/',
+  checkAuth,
+  useRoute(List<MODELS.IPrescription>(PrescriptionModel, {}))
+);
+
 prescriptionRouter.post(
   '/details',
   checkAuth,

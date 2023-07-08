@@ -1,40 +1,7 @@
-import type { RequestWithBody } from '../../../helpers/types';
 import type { Response } from 'express';
-import { ERRORS } from '@hmis/gatekeeper';
 import { PrescriptionModel } from '../models/prescription';
-import type { MODELS, prescriptionValidator } from '@hmis/gatekeeper';
-import List from '../../default/list';
-
-export const addPrescription = async (
-  req: RequestWithBody<prescriptionValidator.CreatePrescriptionBody>,
-  res: Response
-) => {
-  if (!req.isAuthenticated) throw ERRORS.newError('No user found');
-  const newPrescription = new PrescriptionModel({
-    ...req.body,
-    createdBy: req.user._id,
-  });
-  const prescription = await newPrescription.save();
-  return res.status(200).json(prescription);
-};
-
-export const updatePrescription = async (
-  req: RequestWithBody<prescriptionValidator.UpdatePrescriptionBody>,
-  res: Response
-) => {
-  if (!req.isAuthenticated) throw ERRORS.newError('No user found');
-  const prescription = await PrescriptionModel.findByIdAndUpdate(
-    req.body._id,
-    { $set: { ...req.body, lastUpdatedBy: req.user._id } },
-    { new: true }
-  );
-  return res.status(200).json(prescription);
-};
-
-export const getAllPrescriptions = List<MODELS.IPrescription>(
-  PrescriptionModel,
-  {}
-);
+import type { prescriptionValidator } from '@hmis/gatekeeper';
+import type { RequestWithBody } from '../../../helpers/types';
 
 export const getPrescriptionDetails = async (
   req: RequestWithBody<prescriptionValidator.DeletePrescriptionBody>,
