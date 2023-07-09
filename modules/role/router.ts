@@ -29,6 +29,30 @@ const {
   UPDATE_SELF,
 } = PERMISSION;
 
+roleRouter.get(
+  '/resource/all',
+  checkAuth,
+  useRoute((_: Request, res: Response) => {
+    const permissions = Object.entries(
+      permissionBuilder({ permission: {}, defaultAccess: 1 })
+    ).reduce<MODELS.IPermission>(
+      (acc, [key, value]) => ({
+        ...acc,
+        [key]:
+          CREATE +
+          DELETE_ALL +
+          DELETE_SELF +
+          READ_ALL +
+          READ_SELF +
+          UPDATE_ALL +
+          UPDATE_SELF,
+      }),
+      {} as MODELS.IPermission
+    );
+    return res.status(200).json(permissions);
+  })
+);
+
 roleRouter.post(
   '/role/create',
   checkAuth,
@@ -53,31 +77,5 @@ roleRouter.post(
 roleRouter.post('/role/all', checkAuth, List<MODELS.IRole>(RoleModel, {}));
 
 roleRouter.post('/role/details', checkAuth, Get<MODELS.IRole>(RoleModel, {}));
-
-roleRouter.get(
-  '/resource/all',
-  checkAuth,
-  useRoute((_: Request, res: Response) => {
-    const permissions = Object.entries(
-      permissionBuilder({ permission: {}, defaultAccess: 1 })
-    ).reduce<MODELS.IPermission>(
-      (acc, [key, value]) => ({
-        ...acc,
-        [key]:
-          CREATE +
-          DELETE_ALL +
-          DELETE_SELF +
-          READ_ALL +
-          READ_SELF +
-          UPDATE_ALL +
-          UPDATE_SELF,
-      }),
-      {} as MODELS.IPermission
-    );
-
-    const permissionTypes = convertPermissionToReadable(permissions);
-    return res.status(200).json(permissionTypes);
-  })
-);
 
 export default roleRouter
