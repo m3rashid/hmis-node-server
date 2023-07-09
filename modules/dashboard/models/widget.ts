@@ -14,6 +14,8 @@ const dashboardWidgetSchema = new mongoose.Schema<MODELS.IDashboardWidget>(
     modelName: { type: String, required: true },
     durationMonths: { type: Number, required: true },
     chartType: { type: String, required: true },
+    height: { type: Number, required: true },
+    width: { type: Number, required: true },
   },
   { timestamps: true }
 );

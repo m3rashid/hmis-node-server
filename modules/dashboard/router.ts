@@ -38,6 +38,30 @@ dashboardRouter.post(
 );
 
 dashboardRouter.post(
+  '/widget/run-aggregation',
+  checkAuth,
+  useRoute(
+    async (
+      req: Request<
+        any,
+        any,
+        {
+          aggregation: Array<Record<string, any>>;
+          modelName: MODELS.IDbSchemaKey;
+        }
+      >,
+      res: Response
+    ) => {
+      const model = mongoose.model(modelNames[req.body.modelName]);
+      const widgetData = await model.aggregate(
+        (req.body.aggregation || []) as any
+      );
+      return res.status(200).json(widgetData);
+    }
+  )
+);
+
+dashboardRouter.post(
   '/widget/get',
   checkAuth,
   useRoute(
@@ -49,8 +73,10 @@ dashboardRouter.post(
       if (!widget) throw ERRORS.newError('No widget found');
 
       const model = mongoose.model(modelNames[widget.modelName]);
-      const data = await model.aggregate((widget.aggregation || []) as any);
-      return res.status(200).json(data);
+      const widgetData = await model.aggregate(
+        (widget.aggregation || []) as any
+      );
+      return res.status(200).json({ widget, widgetData });
     }
   )
 );
