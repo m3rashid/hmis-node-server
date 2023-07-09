@@ -3,76 +3,13 @@ import List from '../default/list';
 import Edit from '../default/edit';
 import Delete from '../default/delete';
 import Create from '../default/create';
-import { GoalModel } from './models/goal';
-import { TeamModel } from './models/team';
 import { TaskModel } from './models/task';
 import type { MODELS } from '@hmis/gatekeeper';
-import { ProjectModel } from './models/project';
 import { SubTaskModel } from './models/subTask';
 import { checkAuth } from '../../middlewares/auth';
 import { TaskStatusModel } from './models/taskStatus';
 
 const projectManagementRouter = Router();
-
-projectManagementRouter.post(
-  '/goal/all',
-  checkAuth,
-  List<MODELS.IGoal>(GoalModel, {})
-);
-
-projectManagementRouter.post(
-  '/goal/add',
-  checkAuth,
-  Create<MODELS.IGoal>(GoalModel, {})
-);
-
-projectManagementRouter.post(
-  '/goal/edit',
-  checkAuth,
-  Edit<MODELS.IGoal>(GoalModel, {})
-);
-
-projectManagementRouter.post(
-  '/goal/remove',
-  checkAuth,
-  Delete<MODELS.IGoal>(GoalModel, {})
-);
-
-projectManagementRouter.post(
-  '/goal/recover',
-  checkAuth,
-  Delete<MODELS.IGoal>(GoalModel, { recover: true })
-);
-
-projectManagementRouter.post(
-  '/team/all',
-  checkAuth,
-  List<MODELS.ITeam>(TeamModel, {})
-);
-
-projectManagementRouter.post(
-  '/team/add',
-  checkAuth,
-  Create<MODELS.ITeam>(TeamModel, {})
-);
-
-projectManagementRouter.post(
-  '/team/edit',
-  checkAuth,
-  Edit<MODELS.ITeam>(TeamModel, {})
-);
-
-projectManagementRouter.post(
-  '/team/remove',
-  checkAuth,
-  Delete<MODELS.ITeam>(TeamModel, {})
-);
-
-projectManagementRouter.post(
-  '/team/recover',
-  checkAuth,
-  Delete<MODELS.ITeam>(TeamModel, { recover: true })
-);
 
 projectManagementRouter.post(
   '/task-status/all',
@@ -162,36 +99,6 @@ projectManagementRouter.post(
   '/sub-task/recover',
   checkAuth,
   Delete<MODELS.ISubTask>(SubTaskModel, { recover: true })
-);
-
-projectManagementRouter.post(
-  '/project/all',
-  checkAuth,
-  List<MODELS.IProject>(ProjectModel, {})
-);
-
-projectManagementRouter.post(
-  '/project/add',
-  checkAuth,
-  Create<MODELS.IProject>(ProjectModel, {})
-);
-
-projectManagementRouter.post(
-  '/project/edit',
-  checkAuth,
-  Edit<MODELS.IProject>(ProjectModel, {})
-);
-
-projectManagementRouter.post(
-  '/project/remove',
-  checkAuth,
-  Delete<MODELS.IProject>(ProjectModel, {})
-);
-
-projectManagementRouter.post(
-  '/project/recover',
-  checkAuth,
-  Delete<MODELS.IProject>(ProjectModel, { recover: true })
 );
 
 export default projectManagementRouter;
