@@ -38,6 +38,13 @@ inventoryRouter.post(
 );
 
 inventoryRouter.post(
+  '/consumable/recover',
+  checkAuth,
+  Validator.validate(inventoryValidator.deleteConsumableSchema),
+  Delete<MODELS.IConsumable>(ConsumableModel, { recover: true })
+);
+
+inventoryRouter.post(
   '/non-consumable/all',
   checkAuth,
   List<MODELS.INonConsumable>(NonConsumableModel, {})
@@ -62,6 +69,13 @@ inventoryRouter.post(
   checkAuth,
   Validator.validate(inventoryValidator.deleteNonConsumableSchema),
   Delete<MODELS.INonConsumable>(NonConsumableModel, {})
+);
+
+inventoryRouter.post(
+  '/non-consumable/recover',
+  checkAuth,
+  Validator.validate(inventoryValidator.deleteNonConsumableSchema),
+  Delete<MODELS.INonConsumable>(NonConsumableModel, { recover: true })
 );
 
 export default inventoryRouter

@@ -1,8 +1,8 @@
 import {
-	ERRORS,
+  ERRORS,
   Validator,
   PERMISSION,
-	roleValidator,
+  roleValidator,
   permissionBuilder,
   convertPermissionToReadable,
 } from '@hmis/gatekeeper';
@@ -61,10 +61,17 @@ roleRouter.post(
 );
 
 roleRouter.post(
-  '/role/delete',
+  '/role/remove',
   checkAuth,
   Validator.validate(roleValidator.deleteRoleSchema),
   Delete<MODELS.IRole>(RoleModel, {})
+);
+
+roleRouter.post(
+  '/role/recover',
+  checkAuth,
+  Validator.validate(roleValidator.deleteRoleSchema),
+  Delete<MODELS.IRole>(RoleModel, { recover: true })
 );
 
 roleRouter.post(
@@ -78,4 +85,4 @@ roleRouter.post('/role/all', checkAuth, List<MODELS.IRole>(RoleModel, {}));
 
 roleRouter.post('/role/details', checkAuth, Get<MODELS.IRole>(RoleModel, {}));
 
-export default roleRouter
+export default roleRouter;

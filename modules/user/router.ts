@@ -1,5 +1,5 @@
 import {
-	ERRORS,
+  ERRORS,
   Validator,
   authValidator,
   addressValidator,
@@ -7,10 +7,10 @@ import {
   convertPermissionToReadable,
 } from '@hmis/gatekeeper';
 import {
-	login,
-	resetPassword,
-	updatePassword,
-	forgotPassword,
+  login,
+  resetPassword,
+  updatePassword,
+  forgotPassword,
 } from './controllers/auth';
 import {
   doctorsSearch,
@@ -139,7 +139,13 @@ userRouter.post(
 
 userRouter.post('/user/all', checkAuth, List<MODELS.IUser>(UserModel, {}));
 
-userRouter.post('/user/delete', checkAuth, Delete<MODELS.IUser>(UserModel, {}));
+userRouter.post('/user/remove', checkAuth, Delete<MODELS.IUser>(UserModel, {}));
+
+userRouter.post(
+  '/user/recover',
+  checkAuth,
+  Delete<MODELS.IUser>(UserModel, { recover: true })
+);
 
 userRouter.get(
   '/user/me',

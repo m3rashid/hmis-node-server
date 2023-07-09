@@ -38,9 +38,7 @@ function Create<DbType>(
 
       const createDoc = new model({
         ...payload,
-        ...(req.user
-          ? { createdBy: req.user._id, lastUpdatedBy: req.user._id }
-          : {}),
+        ...(req.user ? { createdBy: req.user._id } : {}),
       });
       await createDoc.save();
 

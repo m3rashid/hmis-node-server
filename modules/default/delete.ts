@@ -5,6 +5,7 @@ import type { FilterQuery, Model, QueryOptions } from 'mongoose';
 interface DeleteControllerParams<DbType> {
   options?: QueryOptions<DbType>;
   requireAuth?: boolean;
+  recover?: boolean;
   reqTransformer?: (req: Request) => Promise<Request>;
   filterQueryTransformer?: (_: {
     user: MODELS.ILoginUser;
@@ -16,6 +17,7 @@ function Delete<DbType>(
   model: Model<DbType> | MODELS.PaginateModel<DbType>,
   {
     requireAuth = true,
+    recover = false,
     reqTransformer = async (req) => req,
     filterQueryTransformer = async ({ user, filterQuery }) => filterQuery,
     options = { multi: true },
@@ -41,7 +43,7 @@ function Delete<DbType>(
         query,
         {
           $set: {
-            deleted: true,
+            deleted: !recover,
             ...(req.user ? { lastUpdatedBy: req.user._id } : {}),
           },
         },

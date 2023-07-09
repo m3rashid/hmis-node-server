@@ -39,6 +39,12 @@ projectManagementRouter.post(
 );
 
 projectManagementRouter.post(
+  '/goal/recover',
+  checkAuth,
+  Delete<MODELS.IGoal>(GoalModel, { recover: true })
+);
+
+projectManagementRouter.post(
   '/team/all',
   checkAuth,
   List<MODELS.ITeam>(TeamModel, {})
@@ -60,6 +66,12 @@ projectManagementRouter.post(
   '/team/remove',
   checkAuth,
   Delete<MODELS.ITeam>(TeamModel, {})
+);
+
+projectManagementRouter.post(
+  '/team/recover',
+  checkAuth,
+  Delete<MODELS.ITeam>(TeamModel, { recover: true })
 );
 
 projectManagementRouter.post(
@@ -87,6 +99,12 @@ projectManagementRouter.post(
 );
 
 projectManagementRouter.post(
+  '/task-status/recover',
+  checkAuth,
+  Delete<MODELS.ITaskStatus>(TaskStatusModel, { recover: true })
+);
+
+projectManagementRouter.post(
   '/task/all',
   checkAuth,
   List<MODELS.ITask>(TaskModel, {})
@@ -108,6 +126,12 @@ projectManagementRouter.post(
   '/task/remove',
   checkAuth,
   Delete<MODELS.ITask>(TaskModel, {})
+);
+
+projectManagementRouter.post(
+  '/task/recover',
+  checkAuth,
+  Delete<MODELS.ITask>(TaskModel, { recover: true })
 );
 
 projectManagementRouter.post(
@@ -135,6 +159,12 @@ projectManagementRouter.post(
 );
 
 projectManagementRouter.post(
+  '/sub-task/recover',
+  checkAuth,
+  Delete<MODELS.ISubTask>(SubTaskModel, { recover: true })
+);
+
+projectManagementRouter.post(
   '/project/all',
   checkAuth,
   List<MODELS.IProject>(ProjectModel, {})
@@ -156,6 +186,12 @@ projectManagementRouter.post(
   '/project/remove',
   checkAuth,
   Delete<MODELS.IProject>(ProjectModel, {})
+);
+
+projectManagementRouter.post(
+  '/project/recover',
+  checkAuth,
+  Delete<MODELS.IProject>(ProjectModel, { recover: true })
 );
 
 export default projectManagementRouter;
