@@ -1,10 +1,4 @@
 import {
-	login,
-	resetPassword,
-	updatePassword,
-	forgotPassword,
-} from './controllers/auth';
-import {
 	ERRORS,
   Validator,
   authValidator,
@@ -12,6 +6,12 @@ import {
   availabilityValidator,
   convertPermissionToReadable,
 } from '@hmis/gatekeeper';
+import {
+	login,
+	resetPassword,
+	updatePassword,
+	forgotPassword,
+} from './controllers/auth';
 import {
   doctorsSearch,
   patientSearch,
@@ -22,6 +22,7 @@ import Get from '../default/get';
 import Edit from '../default/edit';
 import List from '../default/list';
 import Create from '../default/create';
+import Delete from '../default/delete';
 import { UserModel } from './models/user';
 import type { MODELS } from '@hmis/gatekeeper';
 import { hashPassword } from './helpers/bcrypt';
@@ -137,6 +138,8 @@ userRouter.post(
 );
 
 userRouter.post('/user/all', checkAuth, List<MODELS.IUser>(UserModel, {}));
+
+userRouter.post('/user/delete', checkAuth, Delete<MODELS.IUser>(UserModel, {}));
 
 userRouter.get(
   '/user/me',
