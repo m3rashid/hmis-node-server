@@ -2,6 +2,7 @@ import {
   modelNames,
   type MODELS,
   paginatedCompiledModel,
+	ENUMS,
 } from '@hmis/gatekeeper';
 import mongoose from 'mongoose';
 import { baseModelSchema } from '../../../utils/models';
@@ -13,8 +14,9 @@ const subTaskSchema = new mongoose.Schema<MODELS.ISubTask>(
     description: { type: String },
     image: { type: String },
     status: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: modelNames.taskStatus,
+      type: String,
+      required: true,
+      enum: ENUMS.TASK_STATUS,
     },
     expectedCompletionTime: { type: Date, required: true },
   },

@@ -8,7 +8,7 @@ import userRouter from './modules/user/router';
 import checkupRouter from './modules/checkup/router';
 import dashboardRouter from './modules/dashboard/router';
 import inventoryRouter from './modules/inventory/router';
-import projectManagementRouter from './modules/projectMgmt/router';
+import taskManagementRouter from './modules/taskManagement/router';
 
 const router: Router = Router();
 
@@ -22,6 +22,6 @@ router.use('/misc', miscRouter);
 router.use('/checkup', checkupRouter)
 router.use('/inventory', inventoryRouter);
 router.use('/dashboard', dashboardRouter);
-router.use('/project', projectManagementRouter);
+router.use('/task', taskManagementRouter);
 
 export default router;

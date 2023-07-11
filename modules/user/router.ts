@@ -51,13 +51,13 @@ userRouter.post(
 );
 
 userRouter.post(
-  '/address/login',
+  '/auth/login',
   Validator.validate(authValidator.loginSchema),
   useRoute(login)
 );
 
 userRouter.post(
-  '/address/logout',
+  '/auth/logout',
   useRoute(async (req: Request, res: Response) => {
     return res.sendStatus(200);
   })
