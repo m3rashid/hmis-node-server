@@ -1,5 +1,5 @@
-import { ERRORS, type MODELS } from '@hmis/gatekeeper';
 import type { Request, Response } from 'express';
+import { ERRORS, type MODELS } from '@hmis/gatekeeper';
 import type { FilterQuery, Model, PaginateOptions } from 'mongoose';
 
 interface SearchControllerParams<DbType> {
@@ -29,23 +29,26 @@ function Search<DbType>(
       );
 
       const foundDocs = await model
+        // @ts-ignore
         .find(req.body.query || {})
         .skip((req.body.options.page || 1) - 1)
-        .limit(limit + 1)
+        .limit(limit)
         .lean();
 
       const docs = JSON.parse(JSON.stringify(foundDocs));
+      const count = await model.countDocuments(req.body.query || {});
 
-      const paginatedDocs: Partial<MODELS.PaginatedListIResponse<DbType>> = {
-        docs: docs.slice(0, limit),
+      const paginatedDocs: MODELS.PaginatedListIResponse<DbType> = {
+        docs: docs,
+        totalDocs: count,
+        totalPages: Math.ceil(count / limit),
+        page: req.body.options.page || 1,
+        pagingCounter: (req.body.options.page || 1) * limit,
         hasNextPage: docs.length > limit,
         hasPrevPage: (req.body.options.page || 1) > 1,
         limit,
-        nextPage: docs.length > limit ? (req.body.options.page || 1) + 1 : null,
-        prevPage:
-          (req.body.options.page || 1) > 1
-            ? (req.body.options.page || 1) - 1
-            : null,
+        nextPage: (req.body.options.page || 1) + 1,
+				prevPage: (req.body.options.page || 1) - 1 < 1 ? null : (req.body.options.page || 1) - 1, 
       };
 
       return res.status(200).json(paginatedDocs as any);
