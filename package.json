@@ -18,9 +18,9 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.359.0",
     "@faker-js/faker": "^8.0.2",
     "@hmis/gatekeeper": "workspace:*",
+    "aws-sdk": "^2.1416.0",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "bull": "^4.10.4",

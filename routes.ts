@@ -5,6 +5,7 @@ import opdRouter from './modules/opd/router';
 import miscRouter from './modules/misc/router';
 import roleRouter from './modules/role/router';
 import userRouter from './modules/user/router';
+import uploadRouter from './modules/upload/router';
 import checkupRouter from './modules/checkup/router';
 import dashboardRouter from './modules/dashboard/router';
 import inventoryRouter from './modules/inventory/router';
@@ -19,9 +20,10 @@ router.use('/opd', opdRouter);
 router.use('/user', userRouter);
 router.use('/role', roleRouter);
 router.use('/misc', miscRouter);
-router.use('/checkup', checkupRouter)
+router.use('/checkup', checkupRouter);
 router.use('/inventory', inventoryRouter);
 router.use('/dashboard', dashboardRouter);
 router.use('/task', taskManagementRouter);
+router.use('/upload', uploadRouter);
 
 export default router;
