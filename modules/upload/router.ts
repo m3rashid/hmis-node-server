@@ -7,6 +7,7 @@ import type { MODELS } from '@hmis/gatekeeper';
 import type { Request, Response } from 'express';
 import generateUploadUrl from '../../utils/upload';
 import { checkAuth } from '../../middlewares/auth';
+import Create from '../default/create';
 
 const uploadRouter = Router();
 const useRoute = ERRORS.useRoute;
@@ -27,6 +28,8 @@ uploadRouter.post('/mine', checkAuth, List<MODELS.IUpload>(UploadModel, {
 		createdBy: new mongoose.Types.ObjectId(user._id)
 	})
 }));
+
+uploadRouter.post('/add', checkAuth, Create<MODELS.IUpload>(UploadModel, {}));
 
 
 export default uploadRouter;
