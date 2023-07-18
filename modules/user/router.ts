@@ -32,6 +32,7 @@ import type { Request, Response } from 'express';
 import { checkAuth } from '../../middlewares/auth';
 import { issueJWT, revalidateJWT } from './helpers/jwt';
 import { AvailabilityModel } from './models/availability';
+import Search from '../default/search';
 
 const userRouter = Router();
 const useRoute = ERRORS.useRoute;
@@ -138,6 +139,8 @@ userRouter.post(
 );
 
 userRouter.post('/user/all', checkAuth, List<MODELS.IUser>(UserModel, {}));
+
+userRouter.post('/user/search', checkAuth, Search<MODELS.IUser>(UserModel, {}));
 
 userRouter.post('/user/remove', checkAuth, Delete<MODELS.IUser>(UserModel, {}));
 
